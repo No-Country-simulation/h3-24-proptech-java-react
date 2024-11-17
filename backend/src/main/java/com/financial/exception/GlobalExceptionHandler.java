@@ -43,4 +43,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(ex.getStatusCode())
                 .body(error);
     }
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException ex ,WebRequest request) {
+        ErrorResponse error = new ErrorResponse(
+                ex.getMessage(),
+                ex.getStatusCode(),
+                request.getDescription(false)
+        );
+        return ResponseEntity.status(ex.getStatusCode())
+                .body(error);
+    }
 }
