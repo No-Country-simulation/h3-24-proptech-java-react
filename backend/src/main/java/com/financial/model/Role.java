@@ -20,7 +20,4 @@ public class Role extends Auditable {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
-
 }
