@@ -1,6 +1,6 @@
 package com.financial.config.mapper;
 
-import com.financial.dto.response.UserResponseDto;
+import com.financial.dto.response.auth.UserResponseDto;
 import com.financial.model.User;
 import org.mapstruct.Mapper;
 

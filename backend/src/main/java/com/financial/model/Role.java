@@ -10,7 +10,7 @@ import java.util.UUID;
 @Entity(name = "roles")
 @Getter
 @Setter
-public class Role {
+public class Role extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "role_id")

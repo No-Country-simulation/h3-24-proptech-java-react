@@ -1,4 +1,4 @@
-package com.financial.dto.response;
+package com.financial.dto.response.auth;
 
 import com.financial.model.Role;
 
