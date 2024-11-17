@@ -7,7 +7,8 @@ import lombok.Setter;
 import java.util.Set;
 import java.util.UUID;
 
-@Entity(name = "roles")
+@Entity
+@Table(name = "roles")
 @Getter
 @Setter
 public class Role extends Auditable {

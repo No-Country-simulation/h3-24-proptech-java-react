@@ -1,0 +1,42 @@
+#spring.application.name=Financial.land
+#server.port=8090
+#spring.datasource.url=${POSTGRES_URL}
+#spring.datasource.username=${POSTGRES_USER}
+#spring.datasource.password=${POSTGRES_PASSWORD}
+#spring.datasource.driver-class-name=org.postgresql.Driver
+#spring.datasource.hikari.maximum-pool-size=10
+
+spring:
+  application:
+    name: Financial.land
+  datasource:
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    database: postgresql
+  profiles:
+    active: dev
+  ai:
+    openai:
+      api-key: ${OPENAI_KEY}
+      chat:
+        enabled: true
+        options:
+          model: gpt-4o
+          temperature: 0.7
+
+server:
+  port: 8090
+  error:
+    include-message: always
+
+

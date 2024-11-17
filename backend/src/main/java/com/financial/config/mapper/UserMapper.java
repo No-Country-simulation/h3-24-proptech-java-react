@@ -11,7 +11,6 @@ import org.mapstruct.factory.Mappers;
 public interface UserMapper {
     User INSTANCE = Mappers.getMapper(User.class);
 
-    @Mapping(source = "",target = "")
     UserResponseDto toDto(User user);
 
     User toUser(RegisterRequestDto dto);
