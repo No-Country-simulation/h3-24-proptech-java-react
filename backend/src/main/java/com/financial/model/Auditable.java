@@ -28,11 +28,11 @@ public class Auditable {
     private String createdBy;
 
     @LastModifiedDate
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDateTime lastModifiedAt;
 
     @LastModifiedBy
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String lastModifiedBy;
 
     @Column(nullable = false)

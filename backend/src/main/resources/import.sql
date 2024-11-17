@@ -1,0 +1,5 @@
+INSERT INTO roles (role_id,name,deleted,created_at,created_by,last_modified_at,last_modified_by) VALUES('340ddc49-1214-4e00-9a77-2334334b23d3','ROLE_COMPRADOR',false,'2024-11-17','SYSTEM','2024-11-17','SYSTEM');
+INSERT INTO roles (role_id,name,deleted,created_at,created_by,last_modified_at,last_modified_by) VALUES('f9c0426d-b39f-4bb6-bd61-ea5814284aef','ROLE_INVERSOR',false,'2024-11-17','SYSTEM','2024-11-17','SYSTEM');
+INSERT INTO roles (role_id,name,deleted,created_at,created_by,last_modified_at,last_modified_by) VALUES('1b4c6755-d2ad-4222-ba02-0a5c7f0a8f68','ROLE_ADMIN',false,'2024-11-17','SYSTEM','2024-11-17','SYSTEM');
+
+INSERT INTO users (user_id,email,password,name,lastname,dni,created_at,created_by,last_modified_at,last_modified_by,deleted) VALUES ('5244d5da-f08b-44fb-bcc9-3ecb5e561e69','admin@admin.com','$2a$10$WzmmybP5lsAJ0LnzVv6QlOAANrxpR/aTsFNfmwl2TeBsQp6AklaOO','ADMIN','ADMIN','12345678','2024-11-06','SYSTEM','2024-11-06','SYSTEM',false);
