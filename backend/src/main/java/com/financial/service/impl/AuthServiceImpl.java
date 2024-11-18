@@ -5,6 +5,7 @@ import com.financial.config.security.JwtService;
 import com.financial.dto.request.auth.LoginRequestDto;
 import com.financial.dto.request.auth.RegisterRequestDto;
 import com.financial.dto.response.auth.AuthResponseDto;
+import com.financial.dto.response.auth.RoleResponseDto;
 import com.financial.dto.response.auth.UserResponseDto;
 import com.financial.exception.BadRequestException;
 import com.financial.exception.NotFoundException;
@@ -16,11 +17,14 @@ import com.financial.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -77,7 +81,11 @@ public class AuthServiceImpl implements AuthService {
 
 
     private AuthResponseDto generateResponse(User user) {
-        UserResponseDto userR = mapper.toUserResponseDTO(user);
+//        UserResponseDto userR = mapper.toUserResponseDTO(user);
+        Set<RoleResponseDto> roles = user.getRoles().stream()
+                .map(r-> new RoleResponseDto(r.getRoleId(),r.getName()))
+                .collect(Collectors.toSet());
+        UserResponseDto userR = new UserResponseDto(user.getUserId(),user.getEmail(),user.getName(),user.getLastname(),user.getDni(),roles);
         String token = jwtService.generateToken(user);
         return new AuthResponseDto(userR,token);
     }
