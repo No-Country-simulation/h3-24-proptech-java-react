@@ -39,6 +39,9 @@ public class SecurityConfig {
     private static final String[] AUTH_ENDPOINTS_PUBLIC = {
             "/api/auth/login",
             "/api/auth/register",
+            "/api/reset-password",
+            "/api/forgot-password",
+            "/api/reset-password"
     };
     @Bean
     public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
