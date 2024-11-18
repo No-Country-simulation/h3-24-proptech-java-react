@@ -14,6 +14,9 @@ spring:
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
   jpa:
     hibernate:
       ddl-auto: create
@@ -23,6 +26,18 @@ spring:
     database: postgresql
   profiles:
     active: dev
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            timeout: 5000
   ai:
     openai:
       api-key: ${OPENAI_KEY}
@@ -37,3 +52,5 @@ server:
   error:
     include-message: always
 
+frontend:
+  url: ${FRONTEND_URL}

@@ -1,0 +1,10 @@
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=EobzCGMG9KikkKwt
+POSTGRES_URL=jdbc:postgresql://aws-0-sa-east-1.pooler.supabase.com:6543/postgres?user=postgres.muuiilwoxgveexkclxas&password=EobzCGMG9KikkKwt
+OPENAI_KEY=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
+
+
+PASSWORD_ADMIN=passwordADM
+FRONTEND_URL=http://localhost:5173
+MAIL_USERNAME=financial.land.sup@gmail.com
+MAIL_PASSWORD=okbo nyqd hann bnss

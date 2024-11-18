@@ -17,4 +17,6 @@ public interface IUserRepository extends JpaRepository<User, UUID> {
 
     @Query(value = "SELECT * FROM users u where u.dni = :dni",nativeQuery = true)
     Optional<User> findUserByDni(@Param("dni") String dni);
+
+    Optional<User> findByResetPasswordToken(String resetPasswordToken);
 }

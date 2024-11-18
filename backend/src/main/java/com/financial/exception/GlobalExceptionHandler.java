@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,6 +81,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleExceptionF(Exception ex ,WebRequest request) {
+        ErrorResponse error = new ErrorResponse(
+                ex.getMessage(),
+                500,
+                request.getDescription(false)
+        );
+        return ResponseEntity.status(500)
+                .body(error);
+    }
+
+    @ExceptionHandler(EmailServiceException.class)
+    public ResponseEntity<ErrorResponse> handleEmailServiceException(EmailServiceException ex ,WebRequest request) {
         ErrorResponse error = new ErrorResponse(
                 ex.getMessage(),
                 500,
