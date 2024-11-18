@@ -51,9 +51,11 @@ public class AuthServiceImpl implements AuthService {
     public AuthResponseDto register(RegisterRequestDto dto) {
         Optional<User> userFound = userRepository.findUserByEmail(dto.getEmail());
         if(userFound.isPresent()) throw new BadRequestException(String.format("Email is already registered: %s",dto.getEmail()));
+        userFound = userRepository.findUserByDni(dto.getDni());
+        if(userFound.isPresent()) throw new BadRequestException(String.format("dni is already registered: %s",dto.getDni()));
         String roleName = dto.getUserType() ? "ROLE_COMPRADOR" : "ROLE_INVERSOR";
         Role role = roleRepository.findRoleByName(roleName).orElseThrow(() -> new NotFoundException(String.format("Role not found with name %s",roleName)));
-        User newUser = mapper.toUser(dto);
+        User newUser = mapper.toUserModel(dto);
         newUser.setPassword(passwordEncoder.encode(dto.getPassword()));
         newUser.getRoles().add(role);
         userRepository.save(newUser);
@@ -69,7 +71,7 @@ public class AuthServiceImpl implements AuthService {
 
 
     private AuthResponseDto generateResponse(User user) {
-        UserResponseDto userR = mapper.toDto(user);
+        UserResponseDto userR = mapper.toUserResponseDTO(user);
         String token = jwtService.generateToken(user);
         return new AuthResponseDto(userR,token);
     }

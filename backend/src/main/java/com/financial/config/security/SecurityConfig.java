@@ -36,6 +36,10 @@ public class SecurityConfig {
     @Autowired
     private  JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    private static final String[] AUTH_ENDPOINTS_PUBLIC = {
+            "/api/auth/login",
+            "/api/auth/register",
+    };
     @Bean
     public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
         http
@@ -45,13 +49,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .formLogin(AbstractHttpConfigurer::disable)
-
-                .httpBasic(AbstractHttpConfigurer::disable)
-
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(AUTH_ENDPOINTS_PUBLIC).permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/auth/check-login").hasAnyRole("COMPRADOR","INVERSOR","ADMIN")
-                        .requestMatchers("/api/auth/**", "/api/public/**","/api/test-connection").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 )

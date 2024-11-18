@@ -8,14 +8,12 @@
 
 spring:
   application:
-    name: Financial.land
+    name: Financial-al
   datasource:
     url: ${POSTGRES_URL}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
-    hikari:
-      maximum-pool-size: 10
   jpa:
     hibernate:
       ddl-auto: create
@@ -31,12 +29,11 @@ spring:
       chat:
         enabled: true
         options:
-          model: gpt-4o
+          model: gpt-4
           temperature: 0.7
 
 server:
   port: 8090
   error:
     include-message: always
-
 
