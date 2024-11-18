@@ -1,8 +1,11 @@
 package com.financial.dto.request.auth;
 import jakarta.validation.constraints.*;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class RegisterRequestDto {
     @Email(message = "invalid email entered")
     @NotBlank(message = "Email must be required")

@@ -1,0 +1,38 @@
+# IMAGEN MODELO, HACER UN BUILD PARA LUEGO COPIARLO Y QUE LA IMAGEN FINAL SEA MAS LIVIANO.
+FROM eclipse-temurin:21.0.3_9-jdk as build
+
+# INFORMAR EL PUERTO DONDE SE EJECUTA EL CONTENEDOR (INFORMATIVO)
+EXPOSE 8090
+
+# DEFINIR DIRECTORIO RAIZ DE NUESTRO CONTENEDOR
+WORKDIR /root
+
+# COPIAR Y PEGAR ARCHIVOS DENTRO DEL CONTENEDOR
+COPY ./pom.xml /root
+COPY ./.mvn /root/.mvn
+COPY ./mvnw /root
+
+#  Eliminar espacios.
+RUN sed -i 's/\r$//' mvnw
+
+RUN chmod +x ./mvnw
+
+
+# DESCARGAR LAS DEPENDENCIAS
+RUN ./mvnw dependency:go-offline
+
+# COPIAR EL CODIGO FUENTE DENTRO DEL CONTENEDOR
+COPY ./src /root/src
+
+
+
+# PERMITE EJECUTAR EL INSTALL A PESAR DE NO TENER LAS ENVS. -D SKIP TESTS.
+RUN ./mvnw clean install -DskipTests
+
+FROM eclipse-temurin:21.0.3_9-jdk
+
+# CONSTRUIR NUESTRA APLICACION
+COPY --from=build /root/target/*.jar app.jar
+
+# LEVANTAR NUESTRA APLICACION CUANDO EL CONTENEDOR INICIE
+ENTRYPOINT ["java","-jar","/app.jar"]

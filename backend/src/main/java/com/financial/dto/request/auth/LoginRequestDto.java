@@ -4,9 +4,12 @@ package com.financial.dto.request.auth;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginRequestDto {
     @Email(message = "invalid email entered")
     @NotBlank(message = "Email must be required")

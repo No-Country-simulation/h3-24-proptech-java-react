@@ -55,9 +55,15 @@ public class AuthServiceImpl implements AuthService {
         if(userFound.isPresent()) throw new BadRequestException(String.format("dni is already registered: %s",dto.getDni()));
         String roleName = dto.getUserType() ? "ROLE_COMPRADOR" : "ROLE_INVERSOR";
         Role role = roleRepository.findRoleByName(roleName).orElseThrow(() -> new NotFoundException(String.format("Role not found with name %s",roleName)));
-        User newUser = mapper.toUserModel(dto);
+
+        User newUser = new User();
+        newUser.setEmail(dto.getEmail());
         newUser.setPassword(passwordEncoder.encode(dto.getPassword()));
+        newUser.setDni(dto.getDni());
+        newUser.setName(dto.getName());
+        newUser.setLastname(dto.getLastname());
         newUser.getRoles().add(role);
+
         userRepository.save(newUser);
         return generateResponse(newUser);
     }
