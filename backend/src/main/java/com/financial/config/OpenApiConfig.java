@@ -31,7 +31,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
         ),
         servers = {
                 @Server(description = "Development Server", url = "http://localhost:8090"),
-                @Server(description = "Production Server", url = "proximamente...")
+                @Server(description = "Production Server", url = "https://financial-al.up.railway.app")
         },
         security = @SecurityRequirement(name = "bearerAuth")
 )
