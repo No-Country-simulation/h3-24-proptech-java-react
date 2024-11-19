@@ -11,15 +11,19 @@ const Navbar = () => {
         <li>
           <Link
             to="/"
-            className={`text-white hover:text-gray-300 ${location.pathname === "/" ? "font-bold" : ""}`}
+            className={`text-white hover:text-gray-300 ${
+              location.pathname === "/" ? "font-bold" : ""
+            }`}
           >
             Inicio
           </Link>
         </li>
         <li>
           <Link
-            to="/login"
-            className={`text-white hover:text-gray-300 ${location.pathname === "/login" ? "font-bold" : ""}`}
+            to="/auth"
+            className={`text-white hover:text-gray-300 ${
+              location.pathname === "/auth" ? "font-bold" : ""
+            }`}
           >
             Login
           </Link>
@@ -30,4 +34,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
