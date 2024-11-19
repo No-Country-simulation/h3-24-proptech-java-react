@@ -14,9 +14,6 @@ spring:
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
-    hikari:
-      maximum-pool-size: 10
-      minimum-idle: 5
   jpa:
     hibernate:
       ddl-auto: create
@@ -46,6 +43,12 @@ spring:
         options:
           model: gpt-4
           temperature: 0.7
+
+cloudinary:
+  name: "dzmzrbuta"
+  api:
+    key: ${CLOUDINARY_KEY}
+    secret: ${CLOUDINARY_SECRET}
 
 server:
   port: 8090
