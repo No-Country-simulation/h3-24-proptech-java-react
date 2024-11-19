@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmación de Cambio de Contraseña</title>
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body style="font-family: 'Lato', sans-serif; font-weight: 400; font-style: normal; background-color: #f4f4f4; margin: 0; padding: 0; -webkit-text-size-adjust: none; -ms-text-size-adjust: none;">
+<div class="email-container" style="width: 100%; max-width: 600px; margin: 0 auto; background-color: #f4f4f4; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+  <!-- Header -->
+  <div class="header" style="padding: 20px; text-align: center;">
+    <img src="" alt="logo financial.land" style="max-width: 250px; height: auto;">
+  </div>
+  <!-- email-template.html -->
+  <div class="content" style="padding: 20px; color: #000000; text-align: center;">
+    <h1 style="font-size: 24px; margin-bottom: 20px;" th:text="${emailTitle}"></h1>
+    <p style="margin: 0;">Hola, <span th:text="${userName}"></span></p>
+    <p style="margin: 0;" th:text="${messageBody}"></p>
+    <p style="margin: 0;" th:if="${extraMessage != null}" th:text="${extraMessage}"></p>
+    <p style="margin-top: 20px;">Gracias por ser parte de nuestra comunidad.</p>
+  </div>
+  <!-- Footer -->
+  <div style="background-color: #050f22; color: #f4f4f4; padding: 20px;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+      <tr>
+        <td style="width: 150px; vertical-align: middle;">
+          <!-- Logo alineado a la izquierda -->
+          <img src="" alt="logo financial.land" style="max-width: 100px; height: auto; display: block;">
+        </td>
+        <td style="text-align: right; vertical-align: middle;">
+          <!-- Información y redes sociales alineadas a la derecha -->
+          <p style="margin: 10px 0; font-size: 18px; font-weight: bold;">Soporte PropTech Financia.al</p>
+          <p style="margin: 10px 0;">1234 Calle Falsa, Ciudad, Provincia</p>
+          <p style="margin: 10px 0;">Teléfono: +1 234 567 890</p>
+          <p style="margin: 10px 0;">E-mail: financial.land.sup@gmail.com</p>
+          <div style="margin-top: 10px;">
+            <a href="https://www.facebook.com" style="color: #f4f4f4; text-decoration: none; margin-left: 10px;"><img src="" alt="Facebook" style="width: 25px; height: 25px; margin: 0 5px; vertical-align: middle;"></a>
+            <a href="https://www.instagram.com" style="color: #f4f4f4; text-decoration: none; margin-left: 10px;"><img src="" alt="Instagram" style="width: 25px; height: 25px; margin: 0 5px; vertical-align: middle;"></a>
+            <a href="https://www.linkedin.com" style="color: #f4f4f4; text-decoration: none; margin-left: 10px;"><img src="" alt="LinkedIn" style="width: 25px; height: 25px; margin: 0 5px; vertical-align: middle;"></a>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+</body>
+</html>

@@ -7,6 +7,7 @@ import com.financial.dto.request.auth.RegisterRequestDto;
 import com.financial.dto.response.auth.AuthResponseDto;
 import com.financial.model.User;
 import com.financial.service.AuthService;
+import com.financial.service.IEmailService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
-
+    private final IEmailService emailService;
     private final AuthService authService;
 
     @PostMapping("/login")
@@ -26,7 +27,9 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponseDto> register (@Valid @RequestBody RegisterRequestDto dto) {
-        return ResponseEntity.status(201).body(authService.register(dto));
+        AuthResponseDto response = authService.register(dto);
+        emailService.sendWelcomeEmail(dto.getEmail());
+        return ResponseEntity.status(201).body(response);
     }
 
     @GetMapping("/check-login")
