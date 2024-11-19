@@ -27,8 +27,8 @@ spring:
 cloudinary:
   name: "dzmzrbuta"
   api:
-    key: "574247662855968"
-    secret: "yKNfJ-cuCLD3lO1kmtnvmJJZYiQ"
+    key: ${CLOUDINARY_KEY}
+    secret: ${CLOUDINARY_SECRET}
 
 server:
   port: 8090
