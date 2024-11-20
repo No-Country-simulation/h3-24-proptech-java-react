@@ -1,11 +1,11 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
-import toast from "react-hot-toast";
-import FormRow from "../FormRow";
+
+import FormRow from "../../ui/FormRow";
+import useRegister from "./useRegister";
 
 function Register() {
-  const [isLoading, setIsLoading] = useState(false);
+  const { register: signup, isPending: isLoading } = useRegister();
+
   const {
     register,
     handleSubmit,
@@ -15,24 +15,7 @@ function Register() {
   } = useForm();
 
   async function onSubmit(data) {
-    setIsLoading(true);
-
-    await axios
-      .post("https://financial-al.up.railway.app/api/auth/register", {
-        ...data,
-        userType: true,
-      })
-      .then(() => {
-        toast.success("¡Cuenta creada con éxito! 🎉");
-      })
-      .catch((err) => {
-        toast.error("¡Algo salió mal!");
-        console.log(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-        reset();
-      });
+    signup(data, { onSettled: () => reset() });
   }
 
   return (
@@ -138,7 +121,9 @@ function Register() {
           />
         </FormRow>
 
-        <button type="submit">Enviar</button>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? "Loading..." : "enviar"}
+        </button>
       </form>
     </section>
   );

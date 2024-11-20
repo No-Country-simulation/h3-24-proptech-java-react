@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Register from "../components/auth/Register";
-import LogIn from "../components/auth/log_in";
+import Register from "../features/auth/Register";
+import Login from "../features/auth/login";
 
 function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -9,7 +9,7 @@ function Auth() {
     <section>
       <h1>HOLA</h1>
 
-      {isLogin ? <LogIn /> : <Register />}
+      {isLogin ? <Login /> : <Register />}
 
       <div>
         {isLogin ? (

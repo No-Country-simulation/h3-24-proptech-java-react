@@ -28,6 +28,17 @@ const Navbar = () => {
             Login
           </Link>
         </li>
+
+        <li>
+          <Link
+            to="/secretPage"
+            className={`text-white hover:text-gray-300 ${
+              location.pathname === "/secretPage" ? "font-bold" : ""
+            }`}
+          >
+            Secret Page
+          </Link>
+        </li>
       </ul>
     </nav>
   );
