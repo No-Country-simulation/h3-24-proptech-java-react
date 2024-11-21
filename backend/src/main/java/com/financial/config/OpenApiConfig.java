@@ -21,8 +21,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
                 version = "1.0.0",
                 contact = @Contact(
                         name = "Financia.al",
-                        url = "Financia-al.com",
-                        email = "Financia.al@proptech.com"
+                        url = "https://financialal.up.railway.app/home",
+                        email = "financial.land.sup@gmail.com"
                 ),
                 license = @License(
                         name = "Standard Software Use License",

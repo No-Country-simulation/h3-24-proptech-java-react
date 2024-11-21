@@ -7,7 +7,7 @@ public enum LoanRate {
     NINE(9, new BigDecimal("0.125780")),
     TWELVE(12, new BigDecimal("0.096453")),
     EIGHTEEN(18, new BigDecimal("0.067190")),
-    TWENTY_FOUR(24, new BigDecimal("0.055246")),
+    TWENTY_FOUR(24, new BigDecimal("0.052615")),
     THIRTY(30, new BigDecimal("0.043922")),
     THIRTY_SIX(36, new BigDecimal("0.038157")),
     FORTY_EIGHT(48, new BigDecimal("0.031049")),
