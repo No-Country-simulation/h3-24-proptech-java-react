@@ -4,7 +4,7 @@ import com.financial.config.mapper.UserMapper;
 import com.financial.config.security.JwtService;
 import com.financial.dto.request.auth.LoginRequestDto;
 import com.financial.dto.request.auth.RegisterRequestDto;
-import com.financial.dto.response.TokenValidationResponse;
+import com.financial.dto.response.TokenValidationResponseDTO;
 import com.financial.dto.response.auth.AuthResponseDto;
 import com.financial.dto.response.auth.RoleResponseDto;
 import com.financial.dto.response.auth.UserResponseDto;
@@ -145,7 +145,7 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
     }
 
-    public TokenValidationResponse validateResetToken(String resetPasswordToken) {
+    public TokenValidationResponseDTO validateResetToken(String resetPasswordToken) {
         if (resetPasswordToken == null || resetPasswordToken.trim().isEmpty()) {
             throw new EmailServiceException("El token no fue proporcionado.");
         }
@@ -157,6 +157,6 @@ public class AuthServiceImpl implements AuthService {
         if (user.getTokenExpiryDate() != null && user.getTokenExpiryDate().isBefore(LocalDateTime.now())) {
             throw new EmailServiceException("El token ha expirado. Solicite uno nuevo.");
         }
-        return new TokenValidationResponse("Token válido. Puede proceder a restablecer su contraseña.");
+        return new TokenValidationResponseDTO("Token válido. Puede proceder a restablecer su contraseña.");
     }
 }
