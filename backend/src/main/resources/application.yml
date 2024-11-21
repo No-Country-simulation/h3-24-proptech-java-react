@@ -34,7 +34,7 @@ spring:
           auth: true
           starttls:
             enable: true
-            timeout: 5000
+            timeout: 2000
   ai:
     openai:
       api-key: ${OPENAI_KEY}

@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record PasswordResetRequest(
+public record PasswordResetRequestDTO(
         @NotBlank(message = "El token no debe estar vacío")
         String token,
 
