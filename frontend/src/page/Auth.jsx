@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Register from '../features/auth/Register';
-import Login from '../features/auth/Login';
+import Login from '../features/auth/login';
 
 function Auth() {
   const [isLogin, setIsLogin] = useState(true);
