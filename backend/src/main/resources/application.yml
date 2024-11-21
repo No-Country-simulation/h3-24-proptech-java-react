@@ -55,5 +55,11 @@ server:
   error:
     include-message: always
 
+
 frontend:
   url: ${FRONTEND_URL}
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

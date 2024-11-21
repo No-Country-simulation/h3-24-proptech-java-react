@@ -32,13 +32,13 @@ public class Loan extends Auditable {
     @Column(nullable = false, name = "interest_rate")
     private Double interestRate;
     @Column(nullable = false)
+
     @Enumerated(EnumType.STRING)
     private LoanStatus status;
-    @Column(nullable = false, name = "date_accepted")
-    private LocalDate dateAccepted;
 
+    @Column(nullable = true, name = "date_accepted")
+    private LocalDate dateAccepted;
     @ManyToOne
     @JoinColumn(name = "user_id",foreignKey = @ForeignKey(name = "FK_LOAN_USER"))
     private User user;
-
 }
