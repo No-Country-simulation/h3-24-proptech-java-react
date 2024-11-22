@@ -10,5 +10,5 @@ public record RequestLoanSimulationDTO(
         BigDecimal requestedAmount,
         @NotNull
         @ValidLoanRate
-        int termMonths
+        Integer termMonths
 ) {}
