@@ -22,6 +22,8 @@ target/
 .env/
 .env\
 
+ngrok.exe
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/

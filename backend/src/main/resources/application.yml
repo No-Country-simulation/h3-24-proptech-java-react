@@ -63,3 +63,7 @@ logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+veriff:
+  api-key: ${VERIFF_KEY}
+  url: ${VERIFF_URL}
