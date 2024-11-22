@@ -1,20 +1,24 @@
 package com.financial.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Objects;
+import java.util.UUID;
 
-@Embeddable
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "cloud_files")
 public class CloudFile {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID cloudFileId;
+
     @Column(name = "public_id")
     private String publicId;
 
@@ -24,10 +28,10 @@ public class CloudFile {
     @Column(name = "original_file_name")
     private String originalFilename;
 
-    public boolean isValidFile() {
-        boolean publicIdValid = Objects.nonNull(publicId) && !publicId.isBlank();
-        boolean urlValid = Objects.nonNull(url) && !url.isBlank();
-        return publicIdValid && urlValid;
+    public CloudFile(String publicId, String url, String originalFilename) {
+        this.publicId = publicId;
+        this.url = url;
+        this.originalFilename = originalFilename;
     }
 
 }

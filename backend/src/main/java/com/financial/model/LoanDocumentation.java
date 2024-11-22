@@ -22,8 +22,8 @@ public class LoanDocumentation {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID loanDocumentationId;
 
-    @ManyToOne
-    @JoinColumn(name = "loan_id",foreignKey = @ForeignKey(name = "FK_LOAN_DOCUMENTATION_LOAN"))
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "loan_id", foreignKey = @ForeignKey(name = "FK_LOAN_DOCUMENTATION_LOAN"))
     private Loan loan;
 
     @Column(nullable = false, name = "doc_type")
@@ -34,9 +34,28 @@ public class LoanDocumentation {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
-    @Column(nullable = false, name = "url_file")
-    private String urlFile;
+    /*
+     * The purpose of this field is to create a 'link' or 'binding' between the front and back files.
+     * The front and back documents of the same document type must have the same 'binding' value.
+     */
+    @Column(name = "binding")
+    private String binding;
+
+    // The ID of the guarantee associated with this document
+    @Column(name = "guarantee_id")
+    private String guaranteeId;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "cloud_file_id", referencedColumnName = "cloudFileId")
+    private CloudFile cloudFile;
 
     @Column(nullable = false, name = "upload_date")
     private LocalDate uploadDate;
+
+    public void setCloudFile(CloudFile cloudFile) {
+        if (cloudFile != null) {
+            this.cloudFile = cloudFile;
+        }
+    }
+
 }
