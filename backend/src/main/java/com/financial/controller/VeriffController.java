@@ -24,8 +24,9 @@ public class VeriffController {
     }
 
     @PostMapping("/decision")
-    public  void webhookevent(@RequestBody VerificationResponse payload) {
+    public  ResponseEntity webhookevent(@RequestBody VerificationResponse payload) {
         log.info(payload.toString());
         veriffService.decision(payload);
+        return ResponseEntity.ok().body("OK");
     }
 }

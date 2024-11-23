@@ -2,16 +2,14 @@ package com.financial.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -37,5 +35,9 @@ public class Profile extends Auditable {
     private String country;
     @Column
     private String gender;
+
+    @OneToOne
+    @JoinColumn(name = "user_id",foreignKey = @ForeignKey(name = "FK_PROFILE_USER"))
+    private User user;
 
 }

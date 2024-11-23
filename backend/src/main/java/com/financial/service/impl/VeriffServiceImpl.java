@@ -26,11 +26,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class VeriffServiceImpl {
     @Value("${veriff.url}")
-    private static  String API_URL;  // Reemplaza con tu API Key
+    private   String API_URL;  // Reemplaza con tu API Key
     @Value("${veriff.api-key}")
-    private static  String API_KEY;  // URL de la API de Veriff
+    private   String API_KEY;  // URL de la API de Veriff
     @Value("${frontend.url}")
-    private static  String FRONTEND_URL;
+    private   String FRONTEND_URL;
 
 
     private final IUserService userService;
@@ -92,7 +92,7 @@ public class VeriffServiceImpl {
         Boolean response = areLabelsValid(payload.getData().getVerification().getInsights());
         if(user.getDni().equals(payload.getData().getVerification().getDocument().getNumber().getValue().replace(".","")) && response){
 
-        userService.validateIdentity(true);
+        userService.validateIdentity(true,UUID.fromString(payload.getVendorData()));
         LocalDate birth = LocalDate.parse(payload.getData().getVerification().getPerson().getDateOfBirth().getValue());
         String nationality = payload.getData().getVerification().getPerson().getNationality().getValue();
         String road = payload.getData().getVerification().getPerson().getAddress().getComponents().getRoad();
@@ -101,10 +101,8 @@ public class VeriffServiceImpl {
         String state = payload.getData().getVerification().getPerson().getAddress().getComponents().getState();
         String country = payload.getData().getVerification().getDocument().getCountry().getValue();
         String gender = payload.getData().getVerification().getPerson().getGender().getValue();
-        profileService.createProfileDecision(birth,nationality,road,houseNumber,city,state,country,gender);
+        profileService.createProfileDecision(birth,nationality,road,houseNumber,city,state,country,gender,user);
         }
-        userService.validateIdentity(false);
-
     }
 
     public boolean areLabelsValid(List<Insight> insights) {

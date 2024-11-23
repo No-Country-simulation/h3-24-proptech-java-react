@@ -17,7 +17,7 @@ public class Application implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 //		// Aquí puedes llamar al método para generar una contraseña
-//		String passwordPlano = "";
+//		String passwordPlano = "Password123@";
 //		String passwordCodificada = passwordEncoder.encode(passwordPlano);
 //
 //		// Mostrar la contraseña codificada en la consola
