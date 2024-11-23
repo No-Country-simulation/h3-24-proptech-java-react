@@ -11,7 +11,6 @@ import java.util.List;
 public record ResponseLoanSimulationDTO(BigDecimal monthlyQuota,           // Cuota mensual
                                         BigDecimal totalPayment,           // Pago total al final del préstamo
                                         BigDecimal requestedAmount,        // Monto solicitado
-                                        Integer termMonths,                // Término en meses
-                                        BigDecimal interestRate,           // Término en meses
+                                        Integer termMonths,                // Término en meses// Término en meses
                                         List<PaymentScheduleDTO> schedule  // Cronograma de pagos
 ) {}
