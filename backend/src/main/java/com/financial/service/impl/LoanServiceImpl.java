@@ -70,17 +70,6 @@ public class LoanServiceImpl implements ILoanService {
         return new ResponseLoanSimulationDTO(res.monthlyQuota().setScale(2, RoundingMode.HALF_UP), res.totalPayment(), res.requestedAmount(), res.termMonths(), schedule);
     }
 
-    public ResponseLoanCalculationsDTO loanCalculations(RequestLoanSimulationDTO requestLoan) {
-        MathContext mathContext = MathContext.DECIMAL128;
-        BigDecimal amount = requestLoan.requestedAmount().setScale(2, RoundingMode.HALF_UP);
-        int term = requestLoan.termMonths();
-//        BigDecimal monthlyRate = LoanRate.getRateByMonths(term).setScale(6, RoundingMode.HALF_UP);
-        BigDecimal monthlyQuota = calculateLoan(amount, term).setScale(2, RoundingMode.HALF_UP);
-        BigDecimal totalPayment = monthlyQuota.multiply(BigDecimal.valueOf(term), mathContext).setScale(2, RoundingMode.HALF_UP);
-        BigDecimal rate = LoanRate.getRateByMonths(term).setScale(6, RoundingMode.HALF_UP);
-        return new ResponseLoanCalculationsDTO(monthlyQuota.setScale(2, RoundingMode.HALF_UP), totalPayment, amount, term, rate);
-    }
-
     @Override
     public BigDecimal calculateLoan(BigDecimal amount, Integer term) {
         // Obtener la tasa según los meses
@@ -114,7 +103,7 @@ public class LoanServiceImpl implements ILoanService {
     private List<PaymentScheduleDTO> generatePaymentSchedule(BigDecimal totalPayment, BigDecimal monthlyRate, BigDecimal monthlyQuota, Integer term, MathContext mathContext) {
         List<PaymentScheduleDTO> schedule = new ArrayList<>();
         BigDecimal remainingBalance = totalPayment.subtract(monthlyQuota).setScale(2, RoundingMode.HALF_UP); // Saldo inicial es el monto del préstamo - la primera cuota
-        BigDecimal interest = monthlyRate.multiply(BigDecimal.valueOf(100), mathContext).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal interest = monthlyRate.setScale(2, RoundingMode.HALF_UP);
         for (int i = 1; i <= term; i++) {
             // Crear un nuevo registro de pago para este mes, incluyendo el interés y el saldo restante
             schedule.add(new PaymentScheduleDTO(i, monthlyQuota.setScale(2, RoundingMode.HALF_UP), interest, remainingBalance.setScale(2, RoundingMode.HALF_UP)));
@@ -128,5 +117,15 @@ public class LoanServiceImpl implements ILoanService {
             }
         }
         return schedule;
+    }
+
+    private ResponseLoanCalculationsDTO loanCalculations(RequestLoanSimulationDTO requestLoan) {
+        MathContext mathContext = MathContext.DECIMAL128;
+        BigDecimal amount = requestLoan.requestedAmount().setScale(2, RoundingMode.HALF_UP);
+        int term = requestLoan.termMonths();
+        BigDecimal monthlyQuota = calculateLoan(amount, term).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal totalPayment = monthlyQuota.multiply(BigDecimal.valueOf(term), mathContext).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal rate = LoanRate.getRateByMonths(term).setScale(6, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100), mathContext);
+        return new ResponseLoanCalculationsDTO(monthlyQuota.setScale(2, RoundingMode.HALF_UP), totalPayment, amount, term, rate.setScale(2, RoundingMode.HALF_UP));
     }
 }
