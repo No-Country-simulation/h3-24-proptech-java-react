@@ -25,7 +25,7 @@ public class Profile extends Auditable {
     private String nationality;
     @Column
     private String road;
-    @Column
+    @Column(name = "house_number")
     private String houseNumber;
     @Column
     private String city;
