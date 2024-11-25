@@ -1,8 +1,8 @@
 function FormRow({ label, error, children, expand, extraClass }) {
   return (
-    <div className={`flex gap-3 ${extraClass}`}>
+    <div className={`formrow flex flex-col gap-2   ${extraClass}`}>
       {label && (
-        <label htmlFor={children.props.id} className="">
+        <label htmlFor={children.props.id} className=" text-lg font-semibold">
           {label}
         </label>
       )}

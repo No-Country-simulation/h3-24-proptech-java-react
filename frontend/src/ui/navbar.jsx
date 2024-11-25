@@ -1,43 +1,21 @@
-// src/components/navbar/Navbar.jsx
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { AlignJustify } from "lucide-react";
+import Button from "./Button";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
-  const location = useLocation();
-
   return (
-    <nav className="bg-black p-4">
-      <ul className="flex space-x-4">
+    <nav className="border-b-2 border-lightGrey p-4">
+      <ul className="flex items-center gap-2">
         <li>
-          <Link
-            to="/"
-            className={`text-white hover:text-gray-300 ${
-              location.pathname === "/" ? "font-bold" : ""
-            }`}
-          >
-            Inicio
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/auth"
-            className={`text-white hover:text-gray-300 ${
-              location.pathname === "/auth" ? "font-bold" : ""
-            }`}
-          >
-            Login
-          </Link>
+          <AlignJustify className=" text-[dark]" />
         </li>
 
-        <li>
-          <Link
-            to="/secretPage"
-            className={`text-white hover:text-gray-300 ${
-              location.pathname === "/secretPage" ? "font-bold" : ""
-            }`}
-          >
-            Secret Page
-          </Link>
+        <li className="px-4 py-1 font-medium bg-grey">
+          <Link to="/home">Logo</Link>
+        </li>
+
+        <li className="ml-[auto]  ">
+          <Button to="/auth">Iniciar sesión</Button>
         </li>
       </ul>
     </nav>
