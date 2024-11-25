@@ -10,7 +10,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ResponseLoanSimulationDTO(BigDecimal monthlyQuota,           // Cuota mensual
                                         BigDecimal totalPayment,           // Pago total al final del préstamo
-                                        BigDecimal requestedAmount,        // Monto solicitado y término en meses
-                                        int termMonths,                    // Término en meses
+                                        BigDecimal requestedAmount,        // Monto solicitado
+                                        Integer termMonths,                // Término en meses// Término en meses
                                         List<PaymentScheduleDTO> schedule  // Cronograma de pagos
 ) {}

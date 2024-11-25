@@ -26,4 +26,6 @@ public interface IUserRepository extends JpaRepository<User, UUID> {
     @Modifying
     @Query(value = "UPDATE users SET is_verified = :isVerified WHERE user_id = :userId", nativeQuery = true)
     void isVerified(@Param("isVerified") Boolean isVerified, @Param("userId") UUID userId);
+
+    Optional<User> findById(UUID userId);
 }

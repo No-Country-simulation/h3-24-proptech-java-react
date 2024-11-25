@@ -2,10 +2,7 @@ package com.financial.model;
 
 import com.financial.model.enums.LoanStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,6 +13,7 @@ import java.util.UUID;
 @Table(name = "loans")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Loan extends Auditable {
@@ -27,10 +25,12 @@ public class Loan extends Auditable {
     private BigDecimal requestedAmount;
     @Column(nullable = false, name = "total_amount")
     private BigDecimal totalAmount;
+    @Column(nullable = true, name = "monthly_Quota")
+    private BigDecimal monthlyQuota;
     @Column(nullable = false, name = "term_months")
     private Integer termMonths;
     @Column(nullable = false, name = "interest_rate")
-    private Double interestRate;
+    private BigDecimal interestRate;
     @Column(nullable = false)
 
     @Enumerated(EnumType.STRING)

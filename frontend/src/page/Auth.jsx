@@ -1,6 +1,6 @@
-import { useState } from "react";
-import Register from "../components/auth/Register";
-import LogIn from "../components/auth/log_in";
+import { useState } from 'react';
+import Register from '../features/auth/Register';
+import Login from '../features/auth/Login';
 
 function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -9,21 +9,19 @@ function Auth() {
     <section>
       <h1>HOLA</h1>
 
-      {isLogin ? <LogIn /> : <Register />}
+      {isLogin ? <Login /> : <Register />}
 
       <div>
         {isLogin ? (
           <p
-            className="p-3 w-36 bg-red-400 cursor-pointer"
-            onClick={() => setIsLogin(false)}
-          >
+            className='p-3 w-36 bg-red-400 cursor-pointer'
+            onClick={() => setIsLogin(false)}>
             Crear una cuenta
           </p>
         ) : (
           <p
-            className="p-3 w-36 bg-red-400 cursor-pointer"
-            onClick={() => setIsLogin(true)}
-          >
+            className='p-3 w-36 bg-red-400 cursor-pointer'
+            onClick={() => setIsLogin(true)}>
             Iniciar sesión
           </p>
         )}

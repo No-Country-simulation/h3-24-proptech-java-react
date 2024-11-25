@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -81,13 +82,18 @@ public class AuthServiceImpl implements AuthService {
         return generateResponse(user);
     }
 
+    @Override
+    public User getUserById(UUID userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(String.format("User not found with ID: %s", userId)));
+    }
 
     private AuthResponseDto generateResponse(User user) {
-//        UserResponseDto userR = mapper.toUserResponseDTO(user);
+        UserResponseDto userR = mapper.toUserResponseDTO(user);
         Set<RoleResponseDto> roles = user.getRoles().stream()
                 .map(r-> new RoleResponseDto(r.getRoleId(),r.getName()))
                 .collect(Collectors.toSet());
-        UserResponseDto userR = new UserResponseDto(user.getUserId(),user.getEmail(),user.getName(),user.getLastname(),user.getDni(),roles);
+        //UserResponseDto userR = new UserResponseDto(user.getUserId(),user.getEmail(),user.getName(),user.getLastname(),user.getDni(),roles);
         String token = jwtService.generateToken(user);
         return new AuthResponseDto(userR,token);
     }
