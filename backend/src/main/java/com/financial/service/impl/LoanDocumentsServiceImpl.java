@@ -35,6 +35,12 @@ public class LoanDocumentsServiceImpl implements LoanDocumentsService {
     @Override
     public LoanDocumentation attachOrUpdateDocumentToLoan(UUID loanId, UploadLoanDocumentationDTO uploadLoanDocumentationDto) {
         Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new LoanNotFoundException(loanId));
+        boolean isDocumentForGuarantee = uploadLoanDocumentationDto.getUserTypeAsEnum().equals(UserType.GUARANTOR);
+        boolean isLoanPreApproved = loan.getStatus().equals(LoanStatus.PRE_APPROVED);
+        if (isDocumentForGuarantee && !isLoanPreApproved) {
+            throw new RuntimeException(String.format("Loan must be %s to upload guarantee documentation", LoanStatus.PRE_APPROVED.name()));
+        }
+
         LoanDocumentation loanDocumentation = uploadLoanDocumentationDto.toLoanDocumentation();
         MultipartFile document = uploadLoanDocumentationDto.document();
         if (loan.hasDocument(loanDocumentation) && loanDocumentation.getDocType().onlyOneUploadIsAllowed()) {

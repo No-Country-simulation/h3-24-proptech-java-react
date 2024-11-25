@@ -13,11 +13,6 @@ public record UploadLoanDocumentationDTO(
         @ValueOfEnum(enumClass = DocType.class)
         String docType,
 
-        @ValueOfEnum(enumClass = UserType.class)
-        String userType,
-
-        String binding,
-
         String guaranteeId,
 
         MultipartFile document
@@ -28,14 +23,17 @@ public record UploadLoanDocumentationDTO(
     }
 
     public UserType getUserTypeAsEnum() {
-        return UserType.valueOf(userType.toUpperCase(Locale.ENGLISH));
+        return hasGuaranteeId() ? UserType.GUARANTOR : UserType.HOLDER;
+    }
+
+    public boolean hasGuaranteeId() {
+        return guaranteeId != null;
     }
 
     public LoanDocumentation toLoanDocumentation() {
         LoanDocumentation loanDocumentation = new LoanDocumentation();
         loanDocumentation.setDocType(getDocTypeAsEnum());
         loanDocumentation.setUserType(getUserTypeAsEnum());
-        loanDocumentation.setBinding(binding);
         loanDocumentation.setGuaranteeId(guaranteeId);
         return loanDocumentation;
     }
