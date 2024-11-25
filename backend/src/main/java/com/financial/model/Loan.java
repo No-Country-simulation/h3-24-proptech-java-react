@@ -54,41 +54,36 @@ public class Loan extends Auditable {
     private List<LoanDocumentation> documents = new ArrayList<>();
 
     public List<LoanDocumentation> getDocumentsOfType(DocType docType, @Nullable String guaranteeId) {
-        List<LoanDocumentation> documentsOfType = documents.stream().filter(doc -> doc.getDocType().equals(docType)).toList();
-        if (guaranteeId != null) {
-            return documentsOfType.stream().filter(document -> document.getGuaranteeId().equals(guaranteeId)).toList();
-        }
-        return documentsOfType;
+        return documents.stream()
+                .filter(doc -> doc.getDocType().equals(docType))
+                .filter(doc -> {
+                    // This document is attached to a holder if its guarantee id is null
+                    if (doc.getGuaranteeId() == null) {
+                        return guaranteeId == null;
+                    } else {
+                        return doc.getGuaranteeId().equals(guaranteeId);
+                    }
+                })
+                .toList();
     }
 
     public boolean hasDocument(LoanDocumentation document) {
-        LoanDocumentation loanDocumentation = getLoanDocumentation(document);
+        return hasDocument(document.getDocType(), document.getGuaranteeId());
+    }
+
+    public boolean hasDocument(DocType docType, @Nullable String guaranteeId) {
+        LoanDocumentation loanDocumentation = getLoanDocumentation(docType, guaranteeId);
         return loanDocumentation != null;
     }
 
-    public LoanDocumentation getLoanDocumentation(LoanDocumentation doc) {
-        for (LoanDocumentation document : documents) {
-            boolean isSameDocType = document.getDocType().equals(doc.getDocType());
-            boolean isSameUserType = document.getUserType().equals(doc.getUserType());
-            if (isSameDocType && isSameUserType) {
-                if (doc.getGuaranteeId() == null) {
-                    return document;
-                } else if (doc.getGuaranteeId().equals(document.getGuaranteeId())) {
-                    return document;
-                }
-            }
-        }
-        return null;
+    public LoanDocumentation getLoanDocumentation(LoanDocumentation loanDocumentation) {
+        return getLoanDocumentation(loanDocumentation.getDocType(), loanDocumentation.getGuaranteeId());
     }
 
-    public int getDocumentCountOfType(DocType docType) {
-        int count = 0;
-        for (LoanDocumentation document : documents) {
-            if (document.getDocType().equals(docType)) {
-                count++;
-            }
-        }
-        return count;
+    public LoanDocumentation getLoanDocumentation(DocType docType, @Nullable String guaranteeId) {
+        return getDocumentsOfType(docType, guaranteeId).stream()
+                .findFirst()
+                .orElse(null);
     }
 
 }

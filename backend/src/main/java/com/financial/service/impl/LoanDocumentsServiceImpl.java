@@ -8,6 +8,8 @@ import com.financial.model.CloudFile;
 import com.financial.model.Loan;
 import com.financial.model.LoanDocumentation;
 import com.financial.model.enums.DocType;
+import com.financial.model.enums.LoanStatus;
+import com.financial.model.enums.UserType;
 import com.financial.repository.ILoanDocumentationRepository;
 import com.financial.repository.ILoanRepository;
 import com.financial.service.FileUploadService;
@@ -71,8 +73,7 @@ public class LoanDocumentsServiceImpl implements LoanDocumentsService {
         boolean allDocumentsUploaded = true;
         for (DocType docType : DocType.values()) {
             List<LoanDocumentation> documents = loan.getDocumentsOfType(docType, guaranteeId);
-            int documentCount = loan.getDocumentCountOfType(docType);
-            if (documents.isEmpty() || documentCount < docType.getMinCount()) {
+            if (documents.isEmpty() || documents.size() < docType.getMinCount()) {
                 allDocumentsUploaded = false;
             }
             status.addDocumentStatusPerType(LoanDocumentationStatusDTO.DocumentTypeStatus.builder()
@@ -84,7 +85,7 @@ public class LoanDocumentsServiceImpl implements LoanDocumentsService {
                     )
                     .minRequired(docType.getMinCount())
                     .maxCount(docType.getMaxCount())
-                    .currentCount(documentCount)
+                    .currentCount(documents.size())
                     .build()
             );
         }
