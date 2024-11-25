@@ -54,4 +54,6 @@ public interface ILoanService{
      * @throws IllegalArgumentException si el préstamo no es válido para refinanciar.
      */
     ResponseLoanDTO refinanceLoan(UUID loanId, RequestRefinanceLoanDTO request);
+
+    String preApproveLoan(UUID loanId);
 }

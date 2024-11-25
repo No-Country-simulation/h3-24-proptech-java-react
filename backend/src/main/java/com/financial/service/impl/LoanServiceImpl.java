@@ -9,6 +9,7 @@ import com.financial.dto.response.loan.PaymentScheduleDTO;
 import com.financial.dto.response.loan.ResponseLoanCalculationsDTO;
 import com.financial.dto.response.loan.ResponseLoanDTO;
 import com.financial.dto.response.loan.ResponseLoanSimulationDTO;
+import com.financial.exception.NotFoundException;
 import com.financial.model.Loan;
 import com.financial.model.User;
 import com.financial.model.enums.LoanRate;
@@ -109,6 +110,15 @@ public class LoanServiceImpl implements ILoanService {
 
         loanRepository.save(existingLoan);
         return loanMapper.toResponseDTO(existingLoan);
+    }
+
+    @Override
+    public String preApproveLoan(UUID loanId) {
+        Loan loanFound = loanRepository.findById(loanId).orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
+        loanFound.setStatus(LoanStatus.PRE_APPROVED);
+        loanRepository.save(loanFound);
+        // AGREGAR EMAIL
+        return "Prestamo pre aprobado correctamente";
     }
 
     private List<PaymentScheduleDTO> generatePaymentSchedule(BigDecimal totalPayment, BigDecimal monthlyRate, BigDecimal monthlyQuota, Integer term, MathContext mathContext) {

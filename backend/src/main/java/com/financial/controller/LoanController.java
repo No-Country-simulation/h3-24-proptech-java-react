@@ -10,6 +10,7 @@ import com.financial.model.User;
 import com.financial.service.ILoanService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -39,4 +40,7 @@ public class LoanController {
         return ResponseEntity.ok(loanService.refinanceLoan(loanId, request));
     }
 
+    @PutMapping("/admin/{loanId}/pre-approve")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> preApproveLoan(@PathVariable UUID loanId) { return ResponseEntity.ok(loanService.preApproveLoan(loanId)); }
 }
