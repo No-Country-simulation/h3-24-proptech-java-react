@@ -1,5 +1,6 @@
 package com.financial.service.impl;
 
+import com.financial.exception.BadRequestException;
 import com.financial.model.User;
 import com.financial.model.veriffModels.Insight;
 import com.financial.model.veriffModels.VerificationResponse;
@@ -50,7 +51,8 @@ public class VeriffServiceImpl {
 
     public String createSession(String firstName, String lastName, String vendorData) {
         try {
-
+            User userFound = userService.findUserById(UUID.fromString(vendorData));
+            if(userFound.getIsVerified()) throw new BadRequestException("User is already verified");
             JSONObject verification = new JSONObject();
 
             JSONObject person = new JSONObject();
@@ -89,8 +91,11 @@ public class VeriffServiceImpl {
     public void decision(VerificationResponse payload) {
 
         User user = userService.findUserById(UUID.fromString(payload.getVendorData()));
+        if(user.getIsVerified()) throw new BadRequestException("User is already verified");
+
         Boolean response = areLabelsValid(payload.getData().getVerification().getInsights());
-        if(user.getDni().equals(payload.getData().getVerification().getDocument().getNumber().getValue().replace(".","")) && response){
+        String dni = payload.getData().getVerification().getDocument().getNumber().getValue().replace(".","");
+        if(user.getDni().equals(dni) && response){
 
         userService.validateIdentity(true,UUID.fromString(payload.getVendorData()));
         LocalDate birth = LocalDate.parse(payload.getData().getVerification().getPerson().getDateOfBirth().getValue());
