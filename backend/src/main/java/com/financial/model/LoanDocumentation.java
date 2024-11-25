@@ -34,13 +34,6 @@ public class LoanDocumentation {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
-    /*
-     * The purpose of this field is to create a 'link' or 'binding' between the front and back files.
-     * The front and back documents of the same document type must have the same 'binding' value.
-     */
-    @Column(name = "binding")
-    private String binding;
-
     // The ID of the guarantee associated with this document
     @Column(name = "guarantee_id")
     private String guaranteeId;

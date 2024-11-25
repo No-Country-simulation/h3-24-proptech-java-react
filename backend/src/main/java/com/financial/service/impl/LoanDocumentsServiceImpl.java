@@ -73,7 +73,6 @@ public class LoanDocumentsServiceImpl implements LoanDocumentsService {
                     .documentType(docType.name())
                     .documents(documents.stream().map(document -> LoanDocumentationStatusDTO.DocumentStatus.builder()
                             .id(document.getLoanDocumentationId().toString())
-                            .key(document.getBinding())
                             .file(document.getCloudFile())
                             .build()).toList()
                     )

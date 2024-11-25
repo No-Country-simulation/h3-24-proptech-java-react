@@ -12,7 +12,6 @@ import lombok.Setter;
 public class LoanDocumentationResponseDTO {
     private String docType;
     private String userType;
-    private String binding;
     private String guaranteeId;
     private CloudFile cloudFile;
 
@@ -20,7 +19,6 @@ public class LoanDocumentationResponseDTO {
         return LoanDocumentationResponseDTO.builder()
                 .docType(loanDocumentation.getDocType().name())
                 .userType(loanDocumentation.getUserType().name())
-                .binding(loanDocumentation.getBinding())
                 .guaranteeId(loanDocumentation.getGuaranteeId())
                 .cloudFile(loanDocumentation.getCloudFile())
                 .build();

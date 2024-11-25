@@ -32,8 +32,8 @@ public class LoanDocumentationStatusDTO {
     }
 
     @Builder
-    public record DocumentStatus(String id, String key, CloudFile file) {
-        
+    public record DocumentStatus(String id, CloudFile file) {
+
     }
 
 }
