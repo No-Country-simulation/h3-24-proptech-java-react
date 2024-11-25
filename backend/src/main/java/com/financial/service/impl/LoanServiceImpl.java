@@ -2,13 +2,13 @@ package com.financial.service.impl;
 
 import com.financial.config.mapper.LoanMapper;
 import com.financial.config.mapper.UserMapper;
-import com.financial.dto.request.loan.RequestCreateLoanDTO;
 import com.financial.dto.request.loan.RequestLoanSimulationDTO;
 import com.financial.dto.request.loan.RequestRefinanceLoanDTO;
 import com.financial.dto.response.loan.PaymentScheduleDTO;
 import com.financial.dto.response.loan.ResponseLoanCalculationsDTO;
 import com.financial.dto.response.loan.ResponseLoanDTO;
 import com.financial.dto.response.loan.ResponseLoanSimulationDTO;
+import com.financial.exception.NotFoundException;
 import com.financial.model.Loan;
 import com.financial.model.User;
 import com.financial.model.enums.LoanRate;
@@ -81,7 +81,7 @@ public class LoanServiceImpl implements ILoanService {
     @Transactional
     public void updateLoanStatus(UUID loanId, String status) {
         Loan loan = loanRepository.findById(loanId)
-                .orElseThrow(() -> new IllegalArgumentException("Préstamo no encontrado"));
+                .orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
         loan.setStatus(LoanStatus.valueOf(status.toUpperCase()));
         loanRepository.save(loan);
     }
@@ -90,7 +90,7 @@ public class LoanServiceImpl implements ILoanService {
     public ResponseLoanDTO refinanceLoan(UUID loanId, RequestRefinanceLoanDTO request) {
         MathContext mathContext = MathContext.DECIMAL128;
         Loan existingLoan = loanRepository.findById(loanId)
-                .orElseThrow(() -> new IllegalArgumentException("Préstamo no encontrado"));
+                .orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
         existingLoan.setRequestedAmount(request.newAmount());
         existingLoan.setTermMonths(request.newTermMonths());
         existingLoan.setInterestRate(request.newInterestRate().setScale(6, RoundingMode.HALF_UP));
@@ -100,9 +100,28 @@ public class LoanServiceImpl implements ILoanService {
         return loanMapper.toResponseDTO(existingLoan);
     }
 
+    @Override
+    @Transactional
+    public void deleteLoan(UUID loanId) {
+        Loan loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new NotFoundException("Loan not found with ID: " + loanId));
+
+        if (loan.getDeleted()) {
+            throw new IllegalStateException("Loan is already marked as deleted.");
+        }
+
+        loan.setDeleted(true);
+        loanRepository.save(loan);
+    }
+
+    @Override
+    public List<Loan> getAllActiveLoans() {
+        return loanRepository.findAllActiveLoans();
+    }
+
     private List<PaymentScheduleDTO> generatePaymentSchedule(BigDecimal totalPayment, BigDecimal monthlyRate, BigDecimal monthlyQuota, Integer term, MathContext mathContext) {
         List<PaymentScheduleDTO> schedule = new ArrayList<>();
-        BigDecimal remainingBalance = totalPayment.subtract(monthlyQuota).setScale(2, RoundingMode.HALF_UP); // Saldo inicial es el monto del préstamo - la primera cuota
+        BigDecimal remainingBalance = totalPayment.subtract(monthlyQuota, mathContext).setScale(2, RoundingMode.HALF_UP); // Saldo inicial es el monto del préstamo - la primera cuota
         BigDecimal interest = monthlyRate.setScale(2, RoundingMode.HALF_UP);
         for (int i = 1; i <= term; i++) {
             // Crear un nuevo registro de pago para este mes, incluyendo el interés y el saldo restante

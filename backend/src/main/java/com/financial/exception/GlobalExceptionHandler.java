@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +34,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(validationErrors, HttpStatus.BAD_REQUEST);
     }
 
-
     @ExceptionHandler({TokenExpiredException.class, InvalidTokenException.class})
     public ResponseEntity<ErrorResponseDto> handleTokenExceptions(RuntimeException ex) {
         ErrorResponseDto error = new ErrorResponseDto(
@@ -56,7 +54,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(error);
     }
-
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorResponse> handleBadRequestException(BadRequestException ex ,WebRequest request) {
@@ -98,6 +95,28 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 request.getDescription(false)
         );
         return ResponseEntity.status(500)
+                .body(error);
+    }
+
+    @ExceptionHandler(LoanNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleLoanNotFoundException(LoanNotFoundException ex, WebRequest request) {
+        ErrorResponse error = new ErrorResponse(
+                ex.getMessage(),
+                ex.getStatusCode(),
+                request.getDescription(false)
+        );
+        return ResponseEntity.status(ex.getStatusCode())
+                .body(error);
+    }
+
+    @ExceptionHandler(PaymentNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlePaymentNotFoundException(PaymentNotFoundException ex, WebRequest request) {
+        ErrorResponse error = new ErrorResponse(
+                ex.getMessage(),
+                ex.getStatusCode(),
+                request.getDescription(false)
+        );
+        return ResponseEntity.status(ex.getStatusCode())
                 .body(error);
     }
 }

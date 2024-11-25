@@ -3,5 +3,8 @@ package com.financial.model.enums;
 public enum PaymentStatus {
     PENDING,
     APPROVED,
-    REFUSED
+    REFUSED,
+    LATE,
+    PAID,
+    MOROSA
 }

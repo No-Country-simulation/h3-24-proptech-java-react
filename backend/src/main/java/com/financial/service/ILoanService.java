@@ -5,8 +5,10 @@ import com.financial.dto.request.loan.RequestLoanSimulationDTO;
 import com.financial.dto.request.loan.RequestRefinanceLoanDTO;
 import com.financial.dto.response.loan.ResponseLoanDTO;
 import com.financial.dto.response.loan.ResponseLoanSimulationDTO;
+import com.financial.model.Loan;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 public interface ILoanService{
@@ -54,4 +56,20 @@ public interface ILoanService{
      * @throws IllegalArgumentException si el préstamo no es válido para refinanciar.
      */
     ResponseLoanDTO refinanceLoan(UUID loanId, RequestRefinanceLoanDTO request);
+
+    /**
+     * Marca un préstamo como eliminado (delete lógico).
+     *
+     * @param loanId Identificador único del préstamo.
+     * @throws IllegalArgumentException si el préstamo no existe.
+     */
+    void deleteLoan(UUID loanId);
+
+    /**
+     * Obtiene una lista de todos los préstamos activos.
+     * Filtra los préstamos que no han sido eliminados lógicamente (deleted = false).
+     *
+     * @return Lista de objetos {@link Loan} que representan los préstamos activos.
+     */
+    List<Loan> getAllActiveLoans();
 }
