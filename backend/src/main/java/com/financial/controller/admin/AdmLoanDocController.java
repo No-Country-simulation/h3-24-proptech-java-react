@@ -3,6 +3,7 @@ package com.financial.controller.admin;
 import com.financial.dto.response.loan.LoanDocumentationResponseDTO;
 import com.financial.service.ILoanDocumentsService;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,7 @@ public class AdmLoanDocController {
     @GetMapping("/get-docs/{loanId}")
     public ResponseEntity<List<LoanDocumentationResponseDTO>> getDocs(
             @PathVariable("loanId")
-            @NotBlank(message = "The loan id cannot be blank")
+            @NotNull(message = "The loan id cannot be null")
             UUID loanId
     ) {
         return ResponseEntity.ok(loanDocumentsService.getDocsByLoanId(loanId));
