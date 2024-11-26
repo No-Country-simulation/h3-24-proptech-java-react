@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,6 +27,12 @@ public interface IUserRepository extends JpaRepository<User, UUID> {
     @Modifying
     @Query(value = "UPDATE users SET is_verified = :isVerified WHERE user_id = :userId", nativeQuery = true)
     void isVerified(@Param("isVerified") Boolean isVerified, @Param("userId") UUID userId);
+
+    @Query(value = "SELECT DISTINCT u.* FROM users u " +
+            "INNER JOIN loans l ON u.user_id = l.user_id " +
+            "WHERE l.status IN ('PENDING', 'PRE_APPROVED')",
+            nativeQuery = true)
+    List<User> findUsersPendingPreApproved();
 
     Optional<User> findById(UUID userId);
 }

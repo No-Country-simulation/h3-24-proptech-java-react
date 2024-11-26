@@ -4,6 +4,7 @@ import com.financial.config.mapper.LoanMapper;
 import com.financial.config.mapper.UserMapper;
 import com.financial.dto.request.loan.RequestLoanSimulationDTO;
 import com.financial.dto.request.loan.RequestRefinanceLoanDTO;
+import com.financial.dto.request.loan.UpdateStatusLoanRequestDTO;
 import com.financial.dto.response.loan.PaymentScheduleDTO;
 import com.financial.dto.response.loan.ResponseLoanCalculationsDTO;
 import com.financial.dto.response.loan.ResponseLoanDTO;
@@ -101,12 +102,12 @@ public class LoanServiceImpl implements ILoanService {
     }
 
     @Override
-    public String preApproveLoan(UUID loanId) {
-        Loan loanFound = loanRepository.findById(loanId).orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
-        loanFound.setStatus(LoanStatus.PRE_APPROVED);
+    public String changeLoanStatus(UpdateStatusLoanRequestDTO dto) {
+        Loan loanFound = loanRepository.findById(dto.loanId()).orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
+        loanFound.setStatus(LoanStatus.valueOf(dto.status()));
         loanRepository.save(loanFound);
         // AGREGAR EMAIL
-        return "Prestamo pre aprobado correctamente";
+        return "Prestamo actualizado correctamente";
     }
 
     @Override
@@ -126,6 +127,17 @@ public class LoanServiceImpl implements ILoanService {
     @Override
     public List<Loan> getAllActiveLoans() {
         return loanRepository.findAllActiveLoans();
+    }
+
+    @Override
+    public List<ResponseLoanDTO> getLoansByStatus(String status) {
+        List<Loan> loans = loanRepository.findAllByStatus(LoanStatus.valueOf(status.toUpperCase()));
+        return loanMapper.toResponseDTOList(loans);
+    }
+
+    @Override
+    public List<ResponseLoanDTO> getLoansByUserId(UUID userId) {
+        return loanMapper.toResponseDTOList(loanRepository.findByUserId(userId));
     }
 
     private List<PaymentScheduleDTO> generatePaymentSchedule(BigDecimal totalPayment, BigDecimal monthlyRate, BigDecimal monthlyQuota, Integer term, MathContext mathContext) {

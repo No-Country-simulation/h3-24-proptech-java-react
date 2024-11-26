@@ -1,6 +1,7 @@
 package com.financial.service.impl;
 
 import com.financial.dto.request.loan.UploadLoanDocumentationDTO;
+import com.financial.dto.response.loan.LoanDocumentationResponseDTO;
 import com.financial.dto.response.loan.LoanDocumentationStatusDTO;
 import com.financial.exception.LoanDocumentationNotFoundException;
 import com.financial.exception.LoanNotFoundException;
@@ -13,7 +14,7 @@ import com.financial.model.enums.UserType;
 import com.financial.repository.ILoanDocumentationRepository;
 import com.financial.repository.ILoanRepository;
 import com.financial.service.FileUploadService;
-import com.financial.service.LoanDocumentsService;
+import com.financial.service.ILoanDocumentsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
@@ -28,7 +29,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class LoanDocumentsServiceImpl implements LoanDocumentsService {
+public class LoanDocumentsServiceImpl implements ILoanDocumentsService {
     private final ILoanRepository loanRepository;
     private final ILoanDocumentationRepository loanDocumentationRepository;
     private final FileUploadService fileUploadService;
@@ -99,6 +100,14 @@ public class LoanDocumentsServiceImpl implements LoanDocumentsService {
                 .getLoanDocumentationByLoan_LoanIdAndLoanDocumentationId(loanId, loanDocumentationId)
                 .orElseThrow(() -> new LoanDocumentationNotFoundException(loanId, loanDocumentationId));
         loanDocumentationRepository.deleteById(loanDocumentationId);
+    }
+
+    @Override
+    public List<LoanDocumentationResponseDTO> getDocsByLoanId(UUID loanId) {
+       return loanDocumentationRepository.getLoanDocumentationByLoanId(loanId)
+               .stream()
+               .map(LoanDocumentationResponseDTO::toLoanDocumentationResponseDto)
+               .toList();
     }
 
 }
