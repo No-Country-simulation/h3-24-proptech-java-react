@@ -2,7 +2,6 @@ package com.financial.service.impl;
 
 import com.financial.config.mapper.LoanMapper;
 import com.financial.config.mapper.UserMapper;
-import com.financial.dto.request.loan.RequestCreateLoanDTO;
 import com.financial.dto.request.loan.RequestLoanSimulationDTO;
 import com.financial.dto.request.loan.RequestRefinanceLoanDTO;
 import com.financial.dto.response.loan.PaymentScheduleDTO;
@@ -71,17 +70,6 @@ public class LoanServiceImpl implements ILoanService {
         return new ResponseLoanSimulationDTO(res.monthlyQuota().setScale(2, RoundingMode.HALF_UP), res.totalPayment(), res.requestedAmount(), res.termMonths(), schedule);
     }
 
-    public ResponseLoanCalculationsDTO loanCalculations(RequestLoanSimulationDTO requestLoan) {
-        MathContext mathContext = MathContext.DECIMAL128;
-        BigDecimal amount = requestLoan.requestedAmount().setScale(2, RoundingMode.HALF_UP);
-        int term = requestLoan.termMonths();
-//        BigDecimal monthlyRate = LoanRate.getRateByMonths(term).setScale(6, RoundingMode.HALF_UP);
-        BigDecimal monthlyQuota = calculateLoan(amount, term).setScale(2, RoundingMode.HALF_UP);
-        BigDecimal totalPayment = monthlyQuota.multiply(BigDecimal.valueOf(term), mathContext).setScale(2, RoundingMode.HALF_UP);
-        BigDecimal rate = LoanRate.getRateByMonths(term).setScale(6, RoundingMode.HALF_UP);
-        return new ResponseLoanCalculationsDTO(monthlyQuota.setScale(2, RoundingMode.HALF_UP), totalPayment, amount, term, rate);
-    }
-
     @Override
     public BigDecimal calculateLoan(BigDecimal amount, Integer term) {
         // Obtener la tasa según los meses
@@ -93,7 +81,7 @@ public class LoanServiceImpl implements ILoanService {
     @Transactional
     public void updateLoanStatus(UUID loanId, String status) {
         Loan loan = loanRepository.findById(loanId)
-                .orElseThrow(() -> new IllegalArgumentException("Préstamo no encontrado"));
+                .orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
         loan.setStatus(LoanStatus.valueOf(status.toUpperCase()));
         loanRepository.save(loan);
     }
@@ -102,7 +90,7 @@ public class LoanServiceImpl implements ILoanService {
     public ResponseLoanDTO refinanceLoan(UUID loanId, RequestRefinanceLoanDTO request) {
         MathContext mathContext = MathContext.DECIMAL128;
         Loan existingLoan = loanRepository.findById(loanId)
-                .orElseThrow(() -> new IllegalArgumentException("Préstamo no encontrado"));
+                .orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
         existingLoan.setRequestedAmount(request.newAmount());
         existingLoan.setTermMonths(request.newTermMonths());
         existingLoan.setInterestRate(request.newInterestRate().setScale(6, RoundingMode.HALF_UP));
@@ -121,10 +109,29 @@ public class LoanServiceImpl implements ILoanService {
         return "Prestamo pre aprobado correctamente";
     }
 
+    @Override
+    @Transactional
+    public void deleteLoan(UUID loanId) {
+        Loan loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new NotFoundException("Loan not found with ID: " + loanId));
+
+        if (loan.getDeleted()) {
+            throw new IllegalStateException("Loan is already marked as deleted.");
+        }
+
+        loan.setDeleted(true);
+        loanRepository.save(loan);
+    }
+
+    @Override
+    public List<Loan> getAllActiveLoans() {
+        return loanRepository.findAllActiveLoans();
+    }
+
     private List<PaymentScheduleDTO> generatePaymentSchedule(BigDecimal totalPayment, BigDecimal monthlyRate, BigDecimal monthlyQuota, Integer term, MathContext mathContext) {
         List<PaymentScheduleDTO> schedule = new ArrayList<>();
-        BigDecimal remainingBalance = totalPayment.subtract(monthlyQuota).setScale(2, RoundingMode.HALF_UP); // Saldo inicial es el monto del préstamo - la primera cuota
-        BigDecimal interest = monthlyRate.multiply(BigDecimal.valueOf(100), mathContext).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal remainingBalance = totalPayment.subtract(monthlyQuota, mathContext).setScale(2, RoundingMode.HALF_UP); // Saldo inicial es el monto del préstamo - la primera cuota
+        BigDecimal interest = monthlyRate.setScale(2, RoundingMode.HALF_UP);
         for (int i = 1; i <= term; i++) {
             // Crear un nuevo registro de pago para este mes, incluyendo el interés y el saldo restante
             schedule.add(new PaymentScheduleDTO(i, monthlyQuota.setScale(2, RoundingMode.HALF_UP), interest, remainingBalance.setScale(2, RoundingMode.HALF_UP)));
@@ -138,5 +145,15 @@ public class LoanServiceImpl implements ILoanService {
             }
         }
         return schedule;
+    }
+
+    private ResponseLoanCalculationsDTO loanCalculations(RequestLoanSimulationDTO requestLoan) {
+        MathContext mathContext = MathContext.DECIMAL128;
+        BigDecimal amount = requestLoan.requestedAmount().setScale(2, RoundingMode.HALF_UP);
+        int term = requestLoan.termMonths();
+        BigDecimal monthlyQuota = calculateLoan(amount, term).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal totalPayment = monthlyQuota.multiply(BigDecimal.valueOf(term), mathContext).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal rate = LoanRate.getRateByMonths(term).setScale(6, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100), mathContext);
+        return new ResponseLoanCalculationsDTO(monthlyQuota.setScale(2, RoundingMode.HALF_UP), totalPayment, amount, term, rate.setScale(2, RoundingMode.HALF_UP));
     }
 }
