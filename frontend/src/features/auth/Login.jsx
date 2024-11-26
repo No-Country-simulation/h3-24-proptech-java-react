@@ -1,7 +1,7 @@
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 
-import FormRow from "../../ui/FormRow";
-import { useLogin } from "./useLogin";
+import FormRow from '../../ui/FormRow';
+import { useLogin } from './useLogin';
 
 const Login = ({ children }) => {
   const { login, isPending: isLoading } = useLogin();

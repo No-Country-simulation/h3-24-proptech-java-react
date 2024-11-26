@@ -3,3 +3,5 @@ INSERT INTO roles (role_id,name,deleted,created_at,created_by,last_modified_at,l
 INSERT INTO roles (role_id,name,deleted,created_at,created_by,last_modified_at,last_modified_by) VALUES('1b4c6755-d2ad-4222-ba02-0a5c7f0a8f68','ROLE_ADMIN',false,'2024-11-17','SYSTEM','2024-11-17','SYSTEM');
 
 INSERT INTO users (user_id,email,password,name,lastname,dni,created_at,created_by,last_modified_at,last_modified_by,deleted) VALUES ('5244d5da-f08b-44fb-bcc9-3ecb5e561e69','admin@admin.com','$2a$10$WzmmybP5lsAJ0LnzVv6QlOAANrxpR/aTsFNfmwl2TeBsQp6AklaOO','ADMIN','ADMIN','12345678','2024-11-06','SYSTEM','2024-11-06','SYSTEM',false);
+INSERT INTO user_role (user_id,role_id) VALUES ('5244d5da-f08b-44fb-bcc9-3ecb5e561e69','1b4c6755-d2ad-4222-ba02-0a5c7f0a8f68');
+INSERT INTO loans (loan_id,interest_rate,status,term_months,total_amount,user_id,requested_amount,created_at,created_by,last_modified_at,last_modified_by,deleted,date_accepted) VALUES ('6e239572-72bd-4d41-ba1c-07ca234d9399',18.45,'PENDING',6,12732.00,'5244d5da-f08b-44fb-bcc9-3ecb5e561e69',11500.00,'2024-11-17','SYSTEM','2024-11-17','SYSTEM',false,null);

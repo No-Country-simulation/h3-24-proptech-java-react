@@ -34,7 +34,7 @@ spring:
           auth: true
           starttls:
             enable: true
-            timeout: 5000
+            timeout: 2000
   ai:
     openai:
       api-key: ${OPENAI_KEY}
@@ -55,5 +55,11 @@ server:
   error:
     include-message: always
 
+
 frontend:
   url: ${FRONTEND_URL}
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

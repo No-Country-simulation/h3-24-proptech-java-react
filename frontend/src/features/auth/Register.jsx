@@ -1,7 +1,7 @@
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 
-import FormRow from "../../ui/FormRow";
-import useRegister from "./useRegister";
+import FormRow from '../../ui/FormRow';
+import useRegister from './useRegister';
 
 function Register({ children }) {
   const { register: signup, isPending: isLoading } = useRegister();
