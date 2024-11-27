@@ -7,10 +7,10 @@ import "./index.css";
 import Home from "./page/Home";
 import PageNotFound from "./page/PageNotFound";
 import Auth from "./page/Auth";
-import ProtectedPage from "./page/ProtectedPage";
 
 import AppLayout from "./ui/AppLayout";
 import ProtectedRoute from "./ui/ProtectedRoute";
+import LoanSimulation from "./page/LoanSimulation";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,7 +36,7 @@ function App() {
               path="secretPage"
               element={
                 <ProtectedRoute>
-                  <ProtectedPage />
+                  <LoanSimulation />
                 </ProtectedRoute>
               }
             />
@@ -61,8 +61,8 @@ function App() {
             fontSize: "16px",
             maxWidth: "600px",
             padding: "16px 24px",
-            backgroundColor: "#7AFF33FF",
-            color: "#fff",
+            backgroundColor: "#FFFFFF",
+            color: "#0D0D0D",
           },
         }}
       />

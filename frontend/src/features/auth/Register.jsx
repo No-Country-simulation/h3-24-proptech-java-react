@@ -1,7 +1,8 @@
-import { useForm } from 'react-hook-form';
+import { useForm } from "react-hook-form";
 
-import FormRow from '../../ui/FormRow';
-import useRegister from './useRegister';
+import FormRow from "../../ui/FormRow";
+import useRegister from "./useRegister";
+import SubmitButton from "../../ui/SubmitButton";
 
 function Register({ children }) {
   const { register: signup, isPending: isLoading } = useRegister();
@@ -126,13 +127,7 @@ function Register({ children }) {
         <div className="mt-[auto]">{children}</div>
 
         <div className="border-t-[1px] border-lightGrey p-4">
-          <button
-            type="submit"
-            disabled={isLoading}
-            className=" px-4 py-3 text-lg text-light font-medium bg-primary rounded-lg w-full"
-          >
-            {isLoading ? "Loading..." : "Continuar"}
-          </button>
+          <SubmitButton isPending={isLoading}>Continuar</SubmitButton>
         </div>
       </form>
     </div>

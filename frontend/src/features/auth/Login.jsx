@@ -1,7 +1,8 @@
-import { useForm } from 'react-hook-form';
+import { useForm } from "react-hook-form";
 
-import FormRow from '../../ui/FormRow';
-import { useLogin } from './useLogin';
+import FormRow from "../../ui/FormRow";
+import { useLogin } from "./useLogin";
+import SubmitButton from "../../ui/SubmitButton";
 
 const Login = ({ children }) => {
   const { login, isPending: isLoading } = useLogin();
@@ -82,13 +83,7 @@ const Login = ({ children }) => {
         <div className="mt-[auto]">{children}</div>
 
         <div className="border-t-[1px] border-lightGrey p-4">
-          <button
-            className=" px-4 py-3 text-lg text-light font-medium bg-primary rounded-lg w-full"
-            type="submit"
-            disabled={isLoading}
-          >
-            {isLoading ? "Loading..." : "Iniciar sesión"}
-          </button>
+          <SubmitButton isPending={isLoading}>Iniciar sesión</SubmitButton>
         </div>
       </form>
     </div>
