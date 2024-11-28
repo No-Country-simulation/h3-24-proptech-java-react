@@ -6,6 +6,7 @@ import com.financial.dto.request.loan.RequestRefinanceLoanDTO;
 import com.financial.dto.request.loan.UpdateStatusLoanRequestDTO;
 import com.financial.dto.response.loan.ResponseLoanDTO;
 import com.financial.dto.response.loan.ResponseLoanSimulationDTO;
+import com.financial.dto.response.loan.ResponseLoandAdminDTO;
 import com.financial.model.Loan;
 
 import java.math.BigDecimal;
@@ -88,7 +89,7 @@ public interface ILoanService{
      *
      * @return Detalles de los prestamos pendientes ({@link ResponseLoanDTO}).
      */
-    List<ResponseLoanDTO> getLoansByStatus(String status);
+    List<ResponseLoandAdminDTO> getLoansByStatus(String status);
 
-    List<ResponseLoanDTO> getLoansByUserId(UUID userId);
+    List<ResponseLoandAdminDTO> getLoansByUserId(UUID userId);
 }

@@ -5,10 +5,7 @@ import com.financial.config.mapper.UserMapper;
 import com.financial.dto.request.loan.RequestLoanSimulationDTO;
 import com.financial.dto.request.loan.RequestRefinanceLoanDTO;
 import com.financial.dto.request.loan.UpdateStatusLoanRequestDTO;
-import com.financial.dto.response.loan.PaymentScheduleDTO;
-import com.financial.dto.response.loan.ResponseLoanCalculationsDTO;
-import com.financial.dto.response.loan.ResponseLoanDTO;
-import com.financial.dto.response.loan.ResponseLoanSimulationDTO;
+import com.financial.dto.response.loan.*;
 import com.financial.exception.NotFoundException;
 import com.financial.model.Loan;
 import com.financial.model.User;
@@ -130,14 +127,14 @@ public class LoanServiceImpl implements ILoanService {
     }
 
     @Override
-    public List<ResponseLoanDTO> getLoansByStatus(String status) {
+    public List<ResponseLoandAdminDTO> getLoansByStatus(String status) {
         List<Loan> loans = loanRepository.findAllByStatus(LoanStatus.valueOf(status.toUpperCase()));
-        return loanMapper.toResponseDTOList(loans);
+        return loanMapper.toResponseADMDTOList(loans);
     }
 
     @Override
-    public List<ResponseLoanDTO> getLoansByUserId(UUID userId) {
-        return loanMapper.toResponseDTOList(loanRepository.findByUserId(userId));
+    public List<ResponseLoandAdminDTO> getLoansByUserId(UUID userId) {
+        return loanMapper.toResponseADMDTOList(loanRepository.findByUserId(userId));
     }
 
     private List<PaymentScheduleDTO> generatePaymentSchedule(BigDecimal totalPayment, BigDecimal monthlyRate, BigDecimal monthlyQuota, Integer term, MathContext mathContext) {

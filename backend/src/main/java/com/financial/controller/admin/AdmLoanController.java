@@ -4,6 +4,7 @@ package com.financial.controller.admin;
 import com.financial.dto.customValidation.loanStatus.ValidLoanStatus;
 import com.financial.dto.request.loan.UpdateStatusLoanRequestDTO;
 import com.financial.dto.response.loan.ResponseLoanDTO;
+import com.financial.dto.response.loan.ResponseLoandAdminDTO;
 import com.financial.service.ILoanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class AdmLoanController {
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<ResponseLoanDTO>> getLoansByStatus(
+    public ResponseEntity<List<ResponseLoandAdminDTO>> getLoansByStatus(
             @PathVariable
             @ValidLoanStatus
             String status
@@ -35,7 +36,7 @@ public class AdmLoanController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<ResponseLoanDTO>> getLoansByUserId(@PathVariable UUID userId) {
+    public ResponseEntity<List<ResponseLoandAdminDTO>> getLoansByUserId(@PathVariable UUID userId) {
 
         return ResponseEntity.ok(loanService.getLoansByUserId(userId));
     }
