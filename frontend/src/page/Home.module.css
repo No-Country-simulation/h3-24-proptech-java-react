@@ -1,0 +1,35 @@
+.wrapper {
+  background-color: #f9f9f9;
+  padding: 20px;
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333333;
+  margin: 20px 0;
+}
+
+.button {
+  background-color: #2962ff;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 20px;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.button:hover {
+  transform: scale(1.05);
+}
+
+.listWhy {
+  list-style: disc;
+  margin: 15px;
+}

@@ -1,0 +1,7 @@
+:root {
+    --color-primary: #2962ff; /* Color azul principal */
+  }
+  
+  .colorText-financia {
+    color: var(--color-primary);
+  }

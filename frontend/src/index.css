@@ -1,6 +1,11 @@
+@import "./styles/fonts.css";
+@import "./styles/colors.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
 
 body {
   color: #121212;
