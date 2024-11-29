@@ -5,7 +5,7 @@ import mujerCafe from './img/mujer_cafe.png';
 import hombreNotebook from './img/hombre_notebook_living.png';
 import hombreCafe from './img/hombre_cafe.png';
 import Navbar from '../ui/navbar';
-import Footer from '../ui/Footer';
+import Footer from '../ui/footer';
 import styles from './Home.module.css';
 
 const Home = () => {
