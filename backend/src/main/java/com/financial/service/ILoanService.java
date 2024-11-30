@@ -1,9 +1,6 @@
 package com.financial.service;
 
-import com.financial.dto.request.loan.RequestCreateLoanDTO;
-import com.financial.dto.request.loan.RequestLoanSimulationDTO;
-import com.financial.dto.request.loan.RequestRefinanceLoanDTO;
-import com.financial.dto.request.loan.UpdateStatusLoanRequestDTO;
+import com.financial.dto.request.loan.*;
 import com.financial.dto.response.loan.ResponseLoanDTO;
 import com.financial.dto.response.loan.ResponseLoanSimulationDTO;
 import com.financial.dto.response.loan.ResponseLoandAdminDTO;
@@ -96,4 +93,9 @@ public interface ILoanService{
     ResponseLoandAdminDTO updateLoanAdmin(UUID loanId,RequestLoanSimulationDTO dto);
 
 
+    String preApprove(UUID loanId);
+
+    String approve(UUID loanId);
+
+    String declinedLoan(RequestDeclinedLoanDTO dto);
 }

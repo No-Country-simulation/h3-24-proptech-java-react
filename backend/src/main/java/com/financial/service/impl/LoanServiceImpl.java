@@ -2,10 +2,12 @@ package com.financial.service.impl;
 
 import com.financial.config.mapper.LoanMapper;
 import com.financial.config.mapper.UserMapper;
+import com.financial.dto.request.loan.RequestDeclinedLoanDTO;
 import com.financial.dto.request.loan.RequestLoanSimulationDTO;
 import com.financial.dto.request.loan.RequestRefinanceLoanDTO;
 import com.financial.dto.request.loan.UpdateStatusLoanRequestDTO;
 import com.financial.dto.response.loan.*;
+import com.financial.exception.BadRequestException;
 import com.financial.exception.NotFoundException;
 import com.financial.model.Loan;
 import com.financial.model.User;
@@ -148,6 +150,36 @@ public class LoanServiceImpl implements ILoanService {
         loanFound.setTotalAmount(res.totalPayment());
         loanRepository.save(loanFound);
         return loanMapper.toResponseADMDTO(loanFound);
+    }
+
+    @Override
+    public String preApprove(UUID loanId) {
+        Loan loanFound = loanRepository.findById(loanId).orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
+        if(loanFound.getStatus() != LoanStatus.PENDING ) throw new BadRequestException("El préstamo no ha sido pre aprobado ya que su estado actual no es el de pending");
+        loanFound.setStatus(LoanStatus.PRE_APPROVED);
+        loanRepository.save(loanFound);
+        //  TODO: ENVIAR UN EMAIL
+        return "Prestamo pre aprobado correctamente!";
+    }
+
+    @Override
+    public String approve(UUID loanId) {
+        Loan loanFound = loanRepository.findById(loanId).orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
+        if(loanFound.getStatus() != LoanStatus.PRE_APPROVED ) throw new BadRequestException("El préstamo no ha sido aprobado ya que su estado actual no es el de pre aprobado");
+        loanFound.setStatus(LoanStatus.APPROVED);
+        loanRepository.save(loanFound);
+        //  TODO: ENVIAR UN EMAIL
+        // TODO: GENERAR CUOTAS..
+        return "Prestamo aprobado correctamente!";
+    }
+
+    @Override
+    public String declinedLoan(RequestDeclinedLoanDTO dto) {
+        Loan loanFound = loanRepository.findById(dto.loanId()).orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
+        loanFound.setStatus(LoanStatus.REFUSED);
+        loanRepository.save(loanFound);
+        // TODO: enviar el email al usuario
+        return "Prestamo declinado correctamente!";
     }
 
     private List<PaymentScheduleDTO> generatePaymentSchedule(BigDecimal totalPayment, BigDecimal monthlyRate, BigDecimal monthlyQuota, Integer term, MathContext mathContext) {
