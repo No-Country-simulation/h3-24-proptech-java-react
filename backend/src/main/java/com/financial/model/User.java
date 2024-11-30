@@ -57,7 +57,7 @@ public class User extends Auditable implements UserDetails {
     @Column(name = "reset_password_token_expiry")
     private LocalDateTime tokenExpiryDate;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Profile profile;
 
     @Override

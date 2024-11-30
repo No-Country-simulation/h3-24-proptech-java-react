@@ -21,7 +21,7 @@ public class Profile extends Auditable {
     @Column(name = "profile_id")
     private UUID profileId;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToOne
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_PROFILE_USER"))
     private User user;
 

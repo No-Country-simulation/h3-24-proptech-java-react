@@ -137,19 +137,6 @@ public class LoanServiceImpl implements ILoanService {
         return loanMapper.toResponseADMDTOList(loanRepository.findByUserId(userId));
     }
 
-    @Override
-    public ResponseLoandAdminDTO updateLoanAdmin(UUID loanId, RequestLoanSimulationDTO dto) {
-       Loan loanFound = loanRepository.findById(loanId).orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
-        ResponseLoanCalculationsDTO res = loanCalculations(dto);
-        loanFound.setRequestedAmount(res.requestedAmount());
-        loanFound.setMonthlyQuota(res.monthlyQuota());       // Asignar la cuota mensual del préstamo desde el DTO
-        loanFound.setTermMonths(res.termMonths());       // Asignar el término del préstamo desde el DTO
-        loanFound.setInterestRate(res.interestRate());       // Asignar la tasa de interés del préstamo desde el DTO
-        loanFound.setTotalAmount(res.totalPayment());
-        loanRepository.save(loanFound);
-        return loanMapper.toResponseADMDTO(loanFound);
-    }
-
     private List<PaymentScheduleDTO> generatePaymentSchedule(BigDecimal totalPayment, BigDecimal monthlyRate, BigDecimal monthlyQuota, Integer term, MathContext mathContext) {
         List<PaymentScheduleDTO> schedule = new ArrayList<>();
         BigDecimal remainingBalance = totalPayment.subtract(monthlyQuota, mathContext).setScale(2, RoundingMode.HALF_UP); // Saldo inicial es el monto del préstamo - la primera cuota

@@ -92,4 +92,8 @@ public interface ILoanService{
     List<ResponseLoandAdminDTO> getLoansByStatus(String status);
 
     List<ResponseLoandAdminDTO> getLoansByUserId(UUID userId);
+
+    ResponseLoandAdminDTO updateLoanAdmin(UUID loanId,RequestLoanSimulationDTO dto);
+
+
 }

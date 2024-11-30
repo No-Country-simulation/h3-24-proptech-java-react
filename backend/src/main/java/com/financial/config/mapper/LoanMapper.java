@@ -19,6 +19,8 @@ public interface LoanMapper {
 
     ResponseLoanDTO toResponseDTO(Loan loan);
     @Mapping(source = "totalAmount", target = "totalAmount")
+    @Mapping(source = "user.profile", target = "profile")
+    @Mapping(source = "documents", target = "documents")
     ResponseLoandAdminDTO toResponseADMDTO(Loan loan);
 
 

@@ -2,6 +2,7 @@ package com.financial.controller.admin;
 
 
 import com.financial.dto.customValidation.loanStatus.ValidLoanStatus;
+import com.financial.dto.request.loan.RequestLoanSimulationDTO;
 import com.financial.dto.request.loan.UpdateStatusLoanRequestDTO;
 import com.financial.dto.response.loan.ResponseLoanDTO;
 import com.financial.dto.response.loan.ResponseLoandAdminDTO;
@@ -45,5 +46,12 @@ public class AdmLoanController {
     public ResponseEntity<List<String>> getStatus(){
         List<String> status = List.of( "APPROVED", "PRE_APPROVED", "REFUSED");
         return ResponseEntity.ok(status);
+    }
+
+
+    @PutMapping("/update-loan/{loanId}")
+    public ResponseEntity<ResponseLoandAdminDTO> getStatus(@PathVariable UUID loanId, @RequestBody RequestLoanSimulationDTO dto){
+
+        return ResponseEntity.ok(loanService.updateLoanAdmin(loanId, dto));
     }
 }
