@@ -39,4 +39,8 @@ public class Payment {
     private BigDecimal interestRate;    // Tasa de interés por atraso (por ejemplo, 0.03 para 3%)
     private boolean paidOnTime;         // Si el pago fue realizado dentro del rango (1-10 del mes)
     private int installmentNumber;      // Número de la cuota (1, 2, ..., término del préstamo)
+
+    @OneToOne( cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "cloud_file_id")
+    private CloudFile cloudFile;
 }
