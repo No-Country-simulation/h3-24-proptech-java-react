@@ -1,4 +1,4 @@
-package com.financial.model.veriffModels;
+package com.financial.model.veriffFullAutoModels;
 
 
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class VerificationResponse {
+public class VerificationFullAutoResponse {
     private String status;
     private String eventType;
     private String sessionId;

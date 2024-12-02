@@ -1,7 +1,8 @@
 package com.financial.controller;
 import com.financial.config.CurrentUser;
 import com.financial.model.User;
-import com.financial.model.veriffModels.VerificationResponse;
+import com.financial.model.veriffDecisionModels.VerificationDecisionResponse;
+import com.financial.model.veriffFullAutoModels.VerificationFullAutoResponse;
 import com.financial.service.impl.VeriffServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +25,15 @@ public class VeriffController {
     }
 
     @PostMapping("/decision")
-    public  ResponseEntity webhookevent(@RequestBody VerificationResponse payload) {
+    public  ResponseEntity webhookDecision(@RequestBody VerificationDecisionResponse payload) {
         log.info(payload.toString());
         veriffService.decision(payload);
+        return ResponseEntity.ok().body("OK");
+    }
+    @PostMapping("/full-auto")
+    public  ResponseEntity webhookFullAuto(@RequestBody VerificationFullAutoResponse payload) {
+        log.info(payload.toString());
+        veriffService.fullAuto(payload);
         return ResponseEntity.ok().body("OK");
     }
 }
