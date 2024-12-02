@@ -5,7 +5,6 @@ import com.financial.dto.response.profile.ResponseProfileDTO;
 import com.financial.service.IProfileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,15 +22,6 @@ public class ProfileController {
         return ResponseEntity.ok(profile);
     }
 
-    @PostMapping
-    public ResponseEntity<ResponseProfileDTO> createProfile(
-            @PathVariable String userIdOrDni,
-            @RequestBody @Valid RequestCreateProfileDTO profileDto
-    ) {
-        ResponseProfileDTO createdProfile = profileService.createProfile(userIdOrDni, profileDto);
-        return new ResponseEntity<>(createdProfile, HttpStatus.CREATED);
-    }
-
     @PutMapping("/{profileId}")
     public ResponseEntity<ResponseProfileDTO> updateProfile(
             @PathVariable String userIdOrDni,
@@ -40,12 +30,6 @@ public class ProfileController {
     ) {
         ResponseProfileDTO updatedProfile = profileService.updateProfile(userIdOrDni, profileId, profileDto);
         return ResponseEntity.ok(updatedProfile);
-    }
-
-    @DeleteMapping("/{profileId}")
-    public ResponseEntity<Void> deleteProfile(@PathVariable String userIdOrDni, @PathVariable UUID profileId) {
-        profileService.deleteProfile(userIdOrDni, profileId);
-        return ResponseEntity.noContent().build();
     }
 
 }

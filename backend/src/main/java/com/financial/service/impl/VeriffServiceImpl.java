@@ -111,7 +111,7 @@ public class VeriffServiceImpl {
                     .country(country)
                     .gender(gender)
                     .build();
-            profileService.createProfileWithUser(profile, user);
+            profileService.createProfile(profile, user);
         }
     }
 

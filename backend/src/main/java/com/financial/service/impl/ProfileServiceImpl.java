@@ -56,27 +56,11 @@ public class ProfileServiceImpl implements IProfileService {
 
     @Transactional
     @Override
-    public void createProfileWithUser(RequestCreateProfileDTO profileDto, User user) {
+    public void createProfile(RequestCreateProfileDTO profileDto, User user) {
         Profile profile = profileMapper.toProfile(profileDto);
         profile.setUser(user);
         profileRepository.save(profile);
         log.info("Profile created from decision: {}", profile.getProfileId());
-    }
-
-    @Transactional
-    @Override
-    public ResponseProfileDTO createProfile(String userIdOrDni, RequestCreateProfileDTO profileDto) {
-        Optional<ResponseProfileDTO> profileMaybe = checkIfProfileExists(userIdOrDni);
-        if (profileMaybe.isPresent()) {
-            ResponseProfileDTO profile = profileMaybe.get();
-            throw new RuntimeException("Profile already exists: " + profile.getProfileId());
-        }
-        User user = userService.findUserByIdOrDni(userIdOrDni);
-        Profile profile = profileMapper.toProfile(profileDto);
-        profile.setUser(user);
-        Profile savedProfile = profileRepository.save(profile);
-        log.info("Profile created: {}", savedProfile.getProfileId());
-        return profileMapper.toResponseProfileDto(savedProfile);
     }
 
     private Optional<ResponseProfileDTO> checkIfProfileExists(String userIdOrDni) {
@@ -98,17 +82,6 @@ public class ProfileServiceImpl implements IProfileService {
         Profile savedProfile = profileRepository.save(updatedProfile);
         log.info("Profile updated: {}", savedProfile.getProfileId());
         return profileMapper.toResponseProfileDto(savedProfile);
-    }
-
-    @Transactional
-    @Override
-    public void deleteProfile(String userIdOrDni, UUID profileId) {
-        ensureProfileExists(userIdOrDni);
-        if (!profileRepository.existsById(profileId)) {
-            throw new ProfileNotFoundException("Profile not found for ID: " + profileId);
-        }
-        profileRepository.deleteById(profileId);
-        log.info("Profile deleted: {}", profileId);
     }
 
     private void ensureProfileExists(String userIdOrDni) {

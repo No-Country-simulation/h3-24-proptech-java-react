@@ -8,9 +8,7 @@ import java.util.UUID;
 
 public interface IProfileService {
 
-    void createProfileWithUser(RequestCreateProfileDTO requestCreateProfileDTO, User user);
-
-    ResponseProfileDTO createProfile(String userIdOrDni, RequestCreateProfileDTO profileDto);
+    void createProfile(RequestCreateProfileDTO requestCreateProfileDTO, User user);
 
     ResponseProfileDTO findProfileByUserIdOrDni(String userIdOrDni);
 
@@ -19,7 +17,5 @@ public interface IProfileService {
     ResponseProfileDTO findProfileByDniOrThrowIfNotFound(String dni);
 
     ResponseProfileDTO updateProfile(String userIdOrDni, UUID profileId, RequestCreateProfileDTO profileDto);
-
-    void deleteProfile(String userIdOrDni, UUID profileId);
 
 }
