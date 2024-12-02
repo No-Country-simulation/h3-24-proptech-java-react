@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import mujerCafe from './img/mujer_cafe.png';
 import hombreNotebook from './img/hombre_notebook_living.png';
 import hombreCafe from './img/hombre_cafe.png';
-import Navbar from '../ui/navbar';
-import Footer from '../ui/footer';
+
 import styles from './Home.module.css';
 
 const Home = () => {
@@ -14,9 +13,9 @@ const Home = () => {
       {/*    <Navbar />
  */}
 
-      <section className={`text-justify py-8 ${styles.wrapper}`}>
+      <section className={`text-center py-8 ${styles.wrapper}`}>
         <h1 className={`${styles.logo} colorText-financia`}>Financia.al</h1>
-        <h2 className={`${styles.h2} mx-auto max-w-4xl`}>
+        <h2 className={`${styles.h2} mx-auto `}>
           La respuesta a tus necesidades económicas, todo en un solo espacio.
         </h2>
         <div className="flex justify-center gap-4 mt-6">
@@ -130,7 +129,7 @@ const Home = () => {
 
       </main>
 
-      <Footer />
+     
     </div>
   );
 };

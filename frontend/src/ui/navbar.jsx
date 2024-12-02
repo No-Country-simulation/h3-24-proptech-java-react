@@ -10,8 +10,8 @@ const Navbar = () => {
           <AlignJustify className=" text-[dark]" />
         </li>
 
-        <li className="px-4 py-1 font-medium bg-grey">
-          <Link to="/home">Logo</Link>
+        <li className="px-4 py-1 font-medium">
+          <Link to="/home"> <img src="/logo_Financia.png" alt="logo azul" /> </Link>
         </li>
 
         <li className="ml-[auto]  ">
