@@ -30,7 +30,7 @@ public class Loan extends Auditable {
     @Column(nullable = false, name = "total_amount")
     private BigDecimal totalAmount;
 
-    @Column(nullable = true, name = "monthly_Quota")
+    @Column(name = "monthly_Quota")
     private BigDecimal monthlyQuota;
 
     @Column(name = "remaining_balance", nullable = true)
@@ -46,7 +46,7 @@ public class Loan extends Auditable {
     @Enumerated(EnumType.STRING)
     private LoanStatus status;
 
-    @Column(nullable = true, name = "date_accepted")
+    @Column(name = "date_accepted")
     private LocalDate dateAccepted;
 
     @OneToMany(mappedBy = "loan", cascade = CascadeType.ALL, orphanRemoval = true)
