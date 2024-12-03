@@ -3,6 +3,7 @@ package com.financial.service.impl;
 import com.financial.config.mapper.ProfileMapper;
 import com.financial.dto.request.profile.RequestCreateProfileDTO;
 import com.financial.dto.response.profile.ResponseProfileDTO;
+import com.financial.exception.NotFoundException;
 import com.financial.exception.ProfileNotFoundException;
 import com.financial.model.Profile;
 import com.financial.model.User;
@@ -50,7 +51,7 @@ public class ProfileServiceImpl implements IProfileService {
     @Override
     public ResponseProfileDTO findProfileByDniOrThrowIfNotFound(String dni) {
         Profile profile = profileRepository.findProfileByUser_Dni(dni)
-                .orElseThrow(() -> new ProfileNotFoundException("Profile not found for DNI: " + dni));
+                .orElseThrow(() -> new NotFoundException("Profile not found for DNI: " + dni));
         return profileMapper.toResponseProfileDto(profile);
     }
 

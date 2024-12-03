@@ -61,7 +61,7 @@ public class VeriffServiceImpl {
 
             verification.put("person", person);
             verification.put("vendorData", vendorData);
-            verification.put("callback", FRONTEND_URL);
+            verification.put("callback", String.format(FRONTEND_URL + "/loan/personal-information"));
 
             String timestamp = Instant.now().atZone(TimeZone.getDefault().toZoneId())
                     .format(DateTimeFormatter.ISO_INSTANT);
@@ -89,12 +89,12 @@ public class VeriffServiceImpl {
     }
 
     public void decision(VerificationDecisionResponse payload) {
-        if(payload.verification().venderData() != null && UUIDUtils.looksLikeUUID(payload.verification().venderData().toString())) {
-            User user = userService.findUserById(payload.verification().venderData());
+        if(payload.verification().vendorData() != null && UUIDUtils.looksLikeUUID(payload.verification().vendorData().toString())) {
+            User user = userService.findUserById(payload.verification().vendorData());
             if (!user.getIsVerified()) {
-                String dni = payload.verification().document().number();
-                if(user.getDni().equals(dni.toUpperCase())) {
-                    userService.validateIdentity(true, payload.verification().venderData());
+                String dni = payload.verification().document().number().replace(".", "").toUpperCase();
+                if(user.getDni().equals(dni)) {
+                    userService.validateIdentity(true, payload.verification().vendorData());
                     LocalDate birth = payload.verification().person().dateOfBirth();
                     String gender = payload.verification().person().gender();
                     String nationality = payload.verification().person().nationality();

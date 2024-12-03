@@ -6,7 +6,7 @@ import java.util.UUID;
 public record Verification(
         UUID id,
         String status,
-        UUID venderData,
+        UUID vendorData,
         Person person,
         Document document
 ) {
