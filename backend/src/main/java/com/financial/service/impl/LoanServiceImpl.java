@@ -16,6 +16,7 @@ import com.financial.model.enums.LoanStatus;
 import com.financial.repository.ILoanRepository;
 import com.financial.service.AuthService;
 import com.financial.service.ILoanService;
+import com.financial.service.IPaymentService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,10 +32,12 @@ public class LoanServiceImpl implements ILoanService {
     private final AuthService authService;
     private final LoanMapper loanMapper;
     private final ILoanRepository loanRepository;
-    public LoanServiceImpl(UserMapper userMapper, AuthService authService, LoanMapper loanMapper, ILoanRepository loanRepository) {
+    private final IPaymentService paymentService;
+    public LoanServiceImpl(UserMapper userMapper, AuthService authService, LoanMapper loanMapper, ILoanRepository loanRepository,IPaymentService paymentService) {
         this.authService = authService;
         this.loanMapper = loanMapper;
         this.loanRepository = loanRepository;
+        this.paymentService = paymentService;
     }
 
     @Transactional
@@ -171,6 +174,7 @@ public class LoanServiceImpl implements ILoanService {
         loanRepository.save(loanFound);
         //  TODO: ENVIAR UN EMAIL
         // TODO: GENERAR CUOTAS..
+        paymentService.createPayment(loanFound.getLoanId());
         return "Prestamo aprobado correctamente!";
     }
 

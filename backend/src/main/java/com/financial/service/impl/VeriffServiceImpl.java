@@ -3,10 +3,12 @@ package com.financial.service.impl;
 import com.financial.dto.request.profile.RequestCreateProfileDTO;
 import com.financial.exception.BadRequestException;
 import com.financial.model.User;
-import com.financial.model.veriffModels.Insight;
-import com.financial.model.veriffModels.VerificationResponse;
+import com.financial.model.veriffDecisionModels.VerificationDecisionResponse;
+import com.financial.model.veriffFullAutoModels.Insight;
+import com.financial.model.veriffFullAutoModels.VerificationFullAutoResponse;
 import com.financial.service.IProfileService;
 import com.financial.service.IUserService;
+import com.financial.utils.UUIDUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -86,11 +88,39 @@ public class VeriffServiceImpl {
         }
     }
 
-    public void decision(VerificationResponse payload) {
+    public void decision(VerificationDecisionResponse payload) {
+        if(payload.verification().venderData() != null && UUIDUtils.looksLikeUUID(payload.verification().venderData().toString())) {
+            User user = userService.findUserById(payload.verification().venderData());
+            if (!user.getIsVerified()) {
+                String dni = payload.verification().document().number();
+                if(user.getDni().equals(dni.toUpperCase())) {
+                    userService.validateIdentity(true, payload.verification().venderData());
+                    LocalDate birth = payload.verification().person().dateOfBirth();
+                    String gender = payload.verification().person().gender();
+                    String nationality = payload.verification().person().nationality();
+                    String firstName = payload.verification().person().firstName();
+                    String lastName = payload.verification().person().lastName();
+                    RequestCreateProfileDTO profile = RequestCreateProfileDTO.builder()
+                            .nationality(nationality)
+                            .dateOfBirth(birth)
+                            .gender(gender)
+                            .firstNameAsInDni(firstName)
+                            .lastNameAsInDni(lastName)
+                            .build();
+                    profileService.createProfileWithUser(profile, user);
+                }
+            }
+        }
+
+    }
+
+
+
+    public void fullAuto(VerificationFullAutoResponse payload) {
         User user = userService.findUserById(UUID.fromString(payload.getVendorData()));
-        if (user.getIsVerified()) throw new BadRequestException("User is already verified");
+        if (!user.getIsVerified()) {
         boolean response = areLabelsValid(payload.getData().getVerification().getInsights());
-        String dni = payload.getData().getVerification().getDocument().getNumber().getValue().replace(".", "");
+        String dni = payload.getData().getVerification().getDocument().getNumber().getValue().replace(".", "").toUpperCase();
         if (user.getDni().equals(dni) && response) {
             userService.validateIdentity(true, UUID.fromString(payload.getVendorData()));
             LocalDate birth = LocalDate.parse(payload.getData().getVerification().getPerson().getDateOfBirth().getValue());
@@ -112,6 +142,7 @@ public class VeriffServiceImpl {
                     .gender(gender)
                     .build();
             profileService.createProfileWithUser(profile, user);
+        }
         }
     }
 

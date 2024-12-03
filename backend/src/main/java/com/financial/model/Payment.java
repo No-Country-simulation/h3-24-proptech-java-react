@@ -39,4 +39,8 @@ public class Payment {
     @Setter
     @Getter
     private boolean isGenerated;
+
+    @OneToOne( cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "cloud_file_id")
+    private CloudFile cloudFile;
 }
