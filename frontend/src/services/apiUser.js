@@ -1,14 +1,14 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { getData } from "../utils/saveDataLocalStore";
-import { baseURL } from "../utils/constants";
+import { getData } from '../utils/saveDataLocalStore';
+import { baseURL } from '../utils/constants';
 
 export async function getCurrentUser() {
   try {
-    const token = getData("token");
+    const token = getData('token');
 
     if (!token) {
-      console.warn("No token found, user is not logged in.");
+      console.warn('No token found, user is not logged in.');
       return null;
     }
 
@@ -20,17 +20,18 @@ export async function getCurrentUser() {
 
     return response.data;
   } catch (error) {
-    console.error("💥Error:", error.message);
+    console.log(error);
+    console.error('💥Error:', error.message);
     return null;
   }
 }
 
 export async function getUserProfile(userId) {
   try {
-    const token = getData("token");
+    const token = getData('token');
 
     if (!token) {
-      console.warn("No token found, user is not logged in.");
+      console.warn('No token found, user is not logged in.');
       return null;
     }
 
@@ -45,7 +46,7 @@ export async function getUserProfile(userId) {
 
     return response.data;
   } catch (error) {
-    console.error("💥Error:", error.message);
+    console.error('💥Error:', error.message);
     return null;
   }
 }

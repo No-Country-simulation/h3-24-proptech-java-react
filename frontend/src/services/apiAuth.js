@@ -1,5 +1,5 @@
-import axios from "axios";
-import { baseURL } from "../utils/constants";
+import axios from 'axios';
+import { baseURL } from '../utils/constants';
 
 export async function registerApi(data) {
   try {
@@ -10,7 +10,7 @@ export async function registerApi(data) {
 
     return response.data;
   } catch (error) {
-    console.error("💥Error:", error.message);
+    console.error('💥Error:', error.message);
     return null;
   }
 }
@@ -21,7 +21,8 @@ export async function loginApi(data) {
 
     return response.data;
   } catch (error) {
-    console.error("💥Error:", error.message);
+    console.log(error);
+    console.error('💥Error:', error.message);
     return null;
   }
 }
