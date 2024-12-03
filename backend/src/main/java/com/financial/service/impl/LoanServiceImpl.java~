@@ -174,7 +174,7 @@ public class LoanServiceImpl implements ILoanService {
         loanRepository.save(loanFound);
         //  TODO: ENVIAR UN EMAIL
         // TODO: GENERAR CUOTAS..
-        paymentService.createPaymentSchedule(loanFound.getLoanId());
+        paymentService.createPayment(loanFound.getLoanId());
         return "Prestamo aprobado correctamente!";
     }
 
