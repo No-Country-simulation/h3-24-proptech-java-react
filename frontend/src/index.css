@@ -8,13 +8,15 @@
 
 
 body {
-  color: #121212;
+  color: #0D0D0D;
   font-size: 16px;
   font-weight: 400;
   background-color: #ffffff;
 }
 
-input {
+input,
+select,
+textarea {
   color: inherit;
   font: inherit;
   border: 1px solid #d6d6d6;

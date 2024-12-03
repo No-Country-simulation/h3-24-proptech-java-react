@@ -1,8 +1,13 @@
 import { AlignJustify } from "lucide-react";
-import Button from "./Button";
 import { Link } from "react-router-dom";
 
-const Navbar = () => {
+import Button from "./Button";
+import UserPhoto from "../features/user/UserPhoto";
+import useCurrentUser from "../features/user/useCurrentUser";
+
+const Nav = () => {
+  const { user } = useCurrentUser();
+
   return (
     <nav className="border-b-2 border-lightGrey p-4">
       <ul className="flex items-center gap-2">
@@ -15,11 +20,11 @@ const Navbar = () => {
         </li>
 
         <li className="ml-[auto]  ">
-          <Button to="/auth">Iniciar sesión</Button>
+          {user ? <UserPhoto /> : <Button to="/auth">Iniciar sesión</Button>}
         </li>
       </ul>
     </nav>
   );
 };
 
-export default Navbar;
+export default Nav;

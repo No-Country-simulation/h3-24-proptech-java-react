@@ -22,7 +22,7 @@ export function useLogin() {
       queryClient.setQueryData(["user"], user);
       saveData("token", user?.token);
 
-      navigate("/secretPage", {
+      navigate("/loan-simulation", {
         replace: true,
       });
     },

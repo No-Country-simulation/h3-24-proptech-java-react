@@ -1,4 +1,4 @@
-/* 
+/*
 import React from 'react';
 import { Instagram, Linkedin, Facebook, AtSign } from 'lucide-react';
 import styles from './Footer.module.css';
@@ -33,12 +33,12 @@ const Footer = () => {
     <footer className={`${styles.footerBackground} text-white py-10`}>
       <div className="container mx-auto px-4">
         <div className={`${styles.footerSection} space-y-8 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-8`}>
-   
+
           <div className="text-center lg:text-left">
             <h3 className="text-2xl font-bold mb-4">Tu préstamo personal. Más fácil que nunca.</h3>
             <p className="mb-6 text-gray-300">Solicita tu préstamo personal a largo plazo y compra lo que necesites, hoy.</p>
-            <Link 
-              to="/calculator" 
+            <Link
+              to="/calculator"
               className={`${styles.ctaButton} inline-block hover:bg-blue-700 transition-colors`}
             >
               Simula tu préstamo
@@ -46,7 +46,7 @@ const Footer = () => {
           </div>
 
           <div className="text-center lg:text-left">
-          
+
             <img className="mx-auto lg:mx-0 mb-4 max-h-16"   src="/logo_Financia-White.png" alt="logo azul" />
             <p className="text-gray-300 text-center lg:text-justify">
               Financia tus compras de hoy, y págalas mañana. Gracias por confiar en nuestros activos!
@@ -79,10 +79,10 @@ const Footer = () => {
         <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
           <div className={`${styles.socialIcons} flex space-x-6 mb-4 lg:mb-0`}>
             {socialLinks.map((social, index) => (
-              <a 
-                key={index} 
-                href={social.url} 
-                target="_blank" 
+              <a
+                key={index}
+                href={social.url}
+                target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-blue-300"
               >
@@ -154,7 +154,7 @@ const Footer = () => {
         <div className="lg:flex lg:justify-between lg:items-start">
           {/* Logo y Descripción (30%) */}
 
-          
+
 
           <div className={`${styles.footerAdjust_LogoDescription} text-center lg:text-left mt-8 lg:mt-0`}>
             <img
@@ -171,7 +171,7 @@ const Footer = () => {
           {/* Links Section (70%) */}
           <div className= {`${styles.footerAdjust_LinkSection} grid grid-cols-2 gap-8 lp:gap-4 text-center lg:text-right`}>
 
-         
+
 
             {[{ title: 'Producto', links: productLinks }, { title: 'Legales', links: legalLinks }].map(
               (section) => (

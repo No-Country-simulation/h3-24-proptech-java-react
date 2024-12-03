@@ -18,13 +18,17 @@ function useRegister() {
       queryClient.setQueryData(["user"], user?.user);
       saveData("token", user?.token);
 
-      navigate("/secretPage", {
+      navigate("/loan-simulation", {
         replace: true,
       });
     },
 
-    onError: () => {
-      toast.error("💥 ¡Algo salió mal!");
+    onError: (error) => {
+      if (error.response?.data?.dni) {
+        toast.error("dni is already registered");
+      } else {
+        alert("Ocurrió un error. Intenta nuevamente.");
+      }
     },
   });
 

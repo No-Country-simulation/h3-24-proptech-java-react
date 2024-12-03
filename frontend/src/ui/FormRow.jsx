@@ -9,7 +9,7 @@ function FormRow({ label, error, children, expand, extraClass }) {
 
       {children}
 
-      {error && <p className="">{error}</p>}
+      {error && <p className=" text-sm font-medium text-primary">{error}</p>}
     </div>
   );
 }
