@@ -5,8 +5,7 @@ import com.financial.dto.customValidation.loanStatus.ValidLoanStatus;
 import com.financial.dto.request.loan.RequestDeclinedLoanDTO;
 import com.financial.dto.request.loan.RequestLoanSimulationDTO;
 import com.financial.dto.request.loan.UpdateStatusLoanRequestDTO;
-import com.financial.dto.response.loan.ResponseLoanDTO;
-import com.financial.dto.response.loan.ResponseLoandAdminDTO;
+import com.financial.dto.response.loan.ResponseLoanAdminDTO;
 import com.financial.service.ILoanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +28,7 @@ public class AdmLoanController {
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<ResponseLoandAdminDTO>> getLoansByStatus(
+    public ResponseEntity<List<ResponseLoanAdminDTO>> getLoansByStatus(
             @PathVariable
             @ValidLoanStatus
             String status
@@ -38,7 +37,7 @@ public class AdmLoanController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<ResponseLoandAdminDTO>> getLoansByUserId(@PathVariable UUID userId) {
+    public ResponseEntity<List<ResponseLoanAdminDTO>> getLoansByUserId(@PathVariable UUID userId) {
 
         return ResponseEntity.ok(loanService.getLoansByUserId(userId));
     }
@@ -51,7 +50,7 @@ public class AdmLoanController {
 
 
     @PutMapping("/update-loan/{loanId}")
-    public ResponseEntity<ResponseLoandAdminDTO> getStatus(@PathVariable UUID loanId, @RequestBody RequestLoanSimulationDTO dto){
+    public ResponseEntity<ResponseLoanAdminDTO> getStatus(@PathVariable UUID loanId, @RequestBody RequestLoanSimulationDTO dto){
 
         return ResponseEntity.ok(loanService.updateLoanAdmin(loanId, dto));
     }

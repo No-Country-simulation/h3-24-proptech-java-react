@@ -2,7 +2,7 @@ package com.financial.config.mapper;
 
 import com.financial.dto.request.loan.RequestLoanSimulationDTO;
 import com.financial.dto.response.loan.ResponseLoanDTO;
-import com.financial.dto.response.loan.ResponseLoandAdminDTO;
+import com.financial.dto.response.loan.ResponseLoanAdminDTO;
 import com.financial.model.Loan;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -21,9 +21,9 @@ public interface LoanMapper {
     @Mapping(source = "totalAmount", target = "totalAmount")
     @Mapping(source = "user.profile", target = "profile")
     @Mapping(source = "documents", target = "documents")
-    ResponseLoandAdminDTO toResponseADMDTO(Loan loan);
+    ResponseLoanAdminDTO toResponseADMDTO(Loan loan);
 
 
     List<ResponseLoanDTO> toResponseDTOList(List<Loan> loans);
-    List<ResponseLoandAdminDTO> toResponseADMDTOList(List<Loan> loans);
+    List<ResponseLoanAdminDTO> toResponseADMDTOList(List<Loan> loans);
 }
