@@ -1,6 +1,6 @@
-import CalculatePersonalLoan from "../features/loan/CalculatePersonalLoan";
-import LoanSimulationResult from "../features/loan/LoanSimulationResult";
-import { useLoanSimulationResult } from "../features/loan/useLoanSimulationResult";
+import CalculatePersonalLoan from "../../features/loan/CalculatePersonalLoan";
+import LoanSimulationResult from "./LoanSimulationResult";
+import { useLoanSimulationResult } from "../../features/loan/useLoanSimulationResult";
 
 function LoanSimulation() {
   const loanSimulationData = useLoanSimulationResult();

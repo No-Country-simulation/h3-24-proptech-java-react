@@ -4,7 +4,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { formatNumber } from "../../utils/helpers";
 import { useLoanSimulationResult } from "./useLoanSimulationResult";
 
-function LoanSimulationResult() {
+function PayDues() {
   const [show, setShow] = useState(false);
   const loan = useLoanSimulationResult();
 
@@ -98,4 +98,4 @@ function LoanSimulationResult() {
   );
 }
 
-export default LoanSimulationResult;
+export default PayDues;

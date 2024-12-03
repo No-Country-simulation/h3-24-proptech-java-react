@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { loanSimulationApi } from "../../services/apiLoan";
 
 export function useLoanSimulation() {
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const {
@@ -16,14 +16,14 @@ export function useLoanSimulation() {
     mutationFn: loanSimulationApi,
 
     onSuccess: (loan) => {
-      toast.success("✅");
+      toast.success("Datos enviados con éxito");
       queryClient.setQueryData(["loanSimulation"], loan);
 
       console.log("data loan:", loan);
 
-      /*navigate("/", {
+      navigate("/loan-simulation-result", {
         replace: true,
-      });*/
+      });
     },
 
     onError: () => {

@@ -10,7 +10,15 @@ import Auth from "./page/Auth";
 
 import AppLayout from "./ui/AppLayout";
 import ProtectedRoute from "./ui/ProtectedRoute";
-import LoanSimulation from "./page/LoanSimulation";
+
+import CalculatePersonalLoan from "./page/loan/CalculatePersonalLoan";
+import LoanSimulationResult from "./page/loan/LoanSimulationResult";
+import LoanApplication from "./page/loan/LoanApplication";
+import LoanInformation from "./page/loan/LoanInformation";
+import LoanAddressInformation from "./page/loan/LoanAddressInformation";
+import LoanPersonalInformation from "./page/loan/LoanPersonalInformation";
+import LoanApplicationSummary from "./page/loan/LoanApplicationSummary";
+import Veriff from "./page/Veriff";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,14 +40,38 @@ function App() {
             <Route path="home" element={<Home />} />
             <Route path="auth" element={<Auth />} />
 
-            <Route
-              path="secretPage"
-              element={
-                <ProtectedRoute>
-                  <LoanSimulation />
-                </ProtectedRoute>
-              }
-            />
+            <Route element={<ProtectedRoute />}>
+              <Route
+                path="loan-simulation"
+                element={<CalculatePersonalLoan />}
+              />
+              <Route
+                path="loan-simulation-result"
+                element={<LoanSimulationResult />}
+              />
+
+              <Route path="loan" element={<LoanApplication />}>
+                <Route index element={<Navigate replace to="veriff" />} />
+                <Route path="veriff" element={<Veriff />} />
+
+                <Route path="loan-information" element={<LoanInformation />} />
+
+                <Route
+                  path="address-details"
+                  element={<LoanAddressInformation />}
+                />
+
+                <Route
+                  path="personal-information"
+                  element={<LoanPersonalInformation />}
+                />
+
+                <Route
+                  path="data-summary"
+                  element={<LoanApplicationSummary />}
+                />
+              </Route>
+            </Route>
 
             <Route path="*" element={<PageNotFound />} />
           </Route>

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import FormRow from "../../ui/FormRow";
-import { useLoanSimulation } from "./useLoanSimulation";
 import SubmitButton from "../../ui/SubmitButton";
+import { useLoanSimulation } from "../../features/loan/useLoanSimulation";
 
 const months = [
   "6 Meses",
@@ -38,12 +38,11 @@ function CalculatePersonalLoan() {
       termMonths: +data.termMonths,
     };
 
-    console.log(data, loan);
     loanSimulation(loan, { onSettled: () => reset() });
   }
 
   return (
-    <section>
+    <section className="px-5  py-8 h-[68vh]">
       <h1 className=" text-2xl font-semibold mb-5">
         Calcula tu préstamo personal
       </h1>
@@ -53,7 +52,10 @@ function CalculatePersonalLoan() {
         que necesitas.
       </p>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="h-full  flex flex-col gap-5"
+      >
         <FormRow
           label="Cuanto dinero necesitas?"
           error={errors?.requestedAmount?.message}
@@ -94,18 +96,7 @@ function CalculatePersonalLoan() {
           </select>
         </FormRow>
 
-        <FormRow
-          label="Cual es tu motivo del prestamo?"
-          error={errors?.reason?.message}
-        >
-          <textarea
-            disabled={isPending}
-            placeholder="Motivo"
-            {...register("reason")}
-          ></textarea>
-        </FormRow>
-
-        <div className="mt-7">
+        <div className=" mt-auto">
           <SubmitButton isPending={isPending}>Ver resultados</SubmitButton>
         </div>
       </form>
@@ -114,3 +105,5 @@ function CalculatePersonalLoan() {
 }
 
 export default CalculatePersonalLoan;
+
+//  h-[57vh]

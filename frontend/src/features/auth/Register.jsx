@@ -77,10 +77,17 @@ function Register({ children }) {
               disabled={isLoading}
               {...register("dni", {
                 required: "Este campo es obligatorio",
-                min: {
+                minLength: {
                   value: 8,
-                  message: "El DNI debe tener al menos 8 dígitos",
+                  message: "El DNI debe tener exactamente 8 dígitos.",
                 },
+                maxLength: {
+                  value: 8,
+                  message: "El DNI debe tener exactamente 8 dígitos.",
+                },
+                validate: (value) =>
+                  /^\d{8}$/.test(value) ||
+                  "El DNI debe contener solo números y tener exactamente 8 dígitos.",
               })}
             />
           </FormRow>
