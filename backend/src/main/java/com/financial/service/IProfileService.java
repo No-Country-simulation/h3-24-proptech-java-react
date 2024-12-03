@@ -1,14 +1,25 @@
 package com.financial.service;
 
-import com.financial.model.Profile;
+import com.financial.dto.request.profile.RequestCreateProfileDTO;
+import com.financial.dto.response.profile.ResponseProfileDTO;
 import com.financial.model.User;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 public interface IProfileService {
-    void createProfileDecision(LocalDate dateOfBirth, String nationality, String road, String houseNumber, String city, String state, String country, String gender, User user);
-    Profile findProfileByUserId(UUID userId);
-    Profile findProfileByDni(String dni);
+
+    void createProfileWithUser(RequestCreateProfileDTO requestCreateProfileDTO, User user);
+
+    ResponseProfileDTO createProfile(String userIdOrDni, RequestCreateProfileDTO profileDto);
+
+    ResponseProfileDTO findProfileByUserIdOrDni(String userIdOrDni);
+
+    ResponseProfileDTO findProfileByUserIdOrThrowIfNotFound(UUID userId);
+
+    ResponseProfileDTO findProfileByDniOrThrowIfNotFound(String dni);
+
+    ResponseProfileDTO updateProfile(String userIdOrDni, UUID profileId, RequestCreateProfileDTO profileDto);
+
+    void deleteProfile(String userIdOrDni, UUID profileId);
 
 }

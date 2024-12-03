@@ -1,10 +1,9 @@
 package com.financial.service;
 
-import com.financial.dto.request.loan.RequestCreateLoanDTO;
-import com.financial.dto.request.loan.RequestLoanSimulationDTO;
-import com.financial.dto.request.loan.RequestRefinanceLoanDTO;
+import com.financial.dto.request.loan.*;
 import com.financial.dto.response.loan.ResponseLoanDTO;
 import com.financial.dto.response.loan.ResponseLoanSimulationDTO;
+import com.financial.dto.response.loan.ResponseLoandAdminDTO;
 import com.financial.model.Loan;
 
 import java.math.BigDecimal;
@@ -57,7 +56,13 @@ public interface ILoanService{
      */
     ResponseLoanDTO refinanceLoan(UUID loanId, RequestRefinanceLoanDTO request);
 
-    String preApproveLoan(UUID loanId);
+    /**
+     *  Cambia el estado de un préstamo.
+     *  Solo para el administrador
+     * @param dto .
+     * @return Retorna un mensaje simple de confirmación.
+     */
+    String changeLoanStatus(UpdateStatusLoanRequestDTO dto);
 
     /**
      * Marca un préstamo como eliminado (delete lógico).
@@ -74,4 +79,23 @@ public interface ILoanService{
      * @return Lista de objetos {@link Loan} que representan los préstamos activos.
      */
     List<Loan> getAllActiveLoans();
+
+    /**
+     * FUNCION SOLO PARA EL ADMINISTRADOR
+     * Busca todos los prestamos pendientes
+     *
+     * @return Detalles de los prestamos pendientes ({@link ResponseLoanDTO}).
+     */
+    List<ResponseLoandAdminDTO> getLoansByStatus(String status);
+
+    List<ResponseLoandAdminDTO> getLoansByUserId(UUID userId);
+
+    ResponseLoandAdminDTO updateLoanAdmin(UUID loanId,RequestLoanSimulationDTO dto);
+
+
+    String preApprove(UUID loanId);
+
+    String approve(UUID loanId);
+
+    String declinedLoan(RequestDeclinedLoanDTO dto);
 }

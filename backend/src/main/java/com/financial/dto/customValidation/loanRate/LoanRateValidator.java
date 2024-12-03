@@ -1,10 +1,8 @@
-package com.financial.dto.customValidation;
+package com.financial.dto.customValidation.loanRate;
 
 import com.financial.model.enums.LoanRate;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-
-import java.lang.reflect.Method;
 
 public class LoanRateValidator implements ConstraintValidator<ValidLoanRate, Integer> {
 

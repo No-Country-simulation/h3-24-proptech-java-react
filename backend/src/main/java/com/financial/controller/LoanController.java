@@ -40,7 +40,4 @@ public class LoanController {
         return ResponseEntity.ok(loanService.refinanceLoan(loanId, request));
     }
 
-    @PutMapping("/admin/{loanId}/pre-approve")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> preApproveLoan(@PathVariable UUID loanId) { return ResponseEntity.ok(loanService.preApproveLoan(loanId)); }
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Register from '../features/auth/Register';
-import Login from '../features/auth/Login';
 import Logo from '../ui/Logo';
+import Login from '../features/auth/Login';
 
 function Auth() {
   const [isLogin, setIsLogin] = useState(true);
