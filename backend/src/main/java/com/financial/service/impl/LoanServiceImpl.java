@@ -46,10 +46,11 @@ public class LoanServiceImpl implements ILoanService {
                 .status(LoanStatus.INITIATED)               // Estado inicial del préstamo
                 .user(user)                                 // Asociar el usuario
                 .requestedAmount(request.requestedAmount()) // Asignar el monto del préstamo desde el DTO
-                .monthlyQuota(res.monthlyQuota())       // Asignar la cuota mensual del préstamo desde el DTO
-                .termMonths(res.termMonths())           // Asignar el término del préstamo desde el DTO
-                .interestRate(res.interestRate())       // Asignar la tasa de interés del préstamo desde el DTO
-                .totalAmount(res.totalPayment())
+                .monthlyQuota(res.monthlyQuota())           // Asignar la cuota mensual del préstamo desde el DTO
+                .termMonths(res.termMonths())               // Asignar el término del préstamo desde el DTO
+                .interestRate(res.interestRate())           // Asignar la tasa de interés del préstamo desde el DTO
+                .totalAmount(res.totalPayment())            // Asignar el monto total del préstamo desde el DTO
+                .remainingBalance(res.totalPayment())       // Asignar el saldo restante del préstamo desde el DTO
                 .build();
         loanRepository.save(loan);
         return loanMapper.toResponseDTO(loan);
