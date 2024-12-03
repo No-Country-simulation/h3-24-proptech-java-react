@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Footer from '../ui/footer';
+import Footer from '../ui/Footer';
 
 import mujerCafe from './img/mujer_cafe.png';
 import hombreNotebook from './img/hombre_notebook_living.png';
