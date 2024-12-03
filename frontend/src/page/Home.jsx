@@ -1,6 +1,4 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import Footer from '../ui/Footer';
 
 import mujerCafe from './img/mujer_cafe.png';
 import hombreNotebook from './img/hombre_notebook_living.png';
@@ -8,6 +6,7 @@ import hombreCafe from './img/hombre_cafe.png';
 
 import styles from './Home.module.css';
 import Nav from '../ui/Nav';
+import { Footeer } from '../ui/Footeer';
 
 const Home = () => {
   return (
@@ -172,7 +171,7 @@ const Home = () => {
           </div>
         </section>
       </main>
-      <Footer />
+      <Footeer />
     </div>
   );
 };
