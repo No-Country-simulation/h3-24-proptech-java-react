@@ -40,7 +40,6 @@ import java.math.BigDecimal;
  */
 @JsonPropertyOrder({"loanId", "requestedAmount", "termMonths", "monthlyQuota", "interestRate", "status"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
-
 public record ResponseLoanDTO(String loanId,
                               BigDecimal requestedAmount,
                               Integer termMonths,

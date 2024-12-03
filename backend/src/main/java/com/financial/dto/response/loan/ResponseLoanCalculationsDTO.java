@@ -6,6 +6,6 @@ import java.math.BigDecimal;
                                           BigDecimal totalPayment,           // Pago total al final del préstamo
                                           BigDecimal requestedAmount,        // Monto solicitado
                                           Integer termMonths,                // Término en meses
-                                          BigDecimal interestRate ){       // Término en meses) {
+                                          BigDecimal interestRate ){       // Interest en meses) {
 
 }

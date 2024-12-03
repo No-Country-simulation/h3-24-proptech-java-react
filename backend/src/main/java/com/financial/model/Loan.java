@@ -33,6 +33,9 @@ public class Loan extends Auditable {
     @Column(nullable = true, name = "monthly_Quota")
     private BigDecimal monthlyQuota;
 
+    @Column(name = "remaining_balance", nullable = true)
+    private BigDecimal remainingBalance;
+
     @Column(nullable = false, name = "term_months")
     private Integer termMonths;
 

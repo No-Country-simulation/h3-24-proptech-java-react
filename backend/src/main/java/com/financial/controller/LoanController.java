@@ -1,7 +1,6 @@
 package com.financial.controller;
 
 import com.financial.config.CurrentUser;
-import com.financial.dto.request.loan.RequestCreateLoanDTO;
 import com.financial.dto.request.loan.RequestLoanSimulationDTO;
 import com.financial.dto.request.loan.RequestRefinanceLoanDTO;
 import com.financial.dto.response.loan.ResponseLoanDTO;
