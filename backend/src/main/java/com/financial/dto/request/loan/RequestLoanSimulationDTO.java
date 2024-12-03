@@ -1,6 +1,6 @@
 package com.financial.dto.request.loan;
 
-import com.financial.dto.customValidation.ValidLoanRate;
+import com.financial.dto.customValidation.loanRate.ValidLoanRate;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
