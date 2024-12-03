@@ -35,8 +35,7 @@ public class RegisterRequestDto {
     private String lastname;
 
     @NotBlank
-    @Pattern(regexp = "^[0-9]{8}$", message = "The DNI must have exactly 8 numerical digits.")
+    @Pattern(regexp = "^[0-9A-Za-z]{8,9}$", message = "El DNI debe tener entre 8 y 9 caracteres, que pueden ser dígitos o letras (A-Z, a-z).")
     private String dni;
-
     private Boolean userType;
 }

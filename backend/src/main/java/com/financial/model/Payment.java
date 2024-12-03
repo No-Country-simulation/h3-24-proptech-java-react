@@ -1,17 +1,14 @@
 package com.financial.model;
 
-
 import com.financial.model.enums.PaymentStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
+@ToString
 @Getter
 @Setter
 @AllArgsConstructor
@@ -39,4 +36,11 @@ public class Payment {
     private BigDecimal interestRate;    // Tasa de interés por atraso (por ejemplo, 0.03 para 3%)
     private boolean paidOnTime;         // Si el pago fue realizado dentro del rango (1-10 del mes)
     private int installmentNumber;      // Número de la cuota (1, 2, ..., término del préstamo)
+    @Setter
+    @Getter
+    private boolean isGenerated;
+
+    @OneToOne( cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "cloud_file_id")
+    private CloudFile cloudFile;
 }

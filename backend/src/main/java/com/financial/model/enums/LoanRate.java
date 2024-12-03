@@ -35,6 +35,13 @@ public enum LoanRate {
         return rate;
     }
 
+    /**
+     * Obtiene la tasa de interés basada en el plazo del préstamo.
+     *
+     * @param months El plazo en meses
+     * @return La tasa de interés correspondiente
+     * @throws IllegalArgumentException Si el plazo no es válido
+     */
     public static BigDecimal getRateByMonths(int months) {
         for (LoanRate rate : values()) {
             if (rate.getMonths() == months) {

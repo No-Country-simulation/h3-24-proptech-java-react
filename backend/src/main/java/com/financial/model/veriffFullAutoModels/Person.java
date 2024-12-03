@@ -1,4 +1,4 @@
-package com.financial.model.veriffModels;
+package com.financial.model.veriffFullAutoModels;
 
 
 import lombok.Getter;

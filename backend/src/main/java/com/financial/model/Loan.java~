@@ -33,9 +33,6 @@ public class Loan extends Auditable {
     @Column(nullable = true, name = "monthly_Quota")
     private BigDecimal monthlyQuota;
 
-    @Column(name = "remaining_balance", nullable = true)
-    private BigDecimal remainingBalance;
-
     @Column(nullable = false, name = "term_months")
     private Integer termMonths;
 
@@ -49,8 +46,6 @@ public class Loan extends Auditable {
     @Column(nullable = true, name = "date_accepted")
     private LocalDate dateAccepted;
 
-    @OneToMany(mappedBy = "loan", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Payment> payments = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_LOAN_USER"))
     private User user;
