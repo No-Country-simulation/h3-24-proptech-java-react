@@ -29,7 +29,7 @@ export const Footeer = () => {
   return (
     <footer className={`${styles.footerBackground} text-white py-10`}>
       <div className='container mx-auto px-4 space-y-12'>
-        {/* Call to Action Section */}
+      
         <div className='text-center lg:text-left lg:flex lg:items-center lg:justify-between lg:gap-8'>
           {/* Contenedor para título y párrafo */}
           <div>
@@ -50,8 +50,7 @@ export const Footeer = () => {
 
         {/* Logo, Description, and Links Section */}
         <div className='lg:flex lg:justify-between lg:items-start'>
-          {/* Logo y Descripción (30%) */}
-
+      
           <div
             className={`${styles.footerAdjust_LogoDescription} text-center lg:text-left mt-8 lg:mt-0`}>
             <img
@@ -65,7 +64,7 @@ export const Footeer = () => {
             </p>
           </div>
 
-          {/* Links Section (70%) */}
+        
           <div
             className={`${styles.footerAdjust_LinkSection} grid grid-cols-2 gap-8 lp:gap-4 text-center lg:text-right`}>
             {[
