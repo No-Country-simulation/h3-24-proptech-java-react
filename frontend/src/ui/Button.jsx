@@ -15,7 +15,7 @@ function Button({
     primary: `text-center px-4 py-2 font-medium border border-primary rounded-[10px] text-primary bg-transparent text-light ${extraClass}`,
     secondary: `text-center px-4 py-2 text-lg text-light font-medium bg-primary rounded-lg  ${extraClass}`,
     greenColor: `text-center px-4 py-2 text-lg text-light font-medium bg-[#22C55E] rounded-lg  ${extraClass}`,
-    logOut: `text-center font-medium  border-none text-[#EF4444] bg-transparent text-light ${extraClass}`,
+    logOut: `text-center font-medium  border-none text-[#EF4444] bg-transparent  ${extraClass}`,
   };
 
   if (to)
