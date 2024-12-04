@@ -77,4 +77,6 @@ public interface IPaymentRepository extends JpaRepository<Payment, UUID> {
 
     @Query("SELECT p FROM Payment p WHERE p.loan.loanId = :loanId AND p.status = com.financial.model.enums.PaymentStatus.PENDING")
     List<Payment> findPendingPayments(@Param("loanId") UUID loanId);
+
+    Optional<Payment> findByPaymentId(UUID paymentId);
 }

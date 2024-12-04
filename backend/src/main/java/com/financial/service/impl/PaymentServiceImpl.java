@@ -6,14 +6,19 @@ import com.financial.dto.response.PaymentResponseDTO;
 import com.financial.exception.LoanNotFoundException;
 import com.financial.exception.NotFoundException;
 import com.financial.exception.PaymentNotFoundException;
+import com.financial.model.GeneratedPayment;
 import com.financial.model.Loan;
 import com.financial.model.Payment;
 import com.financial.model.enums.LateFeeRate;
 import com.financial.model.enums.PaymentStatus;
+import com.financial.model.enums.PaymentType;
+import com.financial.repository.IGeneratedPaymentRepository;
 import com.financial.repository.ILoanRepository;
 import com.financial.repository.IPaymentRepository;
 import com.financial.service.IPaymentService;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,12 +34,14 @@ import java.util.*;
 public class PaymentServiceImpl implements IPaymentService {
     private final ILoanRepository loanRepository;
     private final IPaymentRepository paymentRepository;
+    private final IGeneratedPaymentRepository iGeneratedPaymentRepository;
     private final PaymentMapper paymentMapper;
 
-    public PaymentServiceImpl(IPaymentRepository paymentRepository, PaymentMapper paymentMapper, ILoanRepository loanRepository) {
+    public PaymentServiceImpl(IPaymentRepository paymentRepository, PaymentMapper paymentMapper, ILoanRepository loanRepository, IGeneratedPaymentRepository iGeneratedPaymentRepository) {
         this.paymentRepository = paymentRepository;
         this.loanRepository = loanRepository;
         this.paymentMapper = paymentMapper;
+        this.iGeneratedPaymentRepository = iGeneratedPaymentRepository;
     }
 
     /**
@@ -149,6 +156,18 @@ public class PaymentServiceImpl implements IPaymentService {
             payment.setLateFee(BigDecimal.ZERO);
             payment.setLateFeeApplied(false);
         }
+        GeneratedPayment generatedPayment = null;
+        Pageable pageable = PageRequest.of(0, 1);  // Solo resultado
+        Page<GeneratedPayment> payments = iGeneratedPaymentRepository.findTopByLoanIdAndPaymentTypeAndStatusOrderByInstallmentNumberAsc(loanId, PaymentType.ON_TIME.name(), pageable);
+        if (!payments.hasContent()) {
+            throw new PaymentNotFoundException("No matching generated payment found for loanId: " + loanId);
+        }
+
+        if (payments.hasContent()) {
+            generatedPayment = payments.getContent().getFirst();
+            generatedPayment.setStatus(PaymentStatus.PAID.name());
+            iGeneratedPaymentRepository.save(generatedPayment);
+        }
         Loan loan = payment.getLoan();
         loan.setRemainingBalance(loan.getRemainingBalance().subtract(payment.getAmount())); // Actualizar el saldo del préstamo
         loanRepository.save(loan);
@@ -196,6 +215,12 @@ public class PaymentServiceImpl implements IPaymentService {
                 BigDecimal.ZERO,                  // El monto total de la cuota incluyendo descuento por adelanto. Si no, será 0.
                 BigDecimal.ZERO                   // El monto del interés por adelanto si es que se aplicó, si no, será 0.
         );
+    }
+
+    @Override
+    public Payment getPaymentById(UUID paymentId) {
+        return paymentRepository.findByPaymentId(paymentId)
+                .orElseThrow(() -> new PaymentNotFoundException("Payment not found with ID: " + paymentId));
     }
 
     @Override
@@ -295,7 +320,7 @@ public class PaymentServiceImpl implements IPaymentService {
 
         int dayOfMonth = paymentDate.getDayOfMonth(); // Rango permitido para adelantos (1-10 de cada mes)
         if (dayOfMonth < 1 || dayOfMonth > 10) {
-            throw new IllegalStateException("Solo puedes adelantar pagos entre el día 1 y el día 10 de cada mes.");
+            throw new PaymentNotFoundException("Solo puedes adelantar pagos entre el día 1 y el día 10 de cada mes.");
         }
 
         Payment payment = paymentRepository.findByLoan_LoanIdAndInstallmentNumber(loanId, installmentNumber)
@@ -304,7 +329,7 @@ public class PaymentServiceImpl implements IPaymentService {
                 ));
 
         if (payment.getStatus() == PaymentStatus.PAID || payment.getStatus() == PaymentStatus.PAID_ADVANCE) {
-            throw new IllegalStateException("La cuota número " + installmentNumber + " ya ha sido pagada o adelantada.");
+            throw new PaymentNotFoundException("La cuota número " + installmentNumber + " ya ha sido pagada o adelantada.");
         }
         
         BigDecimal installmentAmount = payment.getAmount();
@@ -317,7 +342,17 @@ public class PaymentServiceImpl implements IPaymentService {
         payment.setAmount(finalAmount); // Actualizar con el monto descontado
         payment.setPaidOnTime(true);
         payment.setStatus(PaymentStatus.PAID_ADVANCE);
-
+        GeneratedPayment generatedPayment = null;
+        Pageable pageable = PageRequest.of(0, 1);  // Solo resultado
+        Page<GeneratedPayment> payments = iGeneratedPaymentRepository.findTopByLoanIdAndPaymentTypeAndStatusOrderByInstallmentNumberAsc(loanId, PaymentType.ADVANCE.name(), pageable);
+        if (!payments.hasContent()) {
+            throw new PaymentNotFoundException("No matching generated payment found for loanId: " + loanId);
+        }
+        if (payments.hasContent()) {
+            generatedPayment = payments.getContent().getFirst();
+            generatedPayment.setStatus(PaymentStatus.PAID.name());
+            iGeneratedPaymentRepository.save(generatedPayment);
+        }
         Loan loan = payment.getLoan();
         loan.setRemainingBalance(loan.getRemainingBalance().subtract(finalAmount)); // Reducir el saldo restante
         loanRepository.save(loan);
@@ -383,5 +418,11 @@ public class PaymentServiceImpl implements IPaymentService {
         return paymentEntities.stream()
                 .map(paymentMapper::toPaymentDetailsResponseDTO)
                 .toList();
+    }
+
+    @Transactional
+    @Override
+    public Payment savePayment(Payment payment) {
+        return paymentRepository.save(payment);
     }
 }
