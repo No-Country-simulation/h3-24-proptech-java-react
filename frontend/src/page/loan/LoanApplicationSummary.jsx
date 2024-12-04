@@ -13,7 +13,7 @@ function LoanApplicationSummary() {
   useEffect(
     function () {
       if (Object.keys(loan).length === 0)
-        navigate("/loan/personal-information", { replace: true });
+        navigate("/messagesStartingLoan", { replace: true });
     },
     [loan, navigate]
   );

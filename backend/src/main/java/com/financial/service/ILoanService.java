@@ -3,7 +3,7 @@ package com.financial.service;
 import com.financial.dto.request.loan.*;
 import com.financial.dto.response.loan.ResponseLoanDTO;
 import com.financial.dto.response.loan.ResponseLoanSimulationDTO;
-import com.financial.dto.response.loan.ResponseLoandAdminDTO;
+import com.financial.dto.response.loan.ResponseLoanAdminDTO;
 import com.financial.model.Loan;
 
 import java.math.BigDecimal;
@@ -86,11 +86,11 @@ public interface ILoanService{
      *
      * @return Detalles de los prestamos pendientes ({@link ResponseLoanDTO}).
      */
-    List<ResponseLoandAdminDTO> getLoansByStatus(String status);
+    List<ResponseLoanAdminDTO> getLoansByStatus(String status);
 
-    List<ResponseLoandAdminDTO> getLoansByUserId(UUID userId);
+    List<ResponseLoanAdminDTO> getLoansByUserId(UUID userId);
 
-    ResponseLoandAdminDTO updateLoanAdmin(UUID loanId,RequestLoanSimulationDTO dto);
+    ResponseLoanAdminDTO updateLoanAdmin(UUID loanId, RequestLoanSimulationDTO dto);
 
 
     String preApprove(UUID loanId);

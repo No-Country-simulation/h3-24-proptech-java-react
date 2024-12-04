@@ -133,18 +133,18 @@ public class LoanServiceImpl implements ILoanService {
     }
 
     @Override
-    public List<ResponseLoandAdminDTO> getLoansByStatus(String status) {
+    public List<ResponseLoanAdminDTO> getLoansByStatus(String status) {
         List<Loan> loans = loanRepository.findAllByStatus(LoanStatus.valueOf(status.toUpperCase()));
         return loanMapper.toResponseADMDTOList(loans);
     }
 
     @Override
-    public List<ResponseLoandAdminDTO> getLoansByUserId(UUID userId) {
+    public List<ResponseLoanAdminDTO> getLoansByUserId(UUID userId) {
         return loanMapper.toResponseADMDTOList(loanRepository.findByUserId(userId));
     }
 
     @Override
-    public ResponseLoandAdminDTO updateLoanAdmin(UUID loanId, RequestLoanSimulationDTO dto) {
+    public ResponseLoanAdminDTO updateLoanAdmin(UUID loanId, RequestLoanSimulationDTO dto) {
        Loan loanFound = loanRepository.findById(loanId).orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
         ResponseLoanCalculationsDTO res = loanCalculations(dto);
         loanFound.setRequestedAmount(res.requestedAmount());

@@ -1,20 +1,27 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ChevronDown, ChevronUp } from "lucide-react";
+
 import { formatNumber } from "../../utils/helpers";
 import { useLoanSimulationResult } from "./useLoanSimulationResult";
 
-function PayDues() {
+function Quotas() {
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const loan = useLoanSimulationResult();
 
-  if (!loan) return;
+  useEffect(
+    function () {
+      if (!loan) navigate("/messagesStartingLoan", { replace: true });
+    },
+    [loan, navigate]
+  );
 
-  const nextPayment = loan.schedule.find((payment) => payment.remaining > 0);
+  const nextPayment = loan?.schedule?.find((payment) => payment.remaining > 0);
   const remainingMonths = loan?.schedule.filter(
     (payment) => payment.remaining > 0
   );
-  const paidMonths = loan?.termMonths - remainingMonths.length;
+  const paidMonths = loan?.termMonths - remainingMonths?.length;
 
   return (
     <section className="max-w-[500px] mx-auto">
@@ -98,4 +105,4 @@ function PayDues() {
   );
 }
 
-export default PayDues;
+export default Quotas;
