@@ -38,7 +38,7 @@ public class PaymentScheduler {
      */
     @Transactional
     //@Scheduled(cron = "0 0 2 1 * ?")
-    @Scheduled(fixedRate = 300000)
+    @Scheduled(fixedRate = 400000)
     public void processMonthlyPayments() {
         List<Loan> loans = loanRepository.findAll();
         for (Loan loan : loans) {
@@ -66,7 +66,10 @@ public class PaymentScheduler {
                             .payLimitDate(paymentDetails.payLimitDate())                            // Fecha límite de pago
                             .status(PaymentStatus.PENDING.name())                                   // Estado "PENDING"
                             .paymentType(PaymentType.ON_TIME.name())
-                            .lateFee(paymentDetails.lateFee())                                      // Interés por mora
+                            .lateFee(paymentDetails.lateFee())
+                            .remainingBalance(loan.getRemainingBalance())
+                            .totalAmount(loan.getTotalAmount())
+                            .requestedAmount(loan.getRequestedAmount())// Interés por mora
                             .build();
                     generatedPaymentRepository.save(generatedPayment);
                     //TODO: Implementar el envío de notificaciones
@@ -93,7 +96,7 @@ public class PaymentScheduler {
     }
 
     @Transactional
-    @Scheduled(fixedRate = 305000)
+    @Scheduled(fixedRate = 405000)
     public void processMonthlyPaymentsAdvance() {
         List<Loan> loans = loanRepository.findAll();
         for (Loan loan : loans) {
@@ -126,6 +129,9 @@ public class PaymentScheduler {
                         .lateFee(BigDecimal.ZERO)                                               // Sin mora para pagos adelantados
                         .paymentType(PaymentType.ADVANCE.name())
                         .discountPercentage(paymentDetails.discountAmount())
+                        .remainingBalance(loan.getRemainingBalance())
+                        .totalAmount(loan.getTotalAmount())
+                        .requestedAmount(loan.getRequestedAmount())
                         .build();
 
                 nextPayment.setGenerated(true);
