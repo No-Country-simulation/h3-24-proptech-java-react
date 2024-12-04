@@ -3,7 +3,7 @@ import { loanStore } from '../../stores/loanStore';
 import { LoanStatus } from '../../types/status.enum';
 import { MenuButton } from './MenuButton';
 import { Status } from '../../types/loan-response.interface';
-import { DoorClosed, DoorOpen, LogOut } from 'lucide-react';
+import { DoorClosed, DoorOpen } from 'lucide-react';
 import { userStore } from '../../stores/userStore';
 import { useState } from 'react';
 
