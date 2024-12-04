@@ -1,44 +1,42 @@
 package com.financial.service.impl;
 
 import com.financial.config.mapper.LoanMapper;
-import com.financial.config.mapper.UserMapper;
 import com.financial.dto.request.loan.RequestDeclinedLoanDTO;
 import com.financial.dto.request.loan.RequestLoanSimulationDTO;
 import com.financial.dto.request.loan.RequestRefinanceLoanDTO;
 import com.financial.dto.request.loan.UpdateStatusLoanRequestDTO;
 import com.financial.dto.response.loan.*;
 import com.financial.exception.BadRequestException;
+import com.financial.exception.LoanNotFoundException;
 import com.financial.exception.NotFoundException;
 import com.financial.model.Loan;
+import com.financial.model.LoanDocumentation;
+import com.financial.model.Profile;
 import com.financial.model.User;
 import com.financial.model.enums.LoanRate;
 import com.financial.model.enums.LoanStatus;
 import com.financial.repository.ILoanRepository;
 import com.financial.service.AuthService;
+import com.financial.service.ILoanDocumentsService;
 import com.financial.service.ILoanService;
 import com.financial.service.IPaymentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class LoanServiceImpl implements ILoanService {
     private final AuthService authService;
     private final LoanMapper loanMapper;
     private final ILoanRepository loanRepository;
     private final IPaymentService paymentService;
-    public LoanServiceImpl(UserMapper userMapper, AuthService authService, LoanMapper loanMapper, ILoanRepository loanRepository,IPaymentService paymentService) {
-        this.authService = authService;
-        this.loanMapper = loanMapper;
-        this.loanRepository = loanRepository;
-        this.paymentService = paymentService;
-    }
+    private final ILoanDocumentsService loanDocumentsService;
 
     @Transactional
     @Override
@@ -65,23 +63,6 @@ public class LoanServiceImpl implements ILoanService {
     }
 
     @Override
-    public ResponseLoanSimulationDTO simulateLoan(RequestLoanSimulationDTO requestLoan) {
-        MathContext mathContext = MathContext.DECIMAL128;
-        var res = loanCalculations(requestLoan);
-        // Generar el cronograma de pagos
-        List<PaymentScheduleDTO> schedule = generatePaymentSchedule(res.totalPayment(), res.interestRate(),res.monthlyQuota(), res.termMonths(), mathContext);
-        // Simulación de préstamo
-        return new ResponseLoanSimulationDTO(res.monthlyQuota().setScale(2, RoundingMode.HALF_UP), res.totalPayment(), res.requestedAmount(), res.termMonths(), schedule);
-    }
-
-    @Override
-    public BigDecimal calculateLoan(BigDecimal amount, Integer term) {
-        // Obtener la tasa según los meses
-        BigDecimal rate = LoanRate.getRateByMonths(term).setScale(6, RoundingMode.HALF_UP);
-        return amount.multiply(rate).setScale(2, RoundingMode.HALF_UP);
-    }
-
-    @Override
     @Transactional
     public void updateLoanStatus(UUID loanId, String status) {
         Loan loan = loanRepository.findById(loanId)
@@ -92,37 +73,25 @@ public class LoanServiceImpl implements ILoanService {
 
     @Override
     public ResponseLoanDTO refinanceLoan(UUID loanId, RequestRefinanceLoanDTO request) {
-        MathContext mathContext = MathContext.DECIMAL128;
         Loan existingLoan = loanRepository.findById(loanId)
                 .orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
         existingLoan.setRequestedAmount(request.newAmount());
         existingLoan.setTermMonths(request.newTermMonths());
         existingLoan.setInterestRate(request.newInterestRate().setScale(6, RoundingMode.HALF_UP));
         existingLoan.setStatus(LoanStatus.PENDING);
-
         loanRepository.save(existingLoan);
         return loanMapper.toResponseDTO(existingLoan);
     }
 
-    @Override
-    public String changeLoanStatus(UpdateStatusLoanRequestDTO dto) {
-        Loan loanFound = loanRepository.findById(dto.loanId()).orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
-        loanFound.setStatus(LoanStatus.valueOf(dto.status()));
-        loanRepository.save(loanFound);
-        // AGREGAR EMAIL
-        return "Prestamo actualizado correctamente";
-    }
 
     @Override
     @Transactional
     public void deleteLoan(UUID loanId) {
         Loan loan = loanRepository.findById(loanId)
                 .orElseThrow(() -> new NotFoundException("Loan not found with ID: " + loanId));
-
         if (loan.getDeleted()) {
             throw new IllegalStateException("Loan is already marked as deleted.");
         }
-
         loan.setDeleted(true);
         loanRepository.save(loan);
     }
@@ -145,7 +114,7 @@ public class LoanServiceImpl implements ILoanService {
 
     @Override
     public ResponseLoanAdminDTO updateLoanAdmin(UUID loanId, RequestLoanSimulationDTO dto) {
-       Loan loanFound = loanRepository.findById(loanId).orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
+        Loan loanFound = loanRepository.findById(loanId).orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
         ResponseLoanCalculationsDTO res = loanCalculations(dto);
         loanFound.setRequestedAmount(res.requestedAmount());
         loanFound.setMonthlyQuota(res.monthlyQuota());       // Asignar la cuota mensual del préstamo desde el DTO
@@ -157,9 +126,20 @@ public class LoanServiceImpl implements ILoanService {
     }
 
     @Override
+    public String changeLoanStatus(UpdateStatusLoanRequestDTO dto) {
+        Loan loanFound = loanRepository.findById(dto.loanId()).orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
+        loanFound.setStatus(LoanStatus.valueOf(dto.status()));
+        loanRepository.save(loanFound);
+        // AGREGAR EMAIL
+        return "Prestamo actualizado correctamente";
+    }
+
+    @Override
     public String preApprove(UUID loanId) {
         Loan loanFound = loanRepository.findById(loanId).orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
-        if(loanFound.getStatus() != LoanStatus.PENDING ) throw new BadRequestException("El préstamo no ha sido pre aprobado ya que su estado actual no es el de pending");
+        if (loanFound.getStatus() != LoanStatus.PENDING) {
+            throw new BadRequestException("El préstamo no ha sido pre aprobado ya que su estado actual no es el de pending");
+        }
         loanFound.setStatus(LoanStatus.PRE_APPROVED);
         loanRepository.save(loanFound);
         //  TODO: ENVIAR UN EMAIL
@@ -169,7 +149,9 @@ public class LoanServiceImpl implements ILoanService {
     @Override
     public String approve(UUID loanId) {
         Loan loanFound = loanRepository.findById(loanId).orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
-        if(loanFound.getStatus() != LoanStatus.PRE_APPROVED ) throw new BadRequestException("El préstamo no ha sido aprobado ya que su estado actual no es el de pre aprobado");
+        if (loanFound.getStatus() != LoanStatus.PRE_APPROVED) {
+            throw new BadRequestException("El préstamo no ha sido aprobado ya que su estado actual no es el de pre aprobado");
+        }
         loanFound.setStatus(LoanStatus.APPROVED);
         loanRepository.save(loanFound);
         //  TODO: ENVIAR UN EMAIL
@@ -185,6 +167,73 @@ public class LoanServiceImpl implements ILoanService {
         loanRepository.save(loanFound);
         // TODO: enviar el email al usuario
         return "Prestamo declinado correctamente!";
+    }
+
+    @Transactional
+    @Override
+    public LoanMovedToPendingResultDTO setLoanToPendingStatus(UUID loanId) {
+        // Check if the user associated with this loan is verified.
+        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new LoanNotFoundException(loanId));
+        if (LoanStatus.PENDING.equals(loan.getStatus())) {
+            return new LoanMovedToPendingResultDTO(false, "Loan already in PENDING status");
+        }
+        User user = loan.getUser();
+        Profile profile = user.getProfile();
+        if (!user.getIsVerified() || profile == null) {
+            return new LoanMovedToPendingResultDTO(false, "The user associated with this loan is not verified");
+        }
+
+        // The user's monthly income it's at least 3 times the loan monthly quota.
+        BigDecimal monthlyIncome = profile.getMonthlyIncome();
+        BigDecimal loanQuota = loan.getMonthlyQuota();
+        boolean monthlyIncomeIsAtLeastThreeTimesThanLoanQuota = loanQuota.multiply(BigDecimal.valueOf(3)).compareTo(monthlyIncome) <= 0;
+        if (!monthlyIncomeIsAtLeastThreeTimesThanLoanQuota) {
+            return new LoanMovedToPendingResultDTO(false, "Monthly income must be at least 3 times than loan quota");
+        }
+
+        // There's at least 2 guarantees
+        Set<String> guaranteeIds = new HashSet<>();
+        for (LoanDocumentation loanDocumentation : loan.getDocuments()) {
+            guaranteeIds.add(loanDocumentation.getGuaranteeId());
+        }
+        if (guaranteeIds.size() < 2) {
+            return new LoanMovedToPendingResultDTO(false, "At least 2 guarantees are required");
+        }
+
+        // The holder and each guarantee have successfully uploaded all the required documents.
+        LoanDocumentationStatusDTO holderStatus = loanDocumentsService.getDocumentationStatus(loanId, null);
+        if (!holderStatus.isAllDocumentsUploaded()) {
+            return new LoanMovedToPendingResultDTO(false, "Not all documents are uploaded for the holder");
+        }
+        for (String guaranteeId : guaranteeIds) {
+            LoanDocumentationStatusDTO guaranteeStatus = loanDocumentsService.getDocumentationStatus(loanId, guaranteeId);
+            if (!guaranteeStatus.isAllDocumentsUploaded()) {
+                return new LoanMovedToPendingResultDTO(false, "Not all documents are uploaded for guarantee " + guaranteeId);
+            }
+        }
+
+        // Set loan to PENDING status
+        loan.setStatus(LoanStatus.PENDING);
+        loanRepository.save(loan);
+
+        return new LoanMovedToPendingResultDTO(true, "Loan successfully moved to PENDING status");
+    }
+
+    @Override
+    public ResponseLoanSimulationDTO simulateLoan(RequestLoanSimulationDTO requestLoan) {
+        MathContext mathContext = MathContext.DECIMAL128;
+        var res = loanCalculations(requestLoan);
+        // Generar el cronograma de pagos
+        List<PaymentScheduleDTO> schedule = generatePaymentSchedule(res.totalPayment(), res.interestRate(), res.monthlyQuota(), res.termMonths(), mathContext);
+        // Simulación de préstamo
+        return new ResponseLoanSimulationDTO(res.monthlyQuota().setScale(2, RoundingMode.HALF_UP), res.totalPayment(), res.requestedAmount(), res.termMonths(), schedule);
+    }
+
+    @Override
+    public BigDecimal calculateLoan(BigDecimal amount, Integer term) {
+        // Obtener la tasa según los meses
+        BigDecimal rate = LoanRate.getRateByMonths(term).setScale(6, RoundingMode.HALF_UP);
+        return amount.multiply(rate).setScale(2, RoundingMode.HALF_UP);
     }
 
     private List<PaymentScheduleDTO> generatePaymentSchedule(BigDecimal totalPayment, BigDecimal monthlyRate, BigDecimal monthlyQuota, Integer term, MathContext mathContext) {
@@ -215,4 +264,5 @@ public class LoanServiceImpl implements ILoanService {
         BigDecimal rate = LoanRate.getRateByMonths(term).setScale(6, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100), mathContext);
         return new ResponseLoanCalculationsDTO(monthlyQuota.setScale(2, RoundingMode.HALF_UP), totalPayment, amount, term, rate.setScale(2, RoundingMode.HALF_UP));
     }
+
 }
