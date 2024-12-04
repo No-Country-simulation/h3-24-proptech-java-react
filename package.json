@@ -1,6 +1,0 @@
-{
-  "devDependencies": {
-    "@types/node": "^22.10.1",
-    "@vitejs/plugin-react": "^4.3.4"
-  }
-}
