@@ -33,7 +33,7 @@ public class GeneratedPaymentService implements IGeneratedPayment {
         if (payments.hasContent()) {
             return payments.getContent().getFirst();  // Devuelve el primer pago si existe
         } else {
-            throw new RuntimeException("No pending payment found");
+            throw new PaymentNotFoundException("No pending payment found");
         }
     }
 
