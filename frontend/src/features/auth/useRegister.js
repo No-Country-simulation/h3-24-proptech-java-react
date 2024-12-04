@@ -24,11 +24,8 @@ function useRegister() {
     },
 
     onError: (error) => {
-      if (error.response?.data?.dni) {
-        toast.error("dni is already registered");
-      } else {
-        alert("Ocurrió un error. Intenta nuevamente.");
-      }
+      toast.error(error.response.data.details);
+      console.log(error);
     },
   });
 

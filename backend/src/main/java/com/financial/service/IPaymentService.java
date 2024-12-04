@@ -4,6 +4,7 @@ import com.financial.dto.response.PaymentDetailsResponseDTO;
 import com.financial.dto.response.PaymentResponseDTO;
 import com.financial.model.Payment;
 import com.financial.model.enums.PaymentStatus;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +19,9 @@ public interface IPaymentService {
      * @param loanId El ID del préstamo aprobado para el cual se generará el cronograma de pagos.
      */
     void createPaymentSchedule(UUID loanId);
+
+    Payment getPaymentById(UUID paymentId);
+
     /**
      * Obtiene todos los pagos registrados en el sistema.
      *
@@ -103,4 +107,7 @@ public interface IPaymentService {
      * @return Lista de objetos {@link PaymentResponseDTO} con los pagos pendientes.
      */
     List<PaymentResponseDTO> getPendingPayments(UUID loanId);
+
+    @Transactional
+    Payment savePayment(Payment payment);
 }
