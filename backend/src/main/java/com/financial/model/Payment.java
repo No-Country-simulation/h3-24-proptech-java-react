@@ -19,28 +19,48 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID paymentId;
+
     @ManyToOne
-    @JoinColumn(name = "loan_id",foreignKey = @ForeignKey(name = "FK_PAYMENT_LOAN"))
+    @JoinColumn(name = "loan_id", foreignKey = @ForeignKey(name = "FK_PAYMENT_LOAN"))
     private Loan loan;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "cloud_file_id")
+    private CloudFile cloudFile;
+
     @Column(nullable = false)
     private BigDecimal amount;
-    private LocalDate dueDate;          // Fecha de vencimiento de la cuota
-    private LocalDate payLimitDate;     // Fecha límite para el pago (por ejemplo, entre el 1 y el 10 de cada mes)
+
+    // Fecha de vencimiento de la cuota
+    private LocalDate dueDate;
+
+    // Fecha límite para el pago (por ejemplo, entre el 1 y el 10 de cada mes)
+    private LocalDate payLimitDate;
+
+    // Fecha en la que se realizó el pago
     @Column(nullable = true)
-    private LocalDate paymentDate;      // Fecha en la que se realizó el pago
+    private LocalDate paymentDate;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
-    private BigDecimal lateFee;         // Monto del interés por atraso
-    private boolean lateFeeApplied;     // Si se aplicó o no un interés por atraso
-    private BigDecimal interestRate;    // Tasa de interés por atraso (por ejemplo, 0.03 para 3%)
-    private boolean paidOnTime;         // Si el pago fue realizado dentro del rango (1-10 del mes)
-    private int installmentNumber;      // Número de la cuota (1, 2, ..., término del préstamo)
+
+    // Monto del interés por atraso
+    private BigDecimal lateFee;
+
+    // Si se aplicó o no un interés por atraso
+    private boolean lateFeeApplied;
+
+    // Tasa de interés por atraso (por ejemplo, 0.03 para 3%)
+    private BigDecimal interestRate;
+
+    // Si el pago fue realizado dentro del rango (1-10 del mes)
+    private boolean paidOnTime;
+
+    // Número de la cuota (1, 2, ..., término del préstamo)
+    private int installmentNumber;
+
     @Setter
     @Getter
     private boolean isGenerated;
-
-    @OneToOne( cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "cloud_file_id")
-    private CloudFile cloudFile;
 }
