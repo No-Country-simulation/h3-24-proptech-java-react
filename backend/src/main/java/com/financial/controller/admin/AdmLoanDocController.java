@@ -2,7 +2,6 @@ package com.financial.controller.admin;
 
 import com.financial.dto.response.loan.LoanDocumentationResponseDTO;
 import com.financial.service.ILoanDocumentsService;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -109,5 +109,4 @@ public class LoanDocumentsServiceImpl implements ILoanDocumentsService {
                 .map(LoanDocumentationResponseDTO::toLoanDocumentationResponseDto)
                 .toList();
     }
- 
 }
