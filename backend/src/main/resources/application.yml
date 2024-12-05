@@ -1,14 +1,8 @@
-#spring.application.name=Financial.land
-#server.port=8090
-#spring.datasource.url=${POSTGRES_URL}
-#spring.datasource.username=${POSTGRES_USER}
-#spring.datasource.password=${POSTGRES_PASSWORD}
-#spring.datasource.driver-class-name=org.postgresql.Driver
-#spring.datasource.hikari.maximum-pool-size=10
-
 spring:
   application:
     name: Financial-al
+  profiles:
+    active: dev
   datasource:
     url: ${POSTGRES_URL}
     username: ${POSTGRES_USER}
@@ -21,8 +15,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     database: postgresql
-  profiles:
-    active: dev
   mail:
     host: smtp.gmail.com
     port: 587
@@ -67,3 +59,10 @@ logging:
 veriff:
   api-key: ${VERIFF_KEY}
   url: ${VERIFF_URL}
+
+mercadopago:
+  access_token: ${MERCADOPAGO_ACCESS_TOKEN}
+  secret_key: ${MERCADOPAGO_SECRET_KEY}
+  success_callback_url: ${MERCADOPAGO_SUCCESS_CALLBACK_URL}
+  failure_callback_url: ${MERCADOPAGO_FAILURE_CALLBACK_URL}
+  pending_callback_url: ${MERCADOPAGO_PENDING_CALLBACK_URL}
