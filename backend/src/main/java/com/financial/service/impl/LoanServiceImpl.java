@@ -1,6 +1,8 @@
 package com.financial.service.impl;
 
 import com.financial.config.mapper.LoanMapper;
+import com.financial.config.mapper.ProfileMapper;
+import com.financial.config.mapper.UserMapper;
 import com.financial.dto.request.loan.RequestDeclinedLoanDTO;
 import com.financial.dto.request.loan.RequestLoanSimulationDTO;
 import com.financial.dto.request.loan.RequestRefinanceLoanDTO;
@@ -10,7 +12,6 @@ import com.financial.exception.BadRequestException;
 import com.financial.exception.LoanNotFoundException;
 import com.financial.exception.NotFoundException;
 import com.financial.model.Loan;
-import com.financial.model.LoanDocumentation;
 import com.financial.model.Profile;
 import com.financial.model.User;
 import com.financial.model.enums.LoanStatus;
@@ -22,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -30,12 +30,14 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class LoanServiceImpl implements ILoanService {
-    private final AuthService authService;
-    private final LoanMapper loanMapper;
     private final ILoanRepository loanRepository;
+    private final AuthService authService;
     private final IPaymentService paymentService;
     private final ILoanDocumentsService loanDocumentsService;
     private final ILoanCalculatorService loanCalculatorService;
+    private final LoanMapper loanMapper;
+    private final UserMapper userMapper;
+    private final ProfileMapper profileMapper;
 
     @Transactional
     @Override
@@ -57,8 +59,17 @@ public class LoanServiceImpl implements ILoanService {
     }
 
     @Override
-    public void getLoanDetails() {
-        // TODO: Implement this method
+    public LoanDetailsResponseDTO getLoanDetails(UUID loanId) {
+        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new LoanNotFoundException(loanId));
+        User user = loan.getUser();
+        Profile profile = user.getProfile();
+        var loanDocumentationStatuses = loanDocumentsService.getDocumentationStatusForLoan(loanId);
+        return new LoanDetailsResponseDTO(
+                loanMapper.toResponseDTO(loan),
+                userMapper.toUserResponseDTO(user),
+                profileMapper.toResponseProfileDto(profile),
+                loanDocumentationStatuses
+        );
     }
 
     @Override
@@ -128,8 +139,8 @@ public class LoanServiceImpl implements ILoanService {
         Loan loanFound = loanRepository.findById(dto.loanId()).orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
         loanFound.setStatus(LoanStatus.valueOf(dto.status()));
         loanRepository.save(loanFound);
-        // AGREGAR EMAIL
-        return "Prestamo actualizado correctamente";
+        // TODO: AGREGAR EMAIL
+        return "Préstamo actualizado correctamente";
     }
 
     @Override
@@ -141,7 +152,7 @@ public class LoanServiceImpl implements ILoanService {
         loanFound.setStatus(LoanStatus.PRE_APPROVED);
         loanRepository.save(loanFound);
         //  TODO: ENVIAR UN EMAIL
-        return "Prestamo pre aprobado correctamente!";
+        return "Préstamo pre aprobado correctamente!";
     }
 
     @Override
@@ -152,10 +163,10 @@ public class LoanServiceImpl implements ILoanService {
         }
         loanFound.setStatus(LoanStatus.APPROVED);
         loanRepository.save(loanFound);
-        //  TODO: ENVIAR UN EMAIL
-        // TODO: GENERAR CUOTAS..
+        // TODO: ENVIAR UN EMAIL
+        // TODO: GENERAR CUOTAS
         paymentService.createPaymentSchedule(loanFound.getLoanId());
-        return "Prestamo aprobado correctamente!";
+        return "Préstamo aprobado correctamente!";
     }
 
     @Override
@@ -164,7 +175,7 @@ public class LoanServiceImpl implements ILoanService {
         loanFound.setStatus(LoanStatus.REFUSED);
         loanRepository.save(loanFound);
         // TODO: enviar el email al usuario
-        return "Prestamo declinado correctamente!";
+        return "Préstamo declinado correctamente!";
     }
 
     @Transactional
@@ -190,21 +201,18 @@ public class LoanServiceImpl implements ILoanService {
         }
 
         // There's at least 2 guarantees
-        Set<String> guaranteeIds = new HashSet<>();
-        for (LoanDocumentation loanDocumentation : loan.getDocuments()) {
-            guaranteeIds.add(loanDocumentation.getGuaranteeId());
-        }
+        Set<String> guaranteeIds = loan.getTrackedGuaranteeIds();
         if (guaranteeIds.size() < 2) {
             return new LoanMovedToPendingResultDTO(false, "At least 2 guarantees are required");
         }
 
         // The holder and each guarantee have successfully uploaded all the required documents.
-        LoanDocumentationStatusDTO holderStatus = loanDocumentsService.getDocumentationStatus(loanId, null);
+        LoanDocumentationStatusDTO holderStatus = loanDocumentsService.getDocumentationStatusForHolderOrGuarantee(loanId, null);
         if (!holderStatus.isAllDocumentsUploaded()) {
             return new LoanMovedToPendingResultDTO(false, "Not all documents are uploaded for the holder");
         }
         for (String guaranteeId : guaranteeIds) {
-            LoanDocumentationStatusDTO guaranteeStatus = loanDocumentsService.getDocumentationStatus(loanId, guaranteeId);
+            LoanDocumentationStatusDTO guaranteeStatus = loanDocumentsService.getDocumentationStatusForHolderOrGuarantee(loanId, guaranteeId);
             if (!guaranteeStatus.isAllDocumentsUploaded()) {
                 return new LoanMovedToPendingResultDTO(false, "Not all documents are uploaded for guarantee " + guaranteeId);
             }

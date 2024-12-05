@@ -1,6 +1,7 @@
 package com.financial.service;
 
 import com.financial.dto.request.loan.*;
+import com.financial.dto.response.loan.LoanDetailsResponseDTO;
 import com.financial.dto.response.loan.LoanMovedToPendingResultDTO;
 import com.financial.dto.response.loan.ResponseLoanAdminDTO;
 import com.financial.dto.response.loan.ResponseLoanDTO;
@@ -22,7 +23,7 @@ public interface ILoanService {
     /**
      * Obtiene detalles de un préstamo.
      */
-    void getLoanDetails();
+    LoanDetailsResponseDTO getLoanDetails(UUID loanId);
 
     /**
      * Actualiza el estado de un préstamo existente.

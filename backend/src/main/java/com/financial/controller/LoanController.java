@@ -3,6 +3,7 @@ package com.financial.controller;
 import com.financial.config.CurrentUser;
 import com.financial.dto.request.loan.RequestLoanSimulationDTO;
 import com.financial.dto.request.loan.RequestRefinanceLoanDTO;
+import com.financial.dto.response.loan.LoanDetailsResponseDTO;
 import com.financial.dto.response.loan.LoanMovedToPendingResultDTO;
 import com.financial.dto.response.loan.ResponseLoanDTO;
 import com.financial.model.User;
@@ -27,6 +28,12 @@ public class LoanController {
             @RequestBody RequestLoanSimulationDTO request
     ) {
         return ResponseEntity.ok(loanService.createLoan(user.getUserId(), request));
+    }
+
+    @GetMapping("/{loanId}/details")
+    public ResponseEntity<LoanDetailsResponseDTO> loanDetails(@PathVariable UUID loanId) {
+        LoanDetailsResponseDTO response = loanService.getLoanDetails(loanId);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{loanId}/refinance")
