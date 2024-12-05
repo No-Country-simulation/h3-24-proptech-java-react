@@ -1,12 +1,12 @@
 package com.financial.service;
 
-import com.mercadopago.resources.preference.Preference;
+import com.financial.dto.response.mp.PreferenceResponseDTO;
 
 import java.util.UUID;
 
 public interface IMercadoPagoService {
 
-    Preference createPreference(UUID paymentId);
+    PreferenceResponseDTO createPreference(UUID paymentId);
 
     UUID getPaymentIdFromMpPayment(Long mpPaymentId);
 

@@ -1,16 +1,19 @@
 package com.financial.service.impl;
 
+import com.financial.dto.response.mp.PreferenceResponseDTO;
 import com.financial.exception.PaymentNotFoundException;
+import com.financial.exception.ProfileNotFoundException;
 import com.financial.model.Loan;
 import com.financial.model.Payment;
+import com.financial.model.Profile;
+import com.financial.model.User;
 import com.financial.repository.IPaymentRepository;
 import com.financial.service.IMercadoPagoService;
 import com.mercadopago.MercadoPagoConfig;
+import com.mercadopago.client.common.IdentificationRequest;
+import com.mercadopago.client.common.PhoneRequest;
 import com.mercadopago.client.payment.PaymentClient;
-import com.mercadopago.client.preference.PreferenceBackUrlsRequest;
-import com.mercadopago.client.preference.PreferenceClient;
-import com.mercadopago.client.preference.PreferenceItemRequest;
-import com.mercadopago.client.preference.PreferenceRequest;
+import com.mercadopago.client.preference.*;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.preference.Preference;
@@ -43,7 +46,7 @@ public class MercadoPagoServiceImpl implements IMercadoPagoService {
     private String pendingCallbackUrl;
 
     @Override
-    public Preference createPreference(UUID paymentId) {
+    public PreferenceResponseDTO createPreference(UUID paymentId) {
         try {
             MercadoPagoConfig.setAccessToken(accessToken);
             return tryCreatePreference(paymentId);
@@ -52,9 +55,14 @@ public class MercadoPagoServiceImpl implements IMercadoPagoService {
         }
     }
 
-    private Preference tryCreatePreference(UUID paymentId) throws MPException, MPApiException {
+    private PreferenceResponseDTO tryCreatePreference(UUID paymentId) throws MPException, MPApiException {
         Payment payment = paymentRepository.findById(paymentId).orElseThrow(() -> new PaymentNotFoundException(paymentId));
         Loan loan = payment.getLoan();
+        User user = loan.getUser();
+        Profile profile = user.getProfile();
+        if (profile == null) {
+            throw new ProfileNotFoundException("User with ID " + user.getUserId() + " does NOT have a profile");
+        }
         String title = String.format("Payment N° %d for loan %s", payment.getInstallmentNumber(), loan.getLoanId().toString());
         String description = String.format("Monthly quota with status %s and amount $%s.", payment.getStatus(), payment.getAmount());
         PreferenceItemRequest itemRequest = PreferenceItemRequest.builder()
@@ -73,6 +81,19 @@ public class MercadoPagoServiceImpl implements IMercadoPagoService {
                 .metadata(new HashMap<>() {{
                     put("payment_id", paymentId.toString());
                 }})
+                .payer(PreferencePayerRequest.builder()
+                        .name(user.getName())
+                        .surname(user.getLastname())
+                        .email(user.getEmail())
+                        .phone(PhoneRequest.builder()
+                                .areaCode("54")
+                                .number(profile.getMobilePhone())
+                                .build())
+                        .identification(IdentificationRequest.builder()
+                                .type("DNI")
+                                .number(user.getDni())
+                                .build()
+                        ).build())
                 .backUrls(PreferenceBackUrlsRequest.builder()
                         .success(successCallbackUrl)
                         .failure(failureCallbackUrl)
@@ -81,7 +102,8 @@ public class MercadoPagoServiceImpl implements IMercadoPagoService {
                 .autoReturn("approved")
                 .build();
         PreferenceClient client = new PreferenceClient();
-        return client.create(preferenceRequest);
+        Preference preference = client.create(preferenceRequest);
+        return new PreferenceResponseDTO(preference.getId());
     }
 
     @Override

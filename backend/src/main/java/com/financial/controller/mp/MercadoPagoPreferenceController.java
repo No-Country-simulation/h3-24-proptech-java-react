@@ -1,7 +1,7 @@
 package com.financial.controller.mp;
 
+import com.financial.dto.response.mp.PreferenceResponseDTO;
 import com.financial.service.IMercadoPagoService;
-import com.mercadopago.resources.preference.Preference;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +18,8 @@ public class MercadoPagoPreferenceController {
     private final IMercadoPagoService preferenceService;
 
     @PostMapping("/{paymentId}")
-    public ResponseEntity<Preference> createPreference(@PathVariable UUID paymentId) {
-        Preference preference = preferenceService.createPreference(paymentId);
+    public ResponseEntity<PreferenceResponseDTO> createPreference(@PathVariable UUID paymentId) {
+        PreferenceResponseDTO preference = preferenceService.createPreference(paymentId);
         return ResponseEntity.ok(preference);
     }
 
