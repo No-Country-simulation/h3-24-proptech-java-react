@@ -5,7 +5,6 @@ import com.financial.dto.request.loan.RequestLoanSimulationDTO;
 import com.financial.dto.request.loan.RequestRefinanceLoanDTO;
 import com.financial.dto.response.loan.LoanMovedToPendingResultDTO;
 import com.financial.dto.response.loan.ResponseLoanDTO;
-import com.financial.dto.response.loan.ResponseLoanSimulationDTO;
 import com.financial.model.User;
 import com.financial.service.ILoanService;
 import jakarta.validation.Valid;
@@ -21,11 +20,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class LoanController {
     private final ILoanService loanService;
-
-    @PostMapping("/simulate")
-    public ResponseEntity<ResponseLoanSimulationDTO> simulateLoan(@Valid @RequestBody RequestLoanSimulationDTO request) {
-        return ResponseEntity.ok(loanService.simulateLoan(request));
-    }
 
     @PostMapping("/create")
     public ResponseEntity<ResponseLoanDTO> createLoan(
