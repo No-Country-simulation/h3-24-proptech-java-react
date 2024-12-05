@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Button from "./Button";
 import UserPhoto from "../features/user/UserPhoto";
 import useCurrentUser from "../features/user/useCurrentUser";
+import { Logo } from "../ui/Logo";
 
 const Nav = () => {
   const { user } = useCurrentUser();
@@ -16,7 +17,9 @@ const Nav = () => {
         </li>
 
         <li className="px-4 py-1 font-medium">
-          <Link to="/home"> <img src="/logo_Financia.png" alt="logo azul" /> </Link>
+          <Link to="/home">
+            <Logo />
+          </Link>
         </li>
 
         <li className="ml-[auto]  ">

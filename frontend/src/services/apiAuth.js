@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { baseURL } from '../utils/constants';
+import axios from "axios";
+import { baseURL } from "../utils/constants";
 
 export async function registerApi(data) {
   try {
@@ -8,10 +8,14 @@ export async function registerApi(data) {
       userType: true,
     });
 
+    if (response.status !== 200 || !response.data) {
+      throw new Error("Hubo un problema al registrar el usuario.");
+    }
+
     return response.data;
   } catch (error) {
-    console.error('💥Error:', error.message);
-    return null;
+    console.error("💥Error:", error);
+    throw error;
   }
 }
 
@@ -19,10 +23,13 @@ export async function loginApi(data) {
   try {
     const response = await axios.post(`${baseURL}/api/auth/login`, data);
 
+    if (response.status !== 200 || !response.data) {
+      throw new Error("Credenciales incorrectas");
+    }
+
     return response.data;
   } catch (error) {
-    console.log(error);
-    console.error('💥Error:', error.message);
-    return null;
+    console.error("💥Error:", error);
+    throw error;
   }
 }

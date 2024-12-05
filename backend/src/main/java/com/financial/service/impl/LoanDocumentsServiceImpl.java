@@ -104,10 +104,10 @@ public class LoanDocumentsServiceImpl implements ILoanDocumentsService {
 
     @Override
     public List<LoanDocumentationResponseDTO> getDocsByLoanId(UUID loanId) {
-       return loanDocumentationRepository.getLoanDocumentationByLoanId(loanId)
-               .stream()
-               .map(LoanDocumentationResponseDTO::toLoanDocumentationResponseDto)
-               .toList();
+        return loanDocumentationRepository.getLoanDocumentationByLoanId(loanId)
+                .stream()
+                .map(LoanDocumentationResponseDTO::toLoanDocumentationResponseDto)
+                .toList();
     }
-
+ 
 }

@@ -7,8 +7,7 @@ export async function startVerificationApi() {
     const token = getData("token");
 
     if (!token) {
-      console.warn("No token found, user is not logged in.");
-      return null;
+      throw new Error("No estás autenticado. Inicia sesión para continuar.");
     }
 
     const response = await axios.post(
@@ -21,13 +20,13 @@ export async function startVerificationApi() {
       }
     );
 
-    const data = response.data;
+    if (response.status !== 200 || !response.data) {
+      throw new Error("Ocurrió un error. Intenta nuevamente..");
+    }
 
-    console.log(data);
-
-    return data;
+    return response.data;
   } catch (error) {
-    console.error("💥Error:", error.message);
-    return null;
+    console.error("💥Error:", error);
+    throw error;
   }
 }
