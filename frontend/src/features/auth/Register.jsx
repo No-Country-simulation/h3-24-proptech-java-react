@@ -25,8 +25,8 @@ function Register({ children }) {
 
   return (
     <>
-      <div className='w-[full] hidden h-[calc(93.5vh)]  md:flex'>
-        <div className='bg-[#142B6A] w-1/2 text-white '>
+      <div className='w-[full] hidden min-h-[calc(93.5vh)]  md:flex'>
+        <div className=' bg-gradient-to-r to-[#142B6A] from-[#0A0E19] w-1/2 text-white '>
           <div className='w-[383px] flex flex-col justify-between  m-auto  h-2/3  pt-[200px]'>
             <div className='flex flex-col gap-4'>
               <h2 className='text-5xl font-bold'>
@@ -46,7 +46,8 @@ function Register({ children }) {
           <form
             onSubmit={handleSubmit(onSubmit)}
             className='hidden md:flex flex-grow flex-col w-[500px] mx-auto pt-[100px]  '>
-            <div className='px-7  flex flex-col gap-5 mb-8'>
+            <h2 className='font-bold text-3xl mb-6'>Registrate</h2>
+            <div className=' flex flex-col gap-5'>
               <FormRow label='Email' error={errors?.email?.message}>
                 <input
                   type='email'

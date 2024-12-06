@@ -17,11 +17,12 @@ const Home = () => {
       {/*    <Navbar />
        */}
       <section
-        className={`text-center py-8 hidden md:flex items-center  justify-between pl-12`}>
+        className={`text-center py-8 hidden xl:flex items-center  justify-between pl-12`}>
         <div className='w-1/3 text-start flex flex-col gap-8'>
           <div className='flex flex-col gap-6'>
             <h2 className='text-[#1F47B4]  font-bold text-7xl'>
-              Triplicamos los montos y plazos
+              La respuesta a tus necesidades económicas, todo en un solo
+              espacio.
             </h2>
             <p className='text-[#142B6A] text-2xl w-[76%]'>
               Solicita tu préstamo personal a largo plazo y compra lo que
@@ -44,7 +45,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className={`text-center py-8 ${styles.wrapper} md:hidden`}>
+      <section className={`text-center py-8 ${styles.wrapper} xl:hidden`}>
         <h1 className={`${styles.logo} colorText-financia`}>Financia.al</h1>
         <h2 className={`${styles.h2} mx-auto `}>
           La respuesta a tus necesidades económicas, todo en un solo espacio.
