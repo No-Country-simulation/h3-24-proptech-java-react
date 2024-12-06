@@ -72,3 +72,4 @@ mercadopago:
   success_callback_url: ${MERCADOPAGO_SUCCESS_CALLBACK_URL}
   failure_callback_url: ${MERCADOPAGO_FAILURE_CALLBACK_URL}
   pending_callback_url: ${MERCADOPAGO_PENDING_CALLBACK_URL}
+  webhook_callback_url: ${MERCADOPAGO_WEBHOOK_CALLBACK_URL}

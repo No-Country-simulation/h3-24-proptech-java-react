@@ -81,6 +81,7 @@ public class MercadoPagoServiceImpl implements IMercadoPagoService {
                 .metadata(new HashMap<>() {{
                     put("payment_id", paymentId.toString());
                 }})
+                .notificationUrl()
                 .payer(PreferencePayerRequest.builder()
                         .name(user.getName())
                         .surname(user.getLastname())
