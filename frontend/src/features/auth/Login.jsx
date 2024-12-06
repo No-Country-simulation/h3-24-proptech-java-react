@@ -25,7 +25,7 @@ const Login = ({ children }) => {
   return (
     <>
       <div className='w-[full] hidden h-[calc(93.5vh)]  md:flex'>
-        <div className='bg-[#142B6A] w-1/2 text-white '>
+        <div className='bg-gradient-to-r to-[#142B6A] from-[#0A0E19] w-1/2 text-white '>
           <div className='w-[383px] flex flex-col justify-between  m-auto  h-2/3  pt-[200px]'>
             <div className='flex flex-col gap-4'>
               <h2 className='text-5xl font-bold'>
