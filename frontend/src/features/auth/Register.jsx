@@ -46,7 +46,8 @@ function Register({ children }) {
           <form
             onSubmit={handleSubmit(onSubmit)}
             className='hidden md:flex flex-grow flex-col w-[500px] mx-auto pt-[100px]  '>
-            <div className='px-7  flex flex-col gap-5 mb-8'>
+            <h2 className='font-bold text-3xl mb-6'>Registrate</h2>
+            <div className=' flex flex-col gap-5'>
               <FormRow label='Email' error={errors?.email?.message}>
                 <input
                   type='email'

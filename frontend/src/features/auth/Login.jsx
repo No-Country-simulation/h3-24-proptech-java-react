@@ -45,7 +45,8 @@ const Login = ({ children }) => {
           <form
             onSubmit={handleSubmit(onSubmit)}
             className='hidden md:flex flex-grow flex-col w-[500px] mx-auto pt-[200px]'>
-            <div className='px-7  flex flex-col gap-5'>
+            <h2 className='font-bold text-3xl mb-6'>Inicia Sesion</h2>
+            <div className=' flex flex-col gap-5'>
               <FormRow label='Email' error={errors?.email?.message}>
                 <input
                   type='email'
