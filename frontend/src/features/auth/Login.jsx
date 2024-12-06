@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import FormRow from '../../ui/FormRow';
 import { useLogin } from './useLogin';
 import SubmitButton from '../../ui/SubmitButton';
+import { LogoSvg } from '../../ui/LogoSvg';
+import TextLogo from '../../ui/TextLogo';
 
 const Login = ({ children }) => {
   const { login, isPending: isLoading } = useLogin();
@@ -19,7 +21,11 @@ const Login = ({ children }) => {
   }
 
   return (
-    <div className=' min-h-[90vh] flex flex-col m-auto '>
+    <div className=' min-h-[90vh] md:min-h-[70vh] md:max-w-[500px] md:border md:shadow-md md:rounded-md flex flex-col m-auto py-4  '>
+      <div className='text-center mb-8 flex items-center gap-1 justify-center'>
+        <LogoSvg />
+        <TextLogo />
+      </div>
       <h1 className=' text-3xl font-semibold mb-6 px-7'>Iniciar sesión</h1>
 
       <form

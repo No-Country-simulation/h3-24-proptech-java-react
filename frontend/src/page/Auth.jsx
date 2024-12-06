@@ -1,20 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Register from '../features/auth/Register';
 
 import Login from '../features/auth/Login';
-import { LogoSvg } from '../ui/LogoSvg';
-import TextLogo from '../ui/TextLogo';
+import { useLocation } from 'react-router-dom';
 
 function Auth() {
   const [isLogin, setIsLogin] = useState(true);
-
+  const location = useLocation();
+  useEffect(() => {
+    const response = location.state;
+    console.log(response);
+    if (response) {
+      setIsLogin(response === 'login');
+    }
+  }, [location.state]);
   return (
-    <section className='pt-8'>
-      <div className='text-center mb-8 flex items-center gap-1 justify-center'>
-        <LogoSvg />
-        <TextLogo />
-      </div>
-
+    <section className='pt-8 w-full mb-4 '>
       {isLogin ? (
         <Login>
           <p className='text-center mb-3'>
