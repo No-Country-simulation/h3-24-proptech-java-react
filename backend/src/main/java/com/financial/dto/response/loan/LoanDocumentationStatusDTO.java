@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 public class LoanDocumentationStatusDTO {
     private boolean allDocumentsUploaded;
+    private String guaranteeId;
     private List<DocumentTypeStatus> documentTypeStatuses = new ArrayList<>();
 
     public void addDocumentStatusPerType(DocumentTypeStatus documentTypeStatus) {

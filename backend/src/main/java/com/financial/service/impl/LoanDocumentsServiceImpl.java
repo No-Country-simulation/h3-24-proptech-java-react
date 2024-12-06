@@ -23,7 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -68,7 +70,19 @@ public class LoanDocumentsServiceImpl implements ILoanDocumentsService {
     }
 
     @Override
-    public LoanDocumentationStatusDTO getDocumentationStatus(UUID loanId, @Nullable String guaranteeId) {
+    public List<LoanDocumentationStatusDTO> getDocumentationStatusForLoan(UUID loanId) {
+        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new LoanNotFoundException(loanId));
+        List<LoanDocumentationStatusDTO> documentationStatusList = new ArrayList<>();
+        documentationStatusList.add(getDocumentationStatusForHolderOrGuarantee(loanId, null));
+        Set<String> guaranteeIds = loan.getTrackedGuaranteeIds();
+        for (String guaranteeId : guaranteeIds) {
+            documentationStatusList.add(getDocumentationStatusForHolderOrGuarantee(loanId, guaranteeId));
+        }
+        return documentationStatusList;
+    }
+
+    @Override
+    public LoanDocumentationStatusDTO getDocumentationStatusForHolderOrGuarantee(UUID loanId, @Nullable String guaranteeId) {
         Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new LoanNotFoundException(loanId));
         LoanDocumentationStatusDTO status = new LoanDocumentationStatusDTO();
         boolean allDocumentsUploaded = true;
@@ -91,6 +105,7 @@ public class LoanDocumentsServiceImpl implements ILoanDocumentsService {
             );
         }
         status.setAllDocumentsUploaded(allDocumentsUploaded);
+        status.setGuaranteeId(guaranteeId);
         return status;
     }
 
@@ -109,5 +124,5 @@ public class LoanDocumentsServiceImpl implements ILoanDocumentsService {
                 .map(LoanDocumentationResponseDTO::toLoanDocumentationResponseDto)
                 .toList();
     }
- 
+
 }

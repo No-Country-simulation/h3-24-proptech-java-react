@@ -13,7 +13,9 @@ public interface ILoanDocumentsService {
 
     LoanDocumentation attachOrUpdateDocumentToLoan(UUID loanId, UploadLoanDocumentationDTO uploadLoanDocumentationDto);
 
-    LoanDocumentationStatusDTO getDocumentationStatus(UUID loanId, @Nullable String guaranteeId);
+    List<LoanDocumentationStatusDTO> getDocumentationStatusForLoan(UUID loanId);
+
+    LoanDocumentationStatusDTO getDocumentationStatusForHolderOrGuarantee(UUID loanId, @Nullable String guaranteeId);
 
     void deleteLoanDocumentation(UUID loanId, UUID loanDocumentationId);
 

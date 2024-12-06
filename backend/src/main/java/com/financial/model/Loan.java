@@ -8,9 +8,7 @@ import org.springframework.lang.Nullable;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "loans")
@@ -89,6 +87,16 @@ public class Loan extends Auditable {
         return getDocumentsOfType(docType, guaranteeId).stream()
                 .findFirst()
                 .orElse(null);
+    }
+
+    public Set<String> getTrackedGuaranteeIds() {
+        Set<String> guaranteeIds = new HashSet<>();
+        for (LoanDocumentation loanDocumentation : getDocuments()) {
+            if (loanDocumentation.getGuaranteeId() != null) {
+                guaranteeIds.add(loanDocumentation.getGuaranteeId());
+            }
+        }
+        return guaranteeIds;
     }
 
 }

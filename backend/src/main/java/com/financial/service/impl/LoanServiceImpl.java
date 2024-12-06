@@ -1,6 +1,8 @@
 package com.financial.service.impl;
 
 import com.financial.config.mapper.LoanMapper;
+import com.financial.config.mapper.ProfileMapper;
+import com.financial.config.mapper.UserMapper;
 import com.financial.dto.request.loan.RequestDeclinedLoanDTO;
 import com.financial.dto.request.loan.RequestLoanSimulationDTO;
 import com.financial.dto.request.loan.RequestRefinanceLoanDTO;
@@ -10,39 +12,38 @@ import com.financial.exception.BadRequestException;
 import com.financial.exception.LoanNotFoundException;
 import com.financial.exception.NotFoundException;
 import com.financial.model.Loan;
-import com.financial.model.LoanDocumentation;
 import com.financial.model.Profile;
 import com.financial.model.User;
-import com.financial.model.enums.LoanRate;
 import com.financial.model.enums.LoanStatus;
 import com.financial.repository.ILoanRepository;
-import com.financial.service.AuthService;
-import com.financial.service.ILoanDocumentsService;
-import com.financial.service.ILoanService;
-import com.financial.service.IPaymentService;
+import com.financial.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
-import java.util.*;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class LoanServiceImpl implements ILoanService {
-    private final AuthService authService;
-    private final LoanMapper loanMapper;
     private final ILoanRepository loanRepository;
+    private final AuthService authService;
     private final IPaymentService paymentService;
     private final ILoanDocumentsService loanDocumentsService;
+    private final ILoanCalculatorService loanCalculatorService;
+    private final LoanMapper loanMapper;
+    private final UserMapper userMapper;
+    private final ProfileMapper profileMapper;
 
     @Transactional
     @Override
     public ResponseLoanDTO createLoan(UUID userId, RequestLoanSimulationDTO request) {
         User user = authService.getUserById(userId);
-        var res = loanCalculations(request);
+        var res = loanCalculatorService.loanCalculations(request);
         Loan loan = Loan.builder()
                 .status(LoanStatus.INITIATED)               // Estado inicial del préstamo
                 .user(user)                                 // Asociar el usuario
@@ -58,8 +59,17 @@ public class LoanServiceImpl implements ILoanService {
     }
 
     @Override
-    public void getLoanDetails() {
-        // TODO: Implement this method
+    public LoanDetailsResponseDTO getLoanDetails(UUID loanId) {
+        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new LoanNotFoundException(loanId));
+        User user = loan.getUser();
+        Profile profile = user.getProfile();
+        var loanDocumentationStatuses = loanDocumentsService.getDocumentationStatusForLoan(loanId);
+        return new LoanDetailsResponseDTO(
+                loanMapper.toResponseDTO(loan),
+                userMapper.toUserResponseDTO(user),
+                profileMapper.toResponseProfileDto(profile),
+                loanDocumentationStatuses
+        );
     }
 
     @Override
@@ -82,7 +92,6 @@ public class LoanServiceImpl implements ILoanService {
         loanRepository.save(existingLoan);
         return loanMapper.toResponseDTO(existingLoan);
     }
-
 
     @Override
     @Transactional
@@ -115,7 +124,7 @@ public class LoanServiceImpl implements ILoanService {
     @Override
     public ResponseLoanAdminDTO updateLoanAdmin(UUID loanId, RequestLoanSimulationDTO dto) {
         Loan loanFound = loanRepository.findById(loanId).orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
-        ResponseLoanCalculationsDTO res = loanCalculations(dto);
+        ResponseLoanCalculationsDTO res = loanCalculatorService.loanCalculations(dto);
         loanFound.setRequestedAmount(res.requestedAmount());
         loanFound.setMonthlyQuota(res.monthlyQuota());       // Asignar la cuota mensual del préstamo desde el DTO
         loanFound.setTermMonths(res.termMonths());       // Asignar el término del préstamo desde el DTO
@@ -130,8 +139,8 @@ public class LoanServiceImpl implements ILoanService {
         Loan loanFound = loanRepository.findById(dto.loanId()).orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
         loanFound.setStatus(LoanStatus.valueOf(dto.status()));
         loanRepository.save(loanFound);
-        // AGREGAR EMAIL
-        return "Prestamo actualizado correctamente";
+        // TODO: AGREGAR EMAIL
+        return "Préstamo actualizado correctamente";
     }
 
     @Override
@@ -143,7 +152,7 @@ public class LoanServiceImpl implements ILoanService {
         loanFound.setStatus(LoanStatus.PRE_APPROVED);
         loanRepository.save(loanFound);
         //  TODO: ENVIAR UN EMAIL
-        return "Prestamo pre aprobado correctamente!";
+        return "Préstamo pre aprobado correctamente!";
     }
 
     @Override
@@ -154,10 +163,10 @@ public class LoanServiceImpl implements ILoanService {
         }
         loanFound.setStatus(LoanStatus.APPROVED);
         loanRepository.save(loanFound);
-        //  TODO: ENVIAR UN EMAIL
-        // TODO: GENERAR CUOTAS..
+        // TODO: ENVIAR UN EMAIL
+        // TODO: GENERAR CUOTAS
         paymentService.createPaymentSchedule(loanFound.getLoanId());
-        return "Prestamo aprobado correctamente!";
+        return "Préstamo aprobado correctamente!";
     }
 
     @Override
@@ -166,7 +175,7 @@ public class LoanServiceImpl implements ILoanService {
         loanFound.setStatus(LoanStatus.REFUSED);
         loanRepository.save(loanFound);
         // TODO: enviar el email al usuario
-        return "Prestamo declinado correctamente!";
+        return "Préstamo declinado correctamente!";
     }
 
     @Transactional
@@ -192,21 +201,18 @@ public class LoanServiceImpl implements ILoanService {
         }
 
         // There's at least 2 guarantees
-        Set<String> guaranteeIds = new HashSet<>();
-        for (LoanDocumentation loanDocumentation : loan.getDocuments()) {
-            guaranteeIds.add(loanDocumentation.getGuaranteeId());
-        }
+        Set<String> guaranteeIds = loan.getTrackedGuaranteeIds();
         if (guaranteeIds.size() < 2) {
             return new LoanMovedToPendingResultDTO(false, "At least 2 guarantees are required");
         }
 
         // The holder and each guarantee have successfully uploaded all the required documents.
-        LoanDocumentationStatusDTO holderStatus = loanDocumentsService.getDocumentationStatus(loanId, null);
+        LoanDocumentationStatusDTO holderStatus = loanDocumentsService.getDocumentationStatusForHolderOrGuarantee(loanId, null);
         if (!holderStatus.isAllDocumentsUploaded()) {
             return new LoanMovedToPendingResultDTO(false, "Not all documents are uploaded for the holder");
         }
         for (String guaranteeId : guaranteeIds) {
-            LoanDocumentationStatusDTO guaranteeStatus = loanDocumentsService.getDocumentationStatus(loanId, guaranteeId);
+            LoanDocumentationStatusDTO guaranteeStatus = loanDocumentsService.getDocumentationStatusForHolderOrGuarantee(loanId, guaranteeId);
             if (!guaranteeStatus.isAllDocumentsUploaded()) {
                 return new LoanMovedToPendingResultDTO(false, "Not all documents are uploaded for guarantee " + guaranteeId);
             }
@@ -217,52 +223,6 @@ public class LoanServiceImpl implements ILoanService {
         loanRepository.save(loan);
 
         return new LoanMovedToPendingResultDTO(true, "Loan successfully moved to PENDING status");
-    }
-
-    @Override
-    public ResponseLoanSimulationDTO simulateLoan(RequestLoanSimulationDTO requestLoan) {
-        MathContext mathContext = MathContext.DECIMAL128;
-        var res = loanCalculations(requestLoan);
-        // Generar el cronograma de pagos
-        List<PaymentScheduleDTO> schedule = generatePaymentSchedule(res.totalPayment(), res.interestRate(), res.monthlyQuota(), res.termMonths(), mathContext);
-        // Simulación de préstamo
-        return new ResponseLoanSimulationDTO(res.monthlyQuota().setScale(2, RoundingMode.HALF_UP), res.totalPayment(), res.requestedAmount(), res.termMonths(), schedule);
-    }
-
-    @Override
-    public BigDecimal calculateLoan(BigDecimal amount, Integer term) {
-        // Obtener la tasa según los meses
-        BigDecimal rate = LoanRate.getRateByMonths(term).setScale(6, RoundingMode.HALF_UP);
-        return amount.multiply(rate).setScale(2, RoundingMode.HALF_UP);
-    }
-
-    private List<PaymentScheduleDTO> generatePaymentSchedule(BigDecimal totalPayment, BigDecimal monthlyRate, BigDecimal monthlyQuota, Integer term, MathContext mathContext) {
-        List<PaymentScheduleDTO> schedule = new ArrayList<>();
-        BigDecimal remainingBalance = totalPayment.subtract(monthlyQuota, mathContext).setScale(2, RoundingMode.HALF_UP); // Saldo inicial es el monto del préstamo - la primera cuota
-        BigDecimal interest = monthlyRate.setScale(2, RoundingMode.HALF_UP);
-        for (int i = 1; i <= term; i++) {
-            // Crear un nuevo registro de pago para este mes, incluyendo el interés y el saldo restante
-            schedule.add(new PaymentScheduleDTO(i, monthlyQuota.setScale(2, RoundingMode.HALF_UP), interest, remainingBalance.setScale(2, RoundingMode.HALF_UP)));
-
-            // Restar la cuota completa del saldo restante
-            remainingBalance = remainingBalance.subtract(monthlyQuota);
-
-            // Si el saldo restante se vuelve negativo, ajustar a 0 para evitar saldos negativos
-            if (remainingBalance.compareTo(BigDecimal.ZERO) < 0) {
-                remainingBalance = BigDecimal.ZERO;
-            }
-        }
-        return schedule;
-    }
-
-    private ResponseLoanCalculationsDTO loanCalculations(RequestLoanSimulationDTO requestLoan) {
-        MathContext mathContext = MathContext.DECIMAL128;
-        BigDecimal amount = requestLoan.requestedAmount().setScale(2, RoundingMode.HALF_UP);
-        int term = requestLoan.termMonths();
-        BigDecimal monthlyQuota = calculateLoan(amount, term).setScale(2, RoundingMode.HALF_UP);
-        BigDecimal totalPayment = monthlyQuota.multiply(BigDecimal.valueOf(term), mathContext).setScale(2, RoundingMode.HALF_UP);
-        BigDecimal rate = LoanRate.getRateByMonths(term).setScale(6, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100), mathContext);
-        return new ResponseLoanCalculationsDTO(monthlyQuota.setScale(2, RoundingMode.HALF_UP), totalPayment, amount, term, rate.setScale(2, RoundingMode.HALF_UP));
     }
 
 }
