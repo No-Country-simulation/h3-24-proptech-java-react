@@ -31,7 +31,7 @@ export const AppLayout = () => {
     <>
       <Menu showMenu={showMenu} setShowMenu={setShowMenu} />
       <Navbar setShowMenu={setShowMenu} showMenu={showMenu} />
-      <div className='pt-16 md:max-w-[100%] md:ml-[23.6%]  m-auto  '>
+      <div className='pt-16 md:max-w-[100%] md:ml-[316.10px] m-auto '>
         <Outlet />
         {isLoading && (
           <>

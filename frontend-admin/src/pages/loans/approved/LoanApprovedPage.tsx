@@ -1,12 +1,23 @@
 import { useEffect, useState } from 'react';
 import { LoanResponse } from '../../../types/loan-response.interface';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Title } from '../../../components/titles-subtitles/Title';
 import { QuoteCard } from './QuoteCard';
 
 export const LoanApprovedPage = () => {
   const [loan, setLoan] = useState<LoanResponse | null>(null);
   const location = useLocation();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const loanData = location.state as LoanResponse;
+    if (loanData === undefined || loanData === null) {
+      navigate('/');
+    } else {
+      setLoan(loanData);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const loanData = location.state as LoanResponse;

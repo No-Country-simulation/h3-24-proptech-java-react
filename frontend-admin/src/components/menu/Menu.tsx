@@ -50,7 +50,7 @@ export const Menu = ({ showMenu, setShowMenu }: MenuProps) => {
 
   return (
     <div
-      className={`fixed bg-white  z-10 w-full md:w-[16.5%] h-screen transition-all duration-300 ease-in-out md:border-r  mt-16 md:min-w-[300px] ${
+      className={`fixed bg-white  z-10 w-full md:w-[316.10px] h-screen transition-all duration-300 ease-in-out md:border-r  mt-16 md:min-w-[300px] ${
         !showMenu
           ? '-left-[100%] md:left-0 md:inline'
           : 'left-0 md:inline-block'

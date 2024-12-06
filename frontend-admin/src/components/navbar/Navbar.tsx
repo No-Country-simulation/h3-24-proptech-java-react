@@ -1,7 +1,9 @@
+import { useEffect, useState } from 'react';
 import { userStore } from '../../stores/userStore';
 import Logo from '../logos/Logo';
 import { MenuLogo } from '../logos/MenuLogo';
 import TextLogo from '../logos/TextLogo';
+import Spinner from '../Spinner';
 
 interface NavbarProps {
   setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,7 +12,12 @@ interface NavbarProps {
 
 export const Navbar = ({ setShowMenu, showMenu }: NavbarProps) => {
   const { user } = userStore();
-  const data = `${user?.name[0]}${user?.lastname[0]}`;
+  const [name, setName] = useState<string | null>(null);
+  useEffect(() => {
+    if (user) {
+      setName(`${user?.name[0]}${user?.lastname[0]}`);
+    }
+  }, [user]);
   return (
     <header className=''>
       <nav>
@@ -24,7 +31,11 @@ export const Navbar = ({ setShowMenu, showMenu }: NavbarProps) => {
             <TextLogo height={11.84} width={76.77} />
           </div>
           <div className='w-7 h-7 rounded-full bg-[#E2E8F0] flex justify-center items-center'>
-            <p className='font-semibold text-[#475569]'>{data}</p>
+            {!name ? (
+              <Spinner />
+            ) : (
+              <p className='font-semibold text-[#475569]'>{name}</p>
+            )}
           </div>
         </div>
       </nav>

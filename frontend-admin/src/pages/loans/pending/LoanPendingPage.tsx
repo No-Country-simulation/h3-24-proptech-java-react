@@ -36,13 +36,17 @@ export const LoanPendingPage = () => {
 
   useEffect(() => {
     const loanData = location.state as LoanResponse;
-
-    setLoan(loanData);
-    if (loanData.documents.length === 0) {
-      return;
+    if (loanData === undefined || loanData === null) {
+      navigate('/');
+    } else {
+      setLoan(loanData);
+      if (loanData.documents.length === 0) {
+        return;
+      }
+      const grouped = groupDocumentsByType(loanData.documents);
+      setGroupedDocuments(grouped);
     }
-    const grouped = groupDocumentsByType(loanData.documents);
-    setGroupedDocuments(grouped);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {

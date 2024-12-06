@@ -16,13 +16,17 @@ export const LoanCard = ({ loanResponse }: Props) => {
   };
   const handleNavigation = () => {
     // Usamos `navigate` para pasar el `loanData` al estado
-    navigate(`/loan-${data[loanResponse.status]}/${loanResponse.loanId}`, {
-      state: loanResponse,
-    });
+    if (loanResponse.status !== 'INITIATED') {
+      navigate(`/loan-${data[loanResponse.status]}/${loanResponse.loanId}`, {
+        state: loanResponse,
+      });
+    }
   };
   return (
     <div
-      className='border border-[#0E1A39] w-[90%] md:w-[300px] p-3 rounded-lg font-semibold cursor-pointer'
+      className={`border border-[#0E1A39] w-[90%] md:w-[300px] p-3 rounded-lg font-semibold ${
+        loanResponse.status !== 'INITIATED' && 'cursor-pointer'
+      }`}
       onClick={handleNavigation}>
       <div className='flex items-center justify-between'>
         <p>{`${loanResponse.user.name} ${loanResponse.user.lastname}`}</p>

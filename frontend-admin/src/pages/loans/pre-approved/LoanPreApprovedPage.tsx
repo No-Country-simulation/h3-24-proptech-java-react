@@ -58,6 +58,17 @@ export const LoanPreApprovedPage = () => {
 
   useEffect(() => {
     const loanData = location.state as LoanResponse;
+    if (loanData === undefined || loanData === null) {
+      navigate('/');
+    } else {
+      setLoan(loanData);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const loanData = location.state as LoanResponse;
 
     setLoan(loanData);
     if (loanData.documents.length === 0) {

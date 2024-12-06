@@ -16,7 +16,7 @@ export const PendingPage = () => {
     INITIATED: 'Iniciados',
   };
   return (
-    <div className='text-black md:p-8'>
+    <div className='text-black md:p-8 '>
       <Title className='mb-10 text-center mt-10'>
         Prestamos {titles[title]}
       </Title>

@@ -90,7 +90,7 @@ export const AccordionCustom = ({ doc, userType }: Props) => {
       {accordionData.map(({ label, type, documents }) => (
         <div
           key={type}
-          className='flex flex-col gap-1 border shadow-md cursor-pointer bg-[#f7f7f7]'>
+          className='flex flex-col  gap-1 border shadow-md cursor-pointer bg-[#f7f7f7]'>
           <div
             className='flex items-center justify-between rounded-md  h-14 shadow-sm w-full px-6'
             onClick={() => toggleText(type)}>
