@@ -36,16 +36,15 @@ export const AppLayout = () => {
       <Navbar setShowMenu={setShowMenu} showMenu={showMenu} />
       <div className='pt-16 md:max-w-[100%] md:ml-[316.10px] m-auto '>
         <Outlet />
-        {isLoading ||
-          (isLoadingUser && (
-            <>
-              <div className='z-50 inset-0 backdrop-blur-md fixed '>
-                <div className=' w-full h-full flex justify-center items-center'>
-                  <Spinner />
-                </div>
+        {(isLoading || isLoadingUser) && (
+          <>
+            <div className='z-50 inset-0 backdrop-blur-md fixed '>
+              <div className=' w-full h-full flex justify-center items-center'>
+                <Spinner />
               </div>
-            </>
-          ))}
+            </div>
+          </>
+        )}
       </div>
     </>
   );
