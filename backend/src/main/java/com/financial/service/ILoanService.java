@@ -1,10 +1,7 @@
 package com.financial.service;
 
 import com.financial.dto.request.loan.*;
-import com.financial.dto.response.loan.LoanMovedToPendingResultDTO;
-import com.financial.dto.response.loan.ResponseLoanAdminDTO;
-import com.financial.dto.response.loan.ResponseLoanDTO;
-import com.financial.dto.response.loan.ResponseLoanSimulationDTO;
+import com.financial.dto.response.loan.*;
 import com.financial.model.Loan;
 
 import java.math.BigDecimal;
@@ -20,11 +17,6 @@ public interface ILoanService {
      * @throws IllegalArgumentException si el usuario asociado no existe.
      */
     ResponseLoanDTO createLoan(UUID userId, RequestLoanSimulationDTO request);
-
-    /**
-     * Obtiene detalles de un préstamo.
-     */
-    void getLoanDetails();
 
     /**
      * Realiza la simulación de un préstamo.
@@ -43,6 +35,8 @@ public interface ILoanService {
      * @return La cuota mensual calculada.
      */
     BigDecimal calculateLoan(BigDecimal amount, Integer term);
+
+    DataResponseLoanDTO getLoanDetails(UUID loanId);
 
     /**
      * Actualiza el estado de un préstamo existente.

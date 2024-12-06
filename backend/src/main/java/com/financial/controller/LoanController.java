@@ -3,6 +3,7 @@ package com.financial.controller;
 import com.financial.config.CurrentUser;
 import com.financial.dto.request.loan.RequestLoanSimulationDTO;
 import com.financial.dto.request.loan.RequestRefinanceLoanDTO;
+import com.financial.dto.response.loan.DataResponseLoanDTO;
 import com.financial.dto.response.loan.LoanMovedToPendingResultDTO;
 import com.financial.dto.response.loan.ResponseLoanDTO;
 import com.financial.dto.response.loan.ResponseLoanSimulationDTO;
@@ -21,6 +22,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class LoanController {
     private final ILoanService loanService;
+
+    @GetMapping("/{loanId}")
+    public ResponseEntity<DataResponseLoanDTO> getLoanDetails(@PathVariable UUID loanId) {
+        return ResponseEntity.ok(loanService.getLoanDetails(loanId));
+    }
 
     @PostMapping("/simulate")
     public ResponseEntity<ResponseLoanSimulationDTO> simulateLoan(@Valid @RequestBody RequestLoanSimulationDTO request) {

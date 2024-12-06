@@ -16,10 +16,7 @@ import com.financial.model.User;
 import com.financial.model.enums.LoanRate;
 import com.financial.model.enums.LoanStatus;
 import com.financial.repository.ILoanRepository;
-import com.financial.service.AuthService;
-import com.financial.service.ILoanDocumentsService;
-import com.financial.service.ILoanService;
-import com.financial.service.IPaymentService;
+import com.financial.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +29,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class LoanServiceImpl implements ILoanService {
+    private final IEmailService emailService;
     private final AuthService authService;
     private final LoanMapper loanMapper;
     private final ILoanRepository loanRepository;
@@ -58,8 +56,10 @@ public class LoanServiceImpl implements ILoanService {
     }
 
     @Override
-    public void getLoanDetails() {
-        // TODO: Implement this method
+    public DataResponseLoanDTO  getLoanDetails(UUID loanId) {
+        Loan loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new LoanNotFoundException("Loan not found with ID: " + loanId));
+        return loanMapper.toDataResponseLoanDTO(loan);
     }
 
     @Override
@@ -142,7 +142,8 @@ public class LoanServiceImpl implements ILoanService {
         }
         loanFound.setStatus(LoanStatus.PRE_APPROVED);
         loanRepository.save(loanFound);
-        //  TODO: ENVIAR UN EMAIL
+
+        emailService.sendLoanApprovalEmail(loanFound.getUser().getEmail(), loanFound.getUser().getName(), LoanStatus.PRE_APPROVED.name());
         return "Prestamo pre aprobado correctamente!";
     }
 

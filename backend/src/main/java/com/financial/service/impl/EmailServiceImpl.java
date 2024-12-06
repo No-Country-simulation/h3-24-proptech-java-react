@@ -152,7 +152,23 @@ public class EmailServiceImpl implements IEmailService {
 
     @Override
     public void sendLoanApprovalEmail(String toEmail, String userName, String loanDetails) {
-        // TODO: Implement the logic to send a loan approval email
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setFrom(emailSender, "Equipo de Financial Land");
+            helper.setTo(toEmail);
+            helper.setSubject("Actualización de Estado del Préstamo");
+
+            Context context = new Context();
+            context.setVariable("userName", userName);
+
+            String htmlContent = templateEngine.process("email-loan-approval", context);
+            helper.setText(htmlContent, true);
+
+            javaMailSender.send(message);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new EmailServiceException("No se pudo enviar el correo de aprobación del préstamo", e);
+        }
     }
 
     @Override
@@ -169,5 +185,6 @@ public class EmailServiceImpl implements IEmailService {
     public void sendAccountActivationEmail(String toEmail, String activationToken) {
         // TODO: Implement the logic to send an account activation email
     }
+
 }
 
