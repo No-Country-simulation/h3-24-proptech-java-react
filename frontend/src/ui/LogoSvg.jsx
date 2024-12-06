@@ -1,4 +1,4 @@
-export default function Logo(props) {
+export const LogoSvg = (props) => {
   return (
     <svg
       width='54'
@@ -17,4 +17,4 @@ export default function Logo(props) {
       />
     </svg>
   );
-}
+};
