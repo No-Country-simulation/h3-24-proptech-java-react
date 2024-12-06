@@ -1,15 +1,15 @@
 import { Outlet } from 'react-router-dom';
 import Nav from './Nav';
-// import { ChatBot } from '../features/chat/ChatBot';
+import { ChatBot } from '../features/chat/ChatBot';
 
 function AppLayout() {
   return (
     <>
       <Nav />
 
-      <main className='pt-[32px] relative'>
+      <main className='pt-[32px]'>
         <Outlet />
-        {/* <ChatBot /> */}
+        <ChatBot />
       </main>
     </>
   );
