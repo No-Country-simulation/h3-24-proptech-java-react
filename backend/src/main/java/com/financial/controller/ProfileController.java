@@ -47,5 +47,4 @@ public class ProfileController {
         profileService.deleteProfile(userIdOrDni, profileId);
         return ResponseEntity.noContent().build();
     }
-
 }

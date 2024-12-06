@@ -43,6 +43,4 @@ public class UserServiceImpl implements IUserService {
     public List<UserResponseDto> getAllUsers() {
         return userMapper.toUserResponseDTO(userRepository.findUsersPendingPreApproved());
     }
-
-
 }

@@ -105,7 +105,6 @@ public class LoanDocumentsServiceImpl implements ILoanDocumentsService {
             );
         }
         status.setAllDocumentsUploaded(allDocumentsUploaded);
-        status.setGuaranteeId(guaranteeId);
         return status;
     }
 

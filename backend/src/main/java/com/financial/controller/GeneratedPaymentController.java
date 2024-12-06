@@ -31,8 +31,8 @@ public class GeneratedPaymentController {
     }
 
     @PutMapping("/update-status")
-    public ResponseEntity<GeneratedPayment> updatePaymentStatus(@RequestParam UUID loanId, @RequestParam Integer installmentNumber) {
-        GeneratedPayment updatedPayment = generatedPaymentService.updatePaymentStatus(loanId, installmentNumber);
-        return ResponseEntity.ok(updatedPayment);
+    public ResponseEntity<String> updatePaymentStatus(@RequestParam UUID loanId, @RequestParam Integer installmentNumber) {
+        generatedPaymentService.updatePaymentStatus(loanId, installmentNumber);
+        return ResponseEntity.ok("Payment status successfully updated");
     }
 }

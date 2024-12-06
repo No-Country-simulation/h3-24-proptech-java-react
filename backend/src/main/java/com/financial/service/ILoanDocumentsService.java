@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ILoanDocumentsService {
-
     LoanDocumentation attachOrUpdateDocumentToLoan(UUID loanId, UploadLoanDocumentationDTO uploadLoanDocumentationDto);
 
     List<LoanDocumentationStatusDTO> getDocumentationStatusForLoan(UUID loanId);
@@ -18,6 +17,5 @@ public interface ILoanDocumentsService {
     LoanDocumentationStatusDTO getDocumentationStatusForHolderOrGuarantee(UUID loanId, @Nullable String guaranteeId);
 
     void deleteLoanDocumentation(UUID loanId, UUID loanDocumentationId);
-
     List<LoanDocumentationResponseDTO> getDocsByLoanId(UUID loanId);
 }

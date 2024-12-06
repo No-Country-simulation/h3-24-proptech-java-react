@@ -1,6 +1,5 @@
 package com.financial.controller.admin;
 
-
 import com.financial.dto.customValidation.loanStatus.ValidLoanStatus;
 import com.financial.dto.request.loan.RequestDeclinedLoanDTO;
 import com.financial.dto.request.loan.RequestLoanSimulationDTO;
@@ -18,9 +17,7 @@ import java.util.UUID;
 @RequestMapping("/api/admin/loans")
 @RequiredArgsConstructor
 public class AdmLoanController {
-
     private final ILoanService loanService;
-
 
     @PutMapping("/change-status")
     public ResponseEntity<?> preApproveLoan(@RequestBody UpdateStatusLoanRequestDTO dto) {
@@ -48,7 +45,6 @@ public class AdmLoanController {
         return ResponseEntity.ok(status);
     }
 
-
     @PutMapping("/update-loan/{loanId}")
     public ResponseEntity<ResponseLoanAdminDTO> getStatus(@PathVariable UUID loanId, @RequestBody RequestLoanSimulationDTO dto){
 
@@ -66,6 +62,7 @@ public class AdmLoanController {
 
         return ResponseEntity.ok(loanService.approve(loanId));
     }
+
     @PostMapping("/declined-loan")
     public ResponseEntity<String> declinedLoan(@RequestBody RequestDeclinedLoanDTO dto){
         String response = loanService.declinedLoan(dto);

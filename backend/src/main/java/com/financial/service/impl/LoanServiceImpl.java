@@ -218,7 +218,6 @@ public class LoanServiceImpl implements ILoanService {
             }
         }
 
-        // Set loan to PENDING status
         loan.setStatus(LoanStatus.PENDING);
         loanRepository.save(loan);
 
