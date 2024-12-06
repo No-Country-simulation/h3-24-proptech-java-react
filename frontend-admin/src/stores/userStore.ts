@@ -38,7 +38,6 @@ export const userStore = create<UserStoreType>((set, get) => ({
         set({ isAuthenticated: true, user: data.user, isLoading: false });
       }
     } catch (error) {
-      console.error(error);
       set({ user: null, isAuthenticated: false, isLoading: false });
       if (isAxiosError(error) && error.response) {
         const newError = error.response.data as {
@@ -59,16 +58,17 @@ export const userStore = create<UserStoreType>((set, get) => ({
 
   checkLogin: async () => {
     try {
+      set({ isLoading: true });
       const data = await checkLoginService();
       if (data) {
         localStorage.setItem('token', data.token);
-        set({ isAuthenticated: true, user: data.user });
+        set({ isAuthenticated: true, user: data.user, isLoading: false });
       }
     } catch (error) {
       console.log(error);
 
       localStorage.removeItem('isAuthenticated');
-      set({ isAuthenticated: false, user: null });
+      set({ isAuthenticated: false, user: null, isLoading: false });
     }
   },
   logout: () => {
