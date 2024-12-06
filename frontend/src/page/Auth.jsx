@@ -15,7 +15,7 @@ function Auth() {
     }
   }, [location.state]);
   return (
-    <section className='pt-8 w-full mb-4 '>
+    <section className='pt-8 w-full  '>
       {isLogin ? (
         <Login>
           <p className='text-center mb-3'>

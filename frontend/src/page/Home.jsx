@@ -17,8 +17,8 @@ const Home = () => {
       {/*    <Navbar />
        */}
       <section
-        className={`text-center py-8 hidden md:flex items-center  justify-between pl-4`}>
-        <div className='w-1/2 text-start '>
+        className={`text-center py-8 hidden md:flex items-center  justify-between pl-12`}>
+        <div className='w-1/3 text-start flex flex-col gap-8'>
           <div className='flex flex-col gap-6'>
             <h2 className='text-[#1F47B4]  font-bold text-7xl'>
               Triplicamos los montos y plazos
@@ -63,7 +63,7 @@ const Home = () => {
         </div>
       </section>
       <hr />
-      <main>
+      <main className='md:max-w-[1440px] md:m-auto'>
         <section className='py-8 px-4 md:py-12 md:px-8'>
           <h2 className='text-3xl font-bold mb-4 md:text-4xl colorText-financia'>
             Quiénes somos
