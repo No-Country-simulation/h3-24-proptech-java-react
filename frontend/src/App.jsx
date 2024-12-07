@@ -24,6 +24,7 @@ import ClientProfile from "./page/ClientProfile";
 import PaymentQuotas from "./page/PaymentQuotas";
 import MessagesStartingLoan from "./page/loan/MessagesStartingLoan";
 import InvestmentPanel from "./page/InvestmentPanel";
+import RecoverPassword from "./page/RecoverPassword";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -43,6 +44,7 @@ function App() {
           <Route element={<AppLayout />}>
             <Route index element={<Navigate replace to="home" />} />
             <Route path="auth" element={<Auth />} />
+            <Route path="reset-password" element={<RecoverPassword />} />
 
             {/* Rutas protegidas  */}
             <Route element={<ProtectedRoute />}>

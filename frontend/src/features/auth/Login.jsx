@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import FormRow from "../../ui/FormRow";
 import { useLogin } from "./useLogin";
 import SubmitButton from "../../ui/SubmitButton";
+import { Link } from "react-router-dom";
 
 const Login = ({ children }) => {
   const { login, isPending: isLoading } = useLogin();
@@ -76,7 +77,9 @@ const Login = ({ children }) => {
               <label htmlFor="Recordarme">Recordarme</label>
             </div>
 
-            <p className=" underline">Olvide mi contraseña</p>
+            <Link to="/reset-password" className=" underline">
+              Olvide mi contraseña
+            </Link>
           </div>
         </div>
 

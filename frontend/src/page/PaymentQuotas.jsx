@@ -1,4 +1,4 @@
-import Quotas from "../features/loan/Quotas";
+import Quotas from "../features/loan/quotas/Quotas";
 
 function PaymentQuotas() {
   return <Quotas />;

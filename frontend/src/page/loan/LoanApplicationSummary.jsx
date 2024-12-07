@@ -3,40 +3,65 @@ import useLoanApplication from "../../features/loan/useLoanApplication";
 import { useNavigate } from "react-router-dom";
 import { CirclePlus } from "lucide-react";
 import Button from "../../ui/Button";
+import useCurrentUser from "../../features/user/useCurrentUser";
+import useUserProfile from "../../features/user/useUserProfile";
+import { useLoanSimulationResult } from "../../features/loan/useLoanSimulationResult";
+import { formatNumber } from "../../utils/helpers";
 
 //const sameStyle = "";
 
 function LoanApplicationSummary() {
-  const { loanResults: loan, submitLoanData } = useLoanApplication();
   const navigate = useNavigate();
+
+  const { user } = useCurrentUser();
+  const { userProfile } = useUserProfile(user?.user?.dni);
+  const { loanResults: loan, submitLoanData } = useLoanApplication();
+  const loanSimulationData = useLoanSimulationResult();
 
   useEffect(
     function () {
-      if (Object.keys(loan).length === 0)
-        navigate("/messagesStartingLoan", { replace: true });
+      if (!loan) navigate("/messagesStartingLoan", { replace: true });
     },
-    [loan, navigate]
+    [loan, loanSimulationData, userProfile, navigate]
   );
+
+  /////////////////////////
+
+  const getMergedData = () => {
+    const mergedData = { ...loan };
+
+    for (const key in userProfile) {
+      if (!mergedData[key]) {
+        mergedData[key] = userProfile[key];
+      }
+    }
+
+    return mergedData;
+  };
+
+  /////////////////////////
+
+  const mergedData = getMergedData();
 
   const {
     economicActivity,
     monthlyIncome,
-    CBU,
-    name,
-    lastname,
-    birthdate,
-    countryOfBirth,
-    province,
+    bankAccountCbu,
+    firstNameAsInDni,
+    lastNameAsInDni,
+    dateOfBirth,
+    nationality,
+    country,
     city,
-    street,
+    state,
+    houseNumber,
+    road,
     zipCode,
-    currentCountry,
-    domicilio,
     gender,
-    phone,
-    landlineTelephonee,
-    education,
-  } = loan;
+    mobilePhone,
+    landlinePhone,
+    educationLevel,
+  } = mergedData;
 
   console.log("Resumen de datos", loan);
 
@@ -49,6 +74,31 @@ function LoanApplicationSummary() {
         Por favor, revise sus datos ingresados para evitar rechazos por datos no
         coincidentes.
       </p>
+
+      <div className="border-t-2 border-lightGrey py-4 mb-4 flex flex-col gap-2">
+        <h2 className="text-xl font-semibold mb-3 text-center">
+          Resultado de la simulación
+        </h2>
+
+        <p className="flex items-center justify-between gap-1 ">
+          Monto solicitado
+          <span className=" font-medium">
+            {formatNumber(loanSimulationData?.requestedAmount)}$ USD
+          </span>
+        </p>
+
+        <p className="flex items-center justify-between  gap-1 ">
+          Plazo
+          <span className=" font-medium">{loan?.termMonths} meses</span>
+        </p>
+
+        <p className="flex items-center justify-between  gap-1">
+          Pago mensual estimado
+          <span className=" font-medium">
+            {formatNumber(loan?.monthlyQuota)}$ USD
+          </span>
+        </p>
+      </div>
 
       <div className="border-t-2 border-lightGrey py-4 mb-4 flex flex-col gap-2">
         <h2 className="text-xl font-semibold mb-3 text-center">
@@ -67,7 +117,7 @@ function LoanApplicationSummary() {
 
         <p className="flex items-center justify-between  gap-1">
           CBU / CVU
-          <span className=" font-medium">{CBU}</span>
+          <span className=" font-medium">{bankAccountCbu}</span>
         </p>
 
         <div className="flex items-center gap-3">
@@ -98,11 +148,11 @@ function LoanApplicationSummary() {
         </h2>
         <p className="flex items-center justify-between  gap-1">
           País
-          <span className=" font-medium">{currentCountry}</span>
+          <span className=" font-medium">{country}</span>
         </p>
         <p className="flex items-center justify-between  gap-1">
           Provincia
-          <span className=" font-medium">{province}</span>
+          <span className=" font-medium">{state}</span>
         </p>
 
         <p className="flex items-center justify-between  gap-1 ">
@@ -117,12 +167,12 @@ function LoanApplicationSummary() {
 
         <p className="flex items-center justify-between  gap-2">
           Calle
-          <span className="text-center bg-lime-40  font-medium">{street}</span>
+          <span className="text-center bg-lime-40  font-medium">{road}</span>
         </p>
 
         <p className="flex items-center justify-between gap-1 ">
           Altura
-          <span className=" font-medium">{domicilio}</span>
+          <span className=" font-medium">{houseNumber}</span>
         </p>
       </div>
 
@@ -132,11 +182,11 @@ function LoanApplicationSummary() {
         </h2>
         <p className="flex items-center justify-between  gap-1 ">
           Nombre(s)
-          <span className=" font-medium">{name}</span>
+          <span className=" font-medium">{firstNameAsInDni}</span>
         </p>
         <p className="flex items-center justify-between  gap-1 ">
           Apellidos(s)
-          <span className=" font-medium">{lastname}</span>
+          <span className=" font-medium">{lastNameAsInDni}</span>
         </p>
 
         <p className="flex items-center justify-between   gap-1">
@@ -146,27 +196,27 @@ function LoanApplicationSummary() {
 
         <p className="flex items-center justify-between  gap-1 ">
           Fecha de nacimiento
-          <span className=" font-medium">{birthdate}</span>
+          <span className=" font-medium">{dateOfBirth}</span>
         </p>
 
         <p className="flex items-center justify-between  gap-1 ">
           País de nacimiento
-          <span className=" font-medium">{countryOfBirth}</span>
+          <span className=" font-medium">{nationality}</span>
         </p>
 
         <p className="flex items-center justify-between  gap-1 ">
           Nivel de estudios
-          <span className=" font-medium">{education}</span>
+          <span className=" font-medium">{educationLevel}</span>
         </p>
 
         <p className="flex items-center justify-between  gap-1 ">
           Teléfono celular
-          <span className=" font-medium">{phone}</span>
+          <span className=" font-medium">{mobilePhone}</span>
         </p>
 
         <p className="flex items-center justify-between   gap-1">
           Teléfono fijo
-          <span className=" font-medium">{landlineTelephonee}</span>
+          <span className=" font-medium">{landlinePhone}</span>
         </p>
       </div>
 
@@ -174,7 +224,17 @@ function LoanApplicationSummary() {
         <Button type="secondary" to="/loan/personal-information">
           Modificar datos
         </Button>
-        <Button type="secondary" onClick={() => submitLoanData()}>
+        <Button
+          type="secondary"
+          onClick={() => {
+            submitLoanData({
+              userDni: user?.user?.dni,
+              profileId: userProfile?.profileId,
+              data: mergedData,
+              loanSimulation: loanSimulationData,
+            });
+          }}
+        >
           Continuar
         </Button>
       </div>

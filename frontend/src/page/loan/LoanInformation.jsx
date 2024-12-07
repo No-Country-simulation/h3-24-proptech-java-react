@@ -1,29 +1,55 @@
+import axios from "axios";
+import { useState } from "react";
 import { CirclePlus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import FormRow from "../../ui/FormRow";
 import SubmitButton from "../../ui/SubmitButton";
+
+import useUserProfile from "../../features/user/useUserProfile";
+import useCurrentUser from "../../features/user/useCurrentUser";
+import { useLoanSimulationResult } from "../../features/loan/useLoanSimulationResult";
 import useLoanApplication from "../../features/loan/useLoanApplication";
-import { useState } from "react";
+
+import { getData } from "../../utils/saveDataLocalStore";
+import { baseURL } from "../../utils/constants";
+
+////////////////////////
+
+function createFormDataUpload(file, docType) {
+  const formData = new FormData();
+  formData.append("document", file);
+  formData.append("docType", docType);
+  return formData;
+}
+
+////////////////////////
 
 function LoanInformation() {
+  const navigate = useNavigate();
   const [salaryReceipts, setSalaryReceipts] = useState([]);
   const [serviceReceipt, setServiceReceipt] = useState(null);
 
-  const navigate = useNavigate();
+  const { user } = useCurrentUser();
+  const { userProfile } = useUserProfile(user?.user?.dni);
+  const loanSimulationData = useLoanSimulationResult();
   const { addLoanData, loanResults } = useLoanApplication();
+
+  const token = getData("token");
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm({
     defaultValues: {
-      economicActivity: loanResults?.economicActivity,
-      monthlyIncome: loanResults?.monthlyIncome,
-      bankAccountCbu: loanResults?.bankAccountCbu,
+      economicActivity:
+        userProfile?.economicActivity || loanResults?.economicActivity || "",
+      monthlyIncome:
+        userProfile?.monthlyIncome || loanResults?.monthlyIncome || 0,
+      bankAccountCbu:
+        userProfile?.bankAccountCbu || loanResults?.bankAccountCbu || "",
     },
   });
 
@@ -43,13 +69,57 @@ function LoanInformation() {
     }
   };
 
+  const handleUpload = async () => {
+    try {
+      // Subida de recibos de sueldo ----
+      for (const file of salaryReceipts) {
+        const formData = createFormDataUpload(file, "SALARY_RECEIPT");
+        await axios.post(
+          `${baseURL}/api/loans/${loanSimulationData?.loanId}/documents`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+
+      // Subida de factura de servicio ----
+      if (serviceReceipt) {
+        const formData = createFormDataUpload(
+          serviceReceipt,
+          "SERVICE_RECEIPT"
+        );
+        await axios.post(
+          `${baseURL}/api/loans/${loanSimulationData?.loanId}/documents`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+
+      setSalaryReceipts([]);
+      setServiceReceipt(null);
+    } catch (error) {
+      console.error("Error subiendo documentos:", error);
+    }
+  };
+
   ////////////////////////
 
   async function onSubmit(data) {
     const values = { ...data, monthlyIncome: Number(data?.monthlyIncome) };
-    addLoanData("form2", values);
+    addLoanData("loan-info", values);
 
-    reset();
+    // Subir documentos
+    await handleUpload();
+
     navigate("/loan/address-details", {
       replace: true,
     });
@@ -108,8 +178,8 @@ function LoanInformation() {
 
         <div className="cursor-pointer">
           <p className="text-xs">
-            Adjunte{" "}
-            {salaryReceipts.length > 0 ? `${salaryReceipts.length}/3` : "3"}{" "}
+            Adjunte
+            {salaryReceipts.length > 0 ? `${salaryReceipts.length}/3` : "3"}
             documentos de:
           </p>
           <p className="  font-medium text-base">Recibos de sueldos</p>
@@ -119,6 +189,7 @@ function LoanInformation() {
           type="file"
           multiple
           className="absolute opacity-0"
+          disabled={salaryReceipts.length === 3}
           onChange={(e) => handleFileChange(e, setSalaryReceipts, true)}
         />
       </div>
