@@ -32,8 +32,9 @@ public class PaymentController {
     }
 
     @GetMapping("/installments")
-    public ResponseEntity<List<PaymentResponseDTO>> getPendingPayments(@RequestParam UUID loanId,
-                                                                              @RequestParam int numberOfInstallments) {
+    public ResponseEntity<List<PaymentResponseDTO>> getPendingPayments(
+            @RequestParam UUID loanId,
+            @RequestParam int numberOfInstallments) {
         return ResponseEntity.ok(paymentService.getPendingInstallments(loanId, numberOfInstallments));
     }
 

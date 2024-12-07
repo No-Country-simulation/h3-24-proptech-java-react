@@ -4,7 +4,6 @@ import com.financial.exception.PaymentNotFoundException;
 import com.financial.model.GeneratedPayment;
 import com.financial.model.Payment;
 import com.financial.model.enums.PaymentStatus;
-import com.financial.model.enums.PaymentType;
 import com.financial.repository.IGeneratedPaymentRepository;
 import com.financial.service.IGeneratedPayment;
 import com.financial.service.IPaymentService;
@@ -38,7 +37,7 @@ public class GeneratedPaymentService implements IGeneratedPayment {
     }
 
     @Transactional
-    public GeneratedPayment updatePaymentStatus(UUID loanId, Integer installmentNumber) {
+    public void updatePaymentStatus(UUID loanId, Integer installmentNumber) {
         GeneratedPayment payment = generatedPaymentRepository.findByLoanIdAndInstallmentNumber(loanId, installmentNumber)
                 .orElseThrow(() -> new PaymentNotFoundException("Payment not found for the given loanId and installmentNumber"));
 
@@ -51,7 +50,5 @@ public class GeneratedPaymentService implements IGeneratedPayment {
         res.setLateFeeApplied(false);                      // No se aplica mora si no se pagó
         res.setGenerated(false);                           // Marcamos como no generado
         iPaymentService.savePayment(res);
-
-        return null;  // Ya no es necesario devolver nada, ya que la fila ha sido eliminada.
     }
 }

@@ -1,16 +1,18 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import SubmitButton from "../../ui/SubmitButton";
 import FormRow from "../../ui/FormRow";
-import { BigLogo } from "../../ui/Logo";
 
 import { baseURL } from "../../utils/constants";
 import toast from "react-hot-toast";
+import { LogoSvg } from "../../ui/LogoSvg";
+import TextLogo from "../../ui/TextLogo";
 function RecoverPasswordForm() {
   const [email, setEmail] = useState(true);
+  const navigate = useNavigate();
   const location = useLocation();
 
   const getQueryParams = (query) => {
@@ -19,7 +21,6 @@ function RecoverPasswordForm() {
   };
 
   const token = getQueryParams(location.search);
-
   console.log("token:", token, email);
 
   const {
@@ -32,7 +33,7 @@ function RecoverPasswordForm() {
 
   async function onSubmit(data) {
     if (data?.email && email) {
-      console.log("email", data.email, baseURL);
+      console.log("email", data.email);
 
       await axios
         .post(`${baseURL}/api/forgot-password`, { email: data.email })
@@ -59,10 +60,14 @@ function RecoverPasswordForm() {
         })
         .then(() => {
           toast.success("Contraseña cambiada");
+
+          navigate("/passwordChangeMessage", {
+            replace: true,
+          });
         })
         .catch((err) => {
-          console.log(err);
           toast.error("Algo salio mal!");
+          console.log(err);
         })
         .finally(() => {
           reset();
@@ -78,8 +83,9 @@ function RecoverPasswordForm() {
           className="flex  flex-col min-h-[90vh] p-5 "
         >
           <div className="flex-grow flex flex-col gap-7 justify-center mb-5">
-            <div className="mx-auto ">
-              <BigLogo />
+            <div className="text-center mx-auto  flex items-center gap-1 justify-center">
+              <LogoSvg />
+              <TextLogo />
             </div>
 
             <FormRow label="Email" error={errors?.email?.message}>
@@ -108,8 +114,9 @@ function RecoverPasswordForm() {
           className="flex  flex-col min-h-[90vh] p-5 "
         >
           <div className="flex-grow flex flex-col gap-7 justify-center mb-5">
-            <div className="mx-auto ">
-              <BigLogo />
+            <div className="text-center mx-auto  flex items-center gap-1 justify-center">
+              <LogoSvg />
+              <TextLogo />
             </div>
 
             <FormRow label="Contraseña" error={errors?.password?.message}>

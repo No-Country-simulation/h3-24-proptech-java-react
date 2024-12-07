@@ -114,8 +114,6 @@ public class VeriffServiceImpl {
 
     }
 
-
-
     public void fullAuto(VerificationFullAutoResponse payload) {
         User user = userService.findUserById(UUID.fromString(payload.getVendorData()));
         if (!user.getIsVerified()) {
@@ -160,5 +158,4 @@ public class VeriffServiceImpl {
         }
         return true;
     }
-
 }

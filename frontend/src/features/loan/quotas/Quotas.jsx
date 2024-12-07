@@ -1,35 +1,29 @@
-/*import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
-import { formatNumber } from "../../utils/helpers";
-import { useLoanSimulationResult } from "./useLoanSimulationResult";*/
+import { formatNumber } from "../../../utils/helpers";
+import { useLoanSimulationResult } from "../useLoanSimulationResult";
 
 function Quotas() {
-  //const { pendingQuotas, isPending } = usePendingQuotas(loan[0].loan.loanId);
-  //console.log("pending Quotas", pendingQuotas);
-
-  // const navigate = useNavigate();
-  // const [show, setShow] = useState(false);
-  // const loan = useLoanSimulationResult();
-
-  /*useEffect(
+  const navigate = useNavigate();
+  const [show, setShow] = useState(false);
+  const loan = useLoanSimulationResult();
+  useEffect(
     function () {
       if (!loan) navigate("/messagesStartingLoan", { replace: true });
     },
     [loan, navigate]
-  );*/
+  );
 
-  /* const nextPayment = loan?.schedule?.find((payment) => payment.remaining > 0);
+  const nextPayment = loan?.schedule?.find((payment) => payment.remaining > 0);
   const remainingMonths = loan?.schedule.filter(
     (payment) => payment.remaining > 0
   );
-  const paidMonths = loan?.termMonths - remainingMonths?.length;*/
+  const paidMonths = loan?.termMonths - remainingMonths?.length;
 
   return (
-    <>
-      {/*
-     <section className="max-w-[500px] mx-auto">
+    <section className="max-w-[500px] mx-auto">
       <h2 className=" text-3xl font-semibold mb-3">Tabla de cuotas</h2>
       <p className="mb-7">Paga y administra tus cuotas pendientes.</p>
 
@@ -106,8 +100,7 @@ function Quotas() {
           ))}
         </ul>
       )}
-    </section> */}
-    </>
+    </section>
   );
 }
 

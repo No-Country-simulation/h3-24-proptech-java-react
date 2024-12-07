@@ -48,9 +48,11 @@ export async function loanApplicationApi({
     ////////////////////////////
     // Crear un prestamo
 
+    const { requestedAmount, termMonths } = loanSimulation;
+
     const loanResponse = await axios.post(
       `${baseURL}/api/loans/create`,
-      loanSimulation,
+      { requestedAmount, termMonths },
       {
         headers: {
           Authorization: `Bearer ${token}`,

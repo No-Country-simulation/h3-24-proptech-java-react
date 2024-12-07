@@ -56,18 +56,23 @@ function LoanInformation() {
   ////////////////////////
   //  Subida de documentos
 
-  console.log(salaryReceipts, serviceReceipt);
-
   const handleFileChange = (e, setFiles, multiple = false) => {
     const files = Array.from(e.target.files);
-    console.log("Files", files);
-
+    console.log(e.target.files);
     if (multiple) {
-      setFiles((prev) => [...prev, ...files]);
+      const data = [files];
+      console.log(e, files);
+      salaryReceipts.length === 0
+        ? setFiles(data)
+        : setFiles([...salaryReceipts, ...files]);
     } else {
       setFiles(files[0]);
     }
   };
+  console.log({
+    salario: salaryReceipts,
+    servicio: serviceReceipt,
+  });
 
   const handleUpload = async () => {
     try {

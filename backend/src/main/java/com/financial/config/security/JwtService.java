@@ -33,7 +33,6 @@ public class JwtService {
         return new Date(System.currentTimeMillis() + 1000 * 60 * 60);
     }
 
-
     public String createToken(String username, Map<String, Object> claims) {
 
         return Jwts.builder()
@@ -53,7 +52,6 @@ public class JwtService {
 
         return createToken(userDetails.getUsername(), claims);
     }
-
 
     public <T> T getClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claimis = getAllClaims(token);
@@ -83,11 +81,9 @@ public class JwtService {
         }
     }
 
-
     public String getUsernameFromToken(String token) {
         return getClaim(token, Claims::getSubject);
     }
-
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
@@ -98,7 +94,6 @@ public class JwtService {
     public Date getExpiration(String token) {
         return getClaim(token, Claims::getExpiration);
     }
-
 
     public boolean isTokenExpired(String token) {
         return getExpiration(token).before(new Date());

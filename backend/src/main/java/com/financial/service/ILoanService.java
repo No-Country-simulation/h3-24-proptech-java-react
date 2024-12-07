@@ -1,13 +1,12 @@
 package com.financial.service;
 
 import com.financial.dto.request.loan.*;
+import com.financial.dto.response.loan.LoanDetailsResponseDTO;
 import com.financial.dto.response.loan.LoanMovedToPendingResultDTO;
 import com.financial.dto.response.loan.ResponseLoanAdminDTO;
 import com.financial.dto.response.loan.ResponseLoanDTO;
-import com.financial.dto.response.loan.ResponseLoanSimulationDTO;
 import com.financial.model.Loan;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,25 +23,7 @@ public interface ILoanService {
     /**
      * Obtiene detalles de un préstamo.
      */
-    void getLoanDetails();
-
-    /**
-     * Realiza la simulación de un préstamo.
-     *
-     * @param request Los parámetros de entrada para la simulación.
-     * @return Los detalles de la simulación.
-     */
-    ResponseLoanSimulationDTO simulateLoan(RequestLoanSimulationDTO requestLoan);
-
-    /**
-     * Calcula la cuota mensual de un préstamo.
-     *
-     * @param amount Monto del préstamo.
-     * @param rate   Tasa de interés anual.
-     * @param term   Plazo en meses.
-     * @return La cuota mensual calculada.
-     */
-    BigDecimal calculateLoan(BigDecimal amount, Integer term);
+    LoanDetailsResponseDTO getLoanDetails(UUID loanId);
 
     /**
      * Actualiza el estado de un préstamo existente.
@@ -115,4 +96,5 @@ public interface ILoanService {
      * </p>
      */
     LoanMovedToPendingResultDTO setLoanToPendingStatus(UUID loanId);
+
 }
