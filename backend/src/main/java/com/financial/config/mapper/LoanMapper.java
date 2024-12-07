@@ -11,7 +11,9 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface LoanMapper {
-
+    @Mappings({
+            @Mapping(source = "totalAmount", target = "totalPayment")
+    })
     ResponseLoanDTO toResponseDTO(Loan loan);
 
     @Mappings({

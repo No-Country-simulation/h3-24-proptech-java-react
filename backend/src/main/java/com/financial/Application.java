@@ -365,8 +365,37 @@ public class Application implements CommandLineRunner {
 										"Una vez verificada tu identidad, podrás continuar con el proceso de solicitud del préstamo.",
 										"Si tienes problemas durante la verificación, asegúrate de que tus documentos sean legibles y que tu rostro sea claramente visible en la cámara."
 								),
-								"meta", "Sección K - Verificación de identidad"))
-
+								"meta", "Sección K - Verificación de identidad")),
+				new Document(
+						"Saludo inicial",
+						Map.of(
+								"question", List.of(
+										"Hola",
+										"Buenas",
+										"Qué tal",
+										"Saludos",
+										"Buen día",
+										"Buenas tardes",
+										"Buenas noches",
+										"Hey",
+										"Hola, ¿cómo estás?",
+										"Qué onda",
+										"Qué hay",
+										"Hola, ¿me puedes ayudar?",
+										"Un saludo",
+										"Buen día, ¿puedes ayudarme?",
+										"Hola, necesito ayuda",
+										"Buenas, ¿estás ahí?",
+										"Hola, ¿puedes responderme?",
+										"Hola, ¿puedo hacerte una consulta?",
+										"Hola, tengo una duda",
+										"¿Qué tal? Necesito orientación",
+										"Hola, ¿me podrías guiar?",
+										"Buen día, quiero información",
+										"Buenas noches, tengo preguntas"),
+								"answer", List.of(
+										"¡Hola! Estoy aquí para ayudarte y guiarte en lo que necesites. Por favor, dime qué deseas saber o en qué puedo asistirte."),
+								"meta", "Respuesta genérica para saludos"))
 		);
 		vectorStore.add(documents);
 	}

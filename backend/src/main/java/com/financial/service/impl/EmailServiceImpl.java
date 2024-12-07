@@ -1,7 +1,10 @@
 package com.financial.service.impl;
 
 import com.financial.exception.EmailServiceException;
+import com.financial.model.enums.LoanStatus;
 import com.financial.service.IEmailService;
+import com.financial.utils.EmailMessageUtils;
+import com.financial.utils.LoanStatusEmailUtil;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,9 +28,11 @@ public class EmailServiceImpl implements IEmailService {
     public static final String PASSWORD_CHANGE_CONFIRMATION_SUBJECT = "Tu cambio de contraseña fue exitoso.";
     public static final String PASSWORD_RECOVERY_SUBJECT = "Password Recovery Request";
     public static final String SUPPORT_NAME = "Soporte";
+    public static final String ADMIN_NAME = "Administración";
     public static final String WELCOME_TEAM_NAME = "Equipo de Bienvenida";
     public static final String PASSWORD_RECOVERY_TEMPLATE = "password-recovery";
     public static final String CONFIRMATION_TEMPLATE = "confirmation";
+    public static final String LOAN_STATUS_NOTIFICATION_TEMPLATE = "loan-status-notification";
     public static final String DEFAULT_USER_NAME = "Usuario";
 
     public EmailServiceImpl(JavaMailSender javaMailSender, TemplateEngine templateEngine, AuthServiceImpl authService) {
@@ -84,13 +89,13 @@ public class EmailServiceImpl implements IEmailService {
         switch (subject) {
             case REGISTRATION_CONFIRMATION_SUBJECT:
                 emailTitle = "Confirmación de Registro";
-                messageBody = "¡Bienvenido!, tu registro en Financial Land ha sido exitoso.";
-                extraMessage = "Si tienes alguna duda, no dudes en contactarnos.";
+                messageBody = "Gracias por registrarte en Financia.al. Estamos encantados  e que formes parte de nuestra comunidad.";
+                extraMessage = "Si tienes alguna duda o necesitas asistencia, no dudes en contactarnos.";
                 break;
 
             case PASSWORD_CHANGE_CONFIRMATION_SUBJECT:
                 emailTitle = "Confirmación de Cambio de Contraseña";
-                messageBody = "Tu contraseña ha sido actualizada con éxito en Financial Land.";
+                messageBody = "Tu contraseña ha sido actualizada con éxito en Financial Al.";
                 extraMessage = "Si no solicitaste este cambio, por favor, contacta con nuestro soporte de inmediato.";
                 break;
 
@@ -151,23 +156,95 @@ public class EmailServiceImpl implements IEmailService {
     }
 
     @Override
-    public void sendLoanApprovalEmail(String toEmail, String userName, String loanDetails) {
-        // TODO: Implement the logic to send a loan approval email
+    public void sendLoanStatusUpdateEmail(String toEmail, String userName, String loanStatus) {
+        String subject = LoanStatusEmailUtil.getSubjectForLoanStatus(LoanStatus.valueOf(loanStatus));
+        validateEmailParameters(toEmail, loanStatus, userName, ADMIN_NAME);
+        String emailTitle, messageBody, extraMessage, callToActionMessage = null;
+        switch (loanStatus) {
+            case "INITIATED":
+                emailTitle = "Solicitud de préstamo";
+                messageBody = "Te informamos que hemos recibido tu solicitud de préstamo en nuestro sistema.";
+                extraMessage = "Nuestro equipo ya está evaluando los datos proporcionados y pronto recibirás novedades sobre el estado de tu solicitud.";
+                callToActionMessage = "Si necesitas modificar o agregar información, puedes acceder a tu cuenta aquí:";
+                break;
+
+            case "PRE_APPROVED":
+                emailTitle = "Tu préstamo ha sido preaprobado";
+                messageBody = "¡Buenas noticias! Tu solicitud de préstamo, así como la información de tus garantes, han sido validadas exitosamente.";
+                extraMessage = "Nuestro equipo se pondrá en contacto contigo pronto para coordinar los siguientes pasos. ";
+                callToActionMessage = "Mientras tanto, puedes verificar el estado de tu solicitud aquí: ";
+                break;
+
+            case "APPROVED":
+                emailTitle = "Tu préstamo ha sido aprobado";
+                messageBody = "Nos complace informarte que tu préstamo ha sido aprobado. ";
+                extraMessage = "En las próximas 24 a 48 horas, podrás acceder a tu cuenta para consultar la tabla de pagos y las fechas de vencimiento de tus cuotas.";
+                callToActionMessage = "Accede aquí para más información:";
+                break;
+
+            case "REFUSED":
+                emailTitle = "Regularización de pagos";
+                messageBody = "Te recordamos que tu cuenta presenta una mora de 3 meses en el pago de las cuotas de tu préstamo.";
+                extraMessage = "Es importante que regularices tu situación para evitar posibles acciones legales.";
+                callToActionMessage = "Por favor, ingresá al sistema para acreditar del pago o contáctanos para analizar alternativas:";
+                break;
+
+            case "PENDING":
+                emailTitle = "Próximo paso: Información de tus garantes";
+                messageBody = "Nos complace informarte que tus datos han sido validados correctamente.";
+                extraMessage = "Ahora necesitamos que completes la información de tus garantes para continuar con el proceso.";
+                callToActionMessage = "Por favor, ingresa al siguiente enlace para proporcionar estos datos: ";
+                break;
+
+            default:
+                throw new IllegalArgumentException("Tipo de email no soportado: " + loanStatus);
+        }
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setFrom(emailSender, ADMIN_NAME);
+            helper.setTo(toEmail);
+            helper.setSubject(subject);
+
+            Context context = new Context();
+            context.setVariable("emailTitle", emailTitle);
+            context.setVariable("userName", userName);
+            context.setVariable("messageBody", messageBody);
+            context.setVariable("extraMessage", extraMessage);
+            context.setVariable("callToActionMessage", callToActionMessage);
+            String htmlContent = templateEngine.process(LOAN_STATUS_NOTIFICATION_TEMPLATE, context);
+
+            helper.setText(htmlContent, true);
+            javaMailSender.send(message);
+        } catch (MessagingException | UnsupportedEncodingException e ) {
+            throw new EmailServiceException("Failed to send password change confirmation email", e);
+        }
     }
 
     @Override
-    public void sendLoanRejectionEmail(String toEmail, String userName, String reason) {
-        // TODO: Implement the logic to send a loan rejection email
+    public void sendLoanRejectionEmail(String toEmail, String userName, String loanStatus, String notification) {
+        String subject = LoanStatusEmailUtil.getSubjectForLoanStatus(LoanStatus.valueOf(loanStatus));
+        validateEmailParameters(toEmail, loanStatus, userName, ADMIN_NAME);
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setFrom(emailSender, ADMIN_NAME);
+            helper.setTo(toEmail);
+            helper.setSubject(subject);
+
+            Context context = new Context();
+            context.setVariable("emailTitle", EmailMessageUtils.EMAIL_TITLE);
+            context.setVariable("userName", userName);
+            context.setVariable("messageBody", EmailMessageUtils.MESSAGE_BODY);
+            context.setVariable("extraMessage", notification);
+            context.setVariable("callToActionMessage", EmailMessageUtils.CALL_TO_ACTION_MESSAGE);
+            String htmlContent = templateEngine.process(LOAN_STATUS_NOTIFICATION_TEMPLATE, context);
+
+            helper.setText(htmlContent, true);
+            javaMailSender.send(message);
+        } catch (MessagingException | UnsupportedEncodingException e ) {
+            throw new EmailServiceException("Failed to send password change confirmation email", e);
+        }
     }
 
-    @Override
-    public void sendLoanRequestEmail(String toEmail, String userName, String loanRequestDetails) {
-        // TODO: Implement the logic to send a loan request email
-    }
-
-    @Override
-    public void sendAccountActivationEmail(String toEmail, String activationToken) {
-        // TODO: Implement the logic to send an account activation email
-    }
 }
-
