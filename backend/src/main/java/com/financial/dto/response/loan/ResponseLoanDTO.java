@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.math.BigDecimal;
+
 /**
  * Representa la respuesta de un préstamo creado o consultado.
  * Este record utiliza anotaciones de Jackson para definir el orden de los campos en la serialización JSON
  * y excluir valores nulos de la salida JSON.
- *
+ * <p>
  * Campos incluidos:
  * <ul>
  *   <li><b>loanId:</b> Identificador único del préstamo.</li>
@@ -18,7 +19,7 @@ import java.math.BigDecimal;
  *   <li><b>interestRate:</b> Tasa de interés aplicada al préstamo.</li>
  *   <li><b>status:</b> Estado actual del préstamo (ejemplo: "INITIATED").</li>
  * </ul>
- *
+ * <p>
  * Ejemplo de JSON serializado:
  * <pre>
  * {
@@ -31,21 +32,22 @@ import java.math.BigDecimal;
  * }
  * </pre>
  *
- * @param loanId Identificador único del préstamo.
+ * @param loanId          Identificador único del préstamo.
  * @param requestedAmount Monto solicitado por el usuario.
- * @param termMonths Duración del préstamo en meses.
- * @param monthlyQuota Cuota mensual calculada a pagar por el usuario.
- * @param interestRate Tasa de interés aplicada al préstamo.
- * @param status Estado actual del préstamo.
+ * @param termMonths      Duración del préstamo en meses.
+ * @param monthlyQuota    Cuota mensual calculada a pagar por el usuario.
+ * @param interestRate    Tasa de interés aplicada al préstamo.
+ * @param status          Estado actual del préstamo.
  */
 @JsonPropertyOrder({"loanId", "requestedAmount", "termMonths", "monthlyQuota", "interestRate", "status"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record ResponseLoanDTO(String loanId,
-                              BigDecimal requestedAmount,
-                              Integer termMonths,
-                              BigDecimal monthlyQuota,
-                              BigDecimal interestRate,
-                              String status,
-                              BigDecimal totalPayment
-                              ) {
+public record ResponseLoanDTO(
+        String loanId,
+        BigDecimal requestedAmount,
+        Integer termMonths,
+        BigDecimal monthlyQuota,
+        BigDecimal interestRate,
+        String status,
+        BigDecimal totalPayment
+) {
 }

@@ -1,11 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import { loanApplicationApi } from "../../services/apiLoan";
 
 function useLoanApplication() {
   const queryClient = useQueryClient();
 
   const submitData = useMutation({
-    mutationFn: async () => null,
+    mutationFn: loanApplicationApi,
 
     onSuccess: () => {
       toast.success("Datos enviados con éxito");
@@ -45,13 +46,15 @@ function useLoanApplication() {
 
   /////////////////////////
   // Enviar los datos al backend
-  const submitLoanData = () => {
-    if (Object.keys(applicationData).length === 0) {
+  const submitLoanData = (additionalData) => {
+    if (!applicationData || Object.keys(applicationData).length === 0) {
       toast.error("No hay datos para enviar");
       return;
     }
 
-    submitData.mutate(loanResults);
+    const payload = { ...loanResults, ...additionalData };
+
+    submitData.mutate(payload);
   };
 
   /////////////////////////

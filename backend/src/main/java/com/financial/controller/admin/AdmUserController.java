@@ -16,7 +16,6 @@ import java.util.List;
 public class AdmUserController {
     private final IUserService userService;
 
-
     @GetMapping("/get-users")
     public ResponseEntity<List<UserResponseDto>> getUsers() {
         return ResponseEntity.ok(userService.getAllUsers());

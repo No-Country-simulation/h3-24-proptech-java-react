@@ -29,4 +29,10 @@ public class GeneratedPaymentController {
                 ? new ResponseEntity<>(generatedPaymentMapper.toPaymentResponseDTO(payment), HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @PutMapping("/update-status")
+    public ResponseEntity<String> updatePaymentStatus(@RequestParam UUID loanId, @RequestParam Integer installmentNumber) {
+        generatedPaymentService.updatePaymentStatus(loanId, installmentNumber);
+        return ResponseEntity.ok("Payment status successfully updated");
+    }
 }

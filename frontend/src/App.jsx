@@ -11,19 +11,21 @@ import Auth from './page/Auth';
 import AppLayout from './ui/AppLayout';
 import ProtectedRoute from './ui/ProtectedRoute';
 
-import CalculatePersonalLoan from './page/loan/CalculatePersonalLoan';
-import LoanSimulationResult from './page/loan/LoanSimulationResult';
-import LoanApplication from './page/loan/LoanApplication';
-import LoanInformation from './page/loan/LoanInformation';
-import LoanAddressInformation from './page/loan/LoanAddressInformation';
-import LoanPersonalInformation from './page/loan/LoanPersonalInformation';
-import LoanApplicationSummary from './page/loan/LoanApplicationSummary';
-import Veriff from './page/Veriff';
-import PersonalSettings from './page/PersonalSettings';
-import ClientProfile from './page/ClientProfile';
-import PaymentQuotas from './page/PaymentQuotas';
-import MessagesStartingLoan from './page/loan/MessagesStartingLoan';
-import InvestmentPanel from './page/InvestmentPanel';
+import CalculatePersonalLoan from "./page/loan/CalculatePersonalLoan";
+import LoanSimulationResult from "./page/loan/LoanSimulationResult";
+import LoanApplication from "./page/loan/LoanApplication";
+import LoanInformation from "./page/loan/LoanInformation";
+import LoanAddressInformation from "./page/loan/LoanAddressInformation";
+import LoanPersonalInformation from "./page/loan/LoanPersonalInformation";
+import LoanApplicationSummary from "./page/loan/LoanApplicationSummary";
+import Veriff from "./page/Veriff";
+import PersonalSettings from "./page/PersonalSettings";
+import ClientProfile from "./page/ClientProfile";
+import PaymentQuotas from "./page/PaymentQuotas";
+import MessagesStartingLoan from "./page/loan/MessagesStartingLoan";
+import InvestmentPanel from "./page/InvestmentPanel";
+import RecoverPassword from "./page/RecoverPassword";
+import PasswordChangeMessage from "./page/PasswordChangeMessage";
 import { ChatBot } from './features/chat/ChatBot';
 
 const queryClient = new QueryClient({
@@ -44,6 +46,13 @@ function App() {
           <Route element={<AppLayout />}>
             <Route index element={<Navigate replace to='home' />} />
             <Route path='auth' element={<Auth />} />
+            <Route index element={<Navigate replace to="home" />} />
+            <Route path="auth" element={<Auth />} />
+            <Route path="reset-password" element={<RecoverPassword />} />
+            <Route
+              path="passwordChangeMessage"
+              element={<PasswordChangeMessage />}
+            />
 
             {/* Rutas protegidas  */}
             <Route element={<ProtectedRoute />}>

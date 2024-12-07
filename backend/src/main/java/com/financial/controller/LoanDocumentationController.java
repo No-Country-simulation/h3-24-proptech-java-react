@@ -33,7 +33,7 @@ public class LoanDocumentationController {
             @PathVariable UUID loanId,
             @RequestParam(required = false) String guaranteeId
     ) {
-        LoanDocumentationStatusDTO status = loanDocumentsService.getDocumentationStatus(loanId, guaranteeId);
+        LoanDocumentationStatusDTO status = loanDocumentsService.getDocumentationStatusForHolderOrGuarantee(loanId, guaranteeId);
         return ResponseEntity.ok(status);
     }
 
