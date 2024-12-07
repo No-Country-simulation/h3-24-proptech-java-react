@@ -21,8 +21,7 @@ const Home = () => {
         <div className='w-1/3 text-start flex flex-col gap-8'>
           <div className='flex flex-col gap-6'>
             <h2 className='text-[#1F47B4]  font-bold text-7xl'>
-              La respuesta a tus necesidades económicas, todo en un solo
-              espacio.
+              Triplicamos los montos y plazos
             </h2>
             <p className='text-[#142B6A] text-2xl w-[76%]'>
               Solicita tu préstamo personal a largo plazo y compra lo que

@@ -12,7 +12,7 @@ const Nav = () => {
   const { user } = useCurrentUser();
 
   return (
-    <nav className='border-b-2 h-16 flex z-50 bg-white border-lightGrey p-4 fixed w-full md:w-full'>
+    <nav className='border-b-2 h-16 flex z-50 bg-white border-lightGrey p-4 fixed w-full md:w-full md:max-w-[1920px]'>
       <ul className='flex items-center w-full  gap-2'>
         <li className=' text-xs font-medium flex items-center '>
           <Link to='/home' className='flex items-center gap-1'>
