@@ -1,54 +1,84 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
 
-import mujerCafe from "../../public/img/mujer_cafe.png";
-import hombreNotebook from "../../public/img/hombre_notebook_living.png";
-import hombreCafe from "../../public/img/hombre_cafe.png";
+import img1 from '../../public/img/img1.jpg';
+import img2 from '../../public/img/img2.jpg';
+import img3 from '../../public/img/img3.jpg';
+import logoHome from '../../public/img/logo-home.png';
 
-import styles from "./Home.module.css";
-import Nav from "../ui/Nav";
-import { Footeer } from "../ui/Footeer";
+import styles from './Home.module.css';
+import Nav from '../ui/Nav';
+import { Footeer } from '../ui/Footeer';
 
 const Home = () => {
+  const navigate = useNavigate();
   return (
-    <div className="bg-white text-black">
+    <div className='bg-white text-black'>
       <Nav />
       {/*    <Navbar />
        */}
+      <section
+        className={`text-center py-8 hidden xl:flex items-center  justify-between pl-12`}>
+        <div className='w-1/3 text-start flex flex-col gap-8'>
+          <div className='flex flex-col gap-6'>
+            <h2 className='text-[#1F47B4]  font-bold text-7xl'>
+              La respuesta a tus necesidades económicas, todo en un solo
+              espacio.
+            </h2>
+            <p className='text-[#142B6A] text-2xl w-[76%]'>
+              Solicita tu préstamo personal a largo plazo y compra lo que
+              necesites, hoy.
+            </p>
+          </div>
+          <div className='flex flex-col gap-3'>
+            <button
+              className='w-[486px] text-white h-[51px] rounded-md bg-[#2962FF] hover:bg-blue-500'
+              onClick={() => navigate('/loan-simulation')}>
+              Simular préstamo
+            </button>
+            <button className='w-[486px] h-[51px] rounded-md text-[#2962FF] border border-[#2962FF] hover:border-blue-500 hover:text-blue-500 '>
+              Quiero invertir
+            </button>
+          </div>
+        </div>
+        <div>
+          <img src={logoHome} alt='' />
+        </div>
+      </section>
 
-      <section className={`text-center py-8 ${styles.wrapper}`}>
+      <section className={`text-center py-8 ${styles.wrapper} xl:hidden`}>
         <h1 className={`${styles.logo} colorText-financia`}>Financia.al</h1>
         <h2 className={`${styles.h2} mx-auto `}>
           La respuesta a tus necesidades económicas, todo en un solo espacio.
         </h2>
-        <div className="flex justify-center gap-4 mt-6">
+        <div className='flex justify-center gap-4 mt-6'>
           <Link
-            to="/loan-simulation"
-            className={`${styles.button} px-6 py-2 rounded-full`}
-          >
+            to='/loan-simulation'
+            className={`${styles.button} px-6 py-2 rounded-full`}>
             Simular préstamo
           </Link>
           <Link
-            to="/inversion"
-            className={`${styles.button} px-6 py-2 rounded-full`}
-          >
+            to='/home'
+            className={`${styles.button} px-6 py-2 rounded-full`}>
             Quiero invertir
           </Link>
         </div>
       </section>
-
-      <main>
-        <section className="py-8 px-4 md:py-12 md:px-8">
-          <h2 className="text-3xl font-bold mb-4 md:text-4xl colorText-financia">
+      <hr />
+      <main className='md:max-w-[1440px] md:m-auto'>
+        <section className='py-8 px-4 md:py-12 md:px-8'>
+          <h2 className='text-3xl font-bold mb-4 md:text-4xl colorText-financia'>
             Quiénes somos
           </h2>
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-8">
-            <img
-              src={mujerCafe}
-              alt="Mujer tomando café"
-              className="w-full rounded-md md:w-1/2"
-            />
-            <p className="text-lg text-justify">
-              En <span className="colorText-financia">Financia.al</span>, somos
+          <div className='flex flex-col  w-full  gap-6 md:flex-row md:items-center md:gap-8'>
+            <div className='md:w-1/2'>
+              <img
+                src={img1}
+                alt='Mujer tomando café'
+                className='w-full rounded-xl aspect-square md:max-w-[400px] border-[3px] shadow-md border-[#2962FF]'
+              />
+            </div>
+            <p className='text-lg text-justify'>
+              En <span className='colorText-financia'>Financia.al</span>, somos
               una plataforma financiera multiproducto comprometida con
               transformar la vida de los latinoamericanos. <br />
               Ofrecemos una amplia gama de soluciones que incluyen planes de
@@ -60,25 +90,27 @@ const Home = () => {
               positivamente a miles de personas. <br />
               Confía en nosotros para gestionar tus finanzas con transparencia y
               solidez. <br />
-              <span className="colorText-financia">
+              <span className='colorText-financia'>
                 ¡En Financia.al estamos aquí para impulsarte!
               </span>
             </p>
           </div>
         </section>
 
-        <section className="py-8 px-4 md:py-12 md:px-8">
-          <h2 className="text-3xl font-bold mb-4 md:text-4xl colorText-financia">
+        <section className='py-8 px-4 md:py-12 md:px-8'>
+          <h2 className='text-3xl font-bold mb-4 md:text-4xl colorText-financia'>
             Préstamos personales
           </h2>
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-8">
-            <img
-              src={hombreNotebook}
-              alt="Hombre usando computadora portátil"
-              className="w-full rounded-md md:w-1/2"
-            />
-            <p className="text-lg text-justify">
-              En <span className="colorText-financia">Financia.al</span>,
+          <div className='flex flex-col gap-6 md:flex-row md:items-center md:gap-8'>
+            <div className='md:w-1/2'>
+              <img
+                src={img2}
+                alt='Hombre usando computadora portátil'
+                className='w-full rounded-xl  border-[3px] shadow-md border-[#2962FF]'
+              />
+            </div>
+            <p className='text-lg text-justify'>
+              En <span className='colorText-financia'>Financia.al</span>,
               hacemos que obtener un préstamo sea simple, rápido y sin
               complicaciones. <br />
               Eliminamos las largas filas y el papeleo innecesario. <br />
@@ -89,15 +121,15 @@ const Home = () => {
               fondos después de confirmar tus datos. Es rápido, seguro y
               diseñado pensando en ti (los préstamos están sujetos a
               aprobación). <br />
-              En <span className="colorText-financia">Financia.al</span>,
+              En <span className='colorText-financia'>Financia.al</span>,
               priorizamos tu tranquilidad. <br />
-              <span className="colorText-financia">
+              <span className='colorText-financia'>
                 Protegemos tu información
-              </span>{" "}
+              </span>{' '}
               con los más altos estándares de privacidad y seguridad, cumpliendo
               con las regulaciones aplicables para garantizar que tu experiencia
               sea confiable y sin riesgos. <br />
-              <span className="colorText-financia">
+              <span className='colorText-financia'>
                 Tu confianza es nuestra prioridad
               </span>
               . Estamos aquí para apoyarte a alcanzar tus metas financieras de
@@ -106,29 +138,31 @@ const Home = () => {
           </div>
         </section>
 
-        <section className="py-8 px-4 md:py-12 md:px-8">
-          <h2 className="text-3xl font-bold mb-4 md:text-4xl colorText-financia">
+        <section className='py-8 px-4 md:py-12 md:px-8'>
+          <h2 className='text-3xl font-bold mb-4 md:text-4xl colorText-financia'>
             Quiénes somos
           </h2>
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:gap-8">
-            <img
-              src={hombreCafe}
-              alt="Hombre tomando café"
-              className="w-full rounded-md md:w-1/2"
-            />
+          <div className='flex flex-col gap-6 md:flex-row md:items-center md:gap-8'>
+            <div className='md:w-1/2'>
+              <img
+                src={img3}
+                alt='Hombre tomando café'
+                className='w-full rounded-xl  border-[3px] shadow-md border-[#2962FF]'
+              />
+            </div>
             <div>
-              <p className="text-lg text-justify mb-7">
+              <p className='text-lg text-justify mb-7'>
                 Nos diferenciamos porque sabemos lo que necesitas: facilidad,
                 claridad y confianza. Por eso, diseñamos una plataforma que pone
                 a tu alcance las mejores soluciones financieras de manera
                 sencilla y eficiente.
               </p>
               <div>
-                <h3 className="text-xl font-semibold">
+                <h3 className='text-xl font-semibold'>
                   Aquí tienes las razones que nos hacen destacar:
                 </h3>
 
-                <ul className="list-disc pl-6 text-lg text-justify">
+                <ul className='list-disc pl-6 text-lg text-justify'>
                   <li>
                     <strong>Todo online, sin complicaciones:</strong> Olvídate
                     de trámites engorrosos y largas esperas. Desde solicitar un
@@ -159,12 +193,12 @@ const Home = () => {
           </div>
 
           <div>
-            <p className="text-lg text-justify mt-7">
+            <p className='text-lg text-justify mt-7'>
               Además, contamos con más de 10 años de experiencia y hemos ayudado
               a miles de personas a alcanzar sus metas financieras. <br />
-              <span className="colorText-financia">Financia.al</span>, más que
-              una plataforma,{" "}
-              <span className="colorText-financia">somos un aliado</span> para
+              <span className='colorText-financia'>Financia.al</span>, más que
+              una plataforma,{' '}
+              <span className='colorText-financia'>somos un aliado</span> para
               tus finanzas. Trabajamos para brindarte las herramientas
               necesarias para que tomes decisiones informadas y alcances tus
               sueños. <br />

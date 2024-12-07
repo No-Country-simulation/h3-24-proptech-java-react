@@ -1,6 +1,8 @@
 import { Instagram, Linkedin, Facebook, AtSign } from 'lucide-react';
 import styles from './footer.module.css';
 import { Link } from 'react-router-dom';
+import { LogoSvg } from './LogoSvg';
+import TextLogo from './TextLogo';
 
 export const Footeer = () => {
   const productLinks = [
@@ -54,11 +56,10 @@ export const Footeer = () => {
 
           <div
             className={`${styles.footerAdjust_LogoDescription} text-center lg:text-left mt-8 lg:mt-0`}>
-            <img
-              className='mx-auto lg:mx-0 mb-4 max-h-16'
-              src='/logo_Financia-White.png'
-              alt='Logo Financia'
-            />
+            <div className='text-center mb-8 flex items-center gap-1 justify-start'>
+              <LogoSvg />
+              <TextLogo />
+            </div>
             <p className='text-gray-300 text-center lg:text-justify'>
               Financia tus compras de hoy, y págalas mañana. Gracias por confiar
               en nuestros activos.
