@@ -48,6 +48,7 @@ public record ResponseLoanDTO(
         BigDecimal monthlyQuota,
         BigDecimal interestRate,
         String status,
-        BigDecimal totalPayment
+        BigDecimal totalPayment,
+        BigDecimal remainingBalance
 ) {
 }

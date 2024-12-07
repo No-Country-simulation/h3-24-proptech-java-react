@@ -30,6 +30,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class LoanServiceImpl implements ILoanService {
+    private final IEmailService emailService;
     private final ILoanRepository loanRepository;
     private final AuthService authService;
     private final IPaymentService paymentService;
@@ -55,6 +56,7 @@ public class LoanServiceImpl implements ILoanService {
                 .remainingBalance(res.totalPayment())       // Asignar el saldo restante del préstamo desde el DTO
                 .build();
         loanRepository.save(loan);
+        emailService.sendLoanStatusUpdateEmail(loan.getUser().getEmail(), loan.getUser().getName(), LoanStatus.INITIATED.name());
         return loanMapper.toResponseDTO(loan);
     }
 
@@ -140,6 +142,7 @@ public class LoanServiceImpl implements ILoanService {
         loanFound.setStatus(LoanStatus.valueOf(dto.status()));
         loanRepository.save(loanFound);
         // TODO: AGREGAR EMAIL
+        emailService.sendLoanStatusUpdateEmail(loanFound.getUser().getEmail(), loanFound.getUser().getName(), LoanStatus.PRE_APPROVED.name());
         return "Préstamo actualizado correctamente";
     }
 
@@ -151,7 +154,7 @@ public class LoanServiceImpl implements ILoanService {
         }
         loanFound.setStatus(LoanStatus.PRE_APPROVED);
         loanRepository.save(loanFound);
-        //  TODO: ENVIAR UN EMAIL
+        emailService.sendLoanStatusUpdateEmail(loanFound.getUser().getEmail(), loanFound.getUser().getName(), LoanStatus.PRE_APPROVED.name());
         return "Préstamo pre aprobado correctamente!";
     }
 
@@ -163,8 +166,7 @@ public class LoanServiceImpl implements ILoanService {
         }
         loanFound.setStatus(LoanStatus.APPROVED);
         loanRepository.save(loanFound);
-        // TODO: ENVIAR UN EMAIL
-        // TODO: GENERAR CUOTAS
+        emailService.sendLoanStatusUpdateEmail(loanFound.getUser().getEmail(), loanFound.getUser().getName(), LoanStatus.APPROVED.name());
         paymentService.createPaymentSchedule(loanFound.getLoanId());
         return "Préstamo aprobado correctamente!";
     }
@@ -174,7 +176,7 @@ public class LoanServiceImpl implements ILoanService {
         Loan loanFound = loanRepository.findById(dto.loanId()).orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
         loanFound.setStatus(LoanStatus.REFUSED);
         loanRepository.save(loanFound);
-        // TODO: enviar el email al usuario
+        emailService.sendLoanRejectionEmail(loanFound.getUser().getEmail(), loanFound.getUser().getName(), LoanStatus.REFUSED.name(), dto.message());
         return "Préstamo declinado correctamente!";
     }
 
@@ -220,7 +222,7 @@ public class LoanServiceImpl implements ILoanService {
 
         loan.setStatus(LoanStatus.PENDING);
         loanRepository.save(loan);
-
+        emailService.sendLoanStatusUpdateEmail(loan.getUser().getEmail(), loan.getUser().getName(), LoanStatus.PENDING.name());
         return new LoanMovedToPendingResultDTO(true, "Loan successfully moved to PENDING status");
     }
 

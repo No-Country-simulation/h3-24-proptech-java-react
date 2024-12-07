@@ -99,12 +99,12 @@
         <img style="width: 280px; height: auto;" src="https://res.cloudinary.com/dcq6ecx2k/image/upload/v1733444344/lanw7dn81sael8i9sfn8.png" alt="Financia.al Logo">
     </div>
     <div class="content" style="padding: 30px 40px 5px 40px">
-        <h1 style="margin-bottom: 20px;">Restablecimiento de Contraseña</h1>
+        <h1 style="margin-bottom: 20px;" th:text="${emailTitle}"></h1>
         <h3 style="font-size: 16px; font-weight: 400; margin-bottom: 20px;">Estimado/a, <span th:text="${userName}"></span></h3>
-        <p style="margin: 0; font-size: 15px;">Hemos recibido una solicitud para restablecer la contraseña de tu cuenta en Financial Al.</p>
-        <p style="margin-bottom: 20px; font-size: 15px;">Para proceder, haz clic en el siguiente botón y sigue las instrucciones:</p>
-        <a th:href="${resetPasswordLink}" style="display: inline-block; background-color: #2962FF; color: #FFFFFF; padding: 10px 20px; border-radius: 5px; text-decoration: none; cursor: pointer;">Restablecer Contraseña</a>
-        <p style="font-size: 14px; margin: 40px 40px 0 40px;">Si no solicitaste este cambio, ignora este correo electrónico. Mantén tu cuenta segura.</p>
+        <p style="margin: 20px 20px 0 20px;; font-size: 15px;" th:text="${messageBody}"></p>
+        <p style="margin: 20px 20px 0 20px;; font-size: 15px;" th:if="${extraMessage != null}" th:text="${extraMessage}"></p>
+        <p style="margin: 20px 20px 0 20px;; font-size: 15px;" th:if="${callToActionMessage != null}" th:text="${callToActionMessage}"></p>
+        <p style="font-size: 14px; margin: 40px 40px 0 40px;">Atentamente, <b>Financia.al</b></p>
     </div>
     <div class="footer">
         <p>Finland.al Support Team</p>

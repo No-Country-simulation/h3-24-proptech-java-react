@@ -1,8 +1,6 @@
 package com.financial.dto.request.loan;
 
-import com.financial.dto.customValidation.ValueOfEnum;
 import com.financial.dto.customValidation.loanStatus.ValidLoanStatus;
-import com.financial.model.enums.LoanStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
