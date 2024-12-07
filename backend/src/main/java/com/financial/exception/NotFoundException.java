@@ -1,6 +1,5 @@
 package com.financial.exception;
 
-
 import lombok.Getter;
 import lombok.Setter;
 

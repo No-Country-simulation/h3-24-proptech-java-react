@@ -35,6 +35,12 @@ spring:
         options:
           model: gpt-4
           temperature: 0.7
+    vectorstore:
+      pgvector:
+        distance-type: COSINE_DISTANCE
+        index-type: HNSW
+        dimensions: 1536
+        remove-existing-vector-store-table: true
 
 cloudinary:
   name: "dzmzrbuta"
@@ -66,3 +72,4 @@ mercadopago:
   success_callback_url: ${MERCADOPAGO_SUCCESS_CALLBACK_URL}
   failure_callback_url: ${MERCADOPAGO_FAILURE_CALLBACK_URL}
   pending_callback_url: ${MERCADOPAGO_PENDING_CALLBACK_URL}
+  webhook_callback_url: ${MERCADOPAGO_WEBHOOK_CALLBACK_URL}

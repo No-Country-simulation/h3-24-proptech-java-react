@@ -1,6 +1,5 @@
 package com.financial.controller;
 
-
 import com.financial.config.CurrentUser;
 import com.financial.dto.request.auth.LoginRequestDto;
 import com.financial.dto.request.auth.RegisterRequestDto;

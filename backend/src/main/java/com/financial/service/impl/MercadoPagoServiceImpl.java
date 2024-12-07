@@ -45,6 +45,8 @@ public class MercadoPagoServiceImpl implements IMercadoPagoService {
     @Value("${mercadopago.pending_callback_url:http://localhost:5173/mp-pending}")
     private String pendingCallbackUrl;
 
+    @Value("${mercadopago.webhook_callback_url}")
+    private String webhookUrl ;
     @Override
     public PreferenceResponseDTO createPreference(UUID paymentId) {
         try {
@@ -81,6 +83,7 @@ public class MercadoPagoServiceImpl implements IMercadoPagoService {
                 .metadata(new HashMap<>() {{
                     put("payment_id", paymentId.toString());
                 }})
+                .notificationUrl(webhookUrl)
                 .payer(PreferencePayerRequest.builder()
                         .name(user.getName())
                         .surname(user.getLastname())

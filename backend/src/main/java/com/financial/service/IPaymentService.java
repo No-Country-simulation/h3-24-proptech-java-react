@@ -4,7 +4,6 @@ import com.financial.dto.response.PaymentDetailsResponseDTO;
 import com.financial.dto.response.PaymentResponseDTO;
 import com.financial.model.Payment;
 import com.financial.model.enums.PaymentStatus;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,9 +18,7 @@ public interface IPaymentService {
      * @param loanId El ID del préstamo aprobado para el cual se generará el cronograma de pagos.
      */
     void createPaymentSchedule(UUID loanId);
-
     Payment getPaymentById(UUID paymentId);
-
     /**
      * Obtiene todos los pagos registrados en el sistema.
      *
@@ -65,7 +62,6 @@ public interface IPaymentService {
      * @return Un {@link PaymentDetailsResponseDTO} con los detalles del pago generado.
      */
     PaymentDetailsResponseDTO generatePaymentForMonth(UUID loanId, int installmentNumber);
-
     /**
      * Procesa un pago anticipado para un préstamo.
      *
@@ -73,7 +69,6 @@ public interface IPaymentService {
      * @param numberOfInstallments El número de cuotas que se adelantarán.
      */
     void processAdvancePayment(UUID loanId, int numberOfInstallments);
-
     /**
      * Genera un pago para un mes específico basado en un préstamo y número de cuota adelantado.
      *
@@ -82,7 +77,6 @@ public interface IPaymentService {
      * @return Un objeto {@link PaymentDetailsResponseDTO} con los detalles del pago generado.
      */
     PaymentDetailsResponseDTO generatePaymentForMonthAdvance(UUID loanId, int installmentNumber);
-
     /**
      * Obtiene las cuotas pendientes para un préstamo específico.
      *
@@ -91,7 +85,6 @@ public interface IPaymentService {
      * @return Lista de objetos {@link PaymentResponseDTO} que representan las cuotas pendientes.
      */
     List<PaymentResponseDTO> getPendingInstallments(UUID loanId, int numberOfInstallments);
-
     /**
      * Obtiene el último pago realizado para un préstamo específico.
      *
@@ -99,7 +92,6 @@ public interface IPaymentService {
      * @return Un objeto {@link PaymentResponseDTO} con los detalles del último pago realizado.
      */
     PaymentResponseDTO getLastPaidPayment(UUID loanId);
-
     /**
      * Obtiene los pagos pendientes asociados a un préstamo específico.
      *
@@ -107,7 +99,5 @@ public interface IPaymentService {
      * @return Lista de objetos {@link PaymentResponseDTO} con los pagos pendientes.
      */
     List<PaymentResponseDTO> getPendingPayments(UUID loanId);
-
-    @Transactional
-    Payment savePayment(Payment payment);
+    void savePayment(Payment payment);
 }
