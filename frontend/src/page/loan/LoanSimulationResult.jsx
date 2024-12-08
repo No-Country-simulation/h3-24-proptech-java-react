@@ -1,5 +1,4 @@
 import { OctagonAlert } from 'lucide-react';
-import { useLoanSimulationResult } from '../../features/loan/useLoanSimulationResult';
 import Button from '../../ui/Button';
 import { formatNumber } from '../../utils/helpers';
 import { useNavigate } from 'react-router-dom';

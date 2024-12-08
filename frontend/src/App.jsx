@@ -28,6 +28,7 @@ import RecoverPassword from './page/RecoverPassword';
 import PasswordChangeMessage from './page/PasswordChangeMessage';
 import { ChatBot } from './features/chat/ChatBot';
 import { LoanProvider } from './context/LoanContext';
+import { ProfileProvider } from './context/ProfileContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,96 +41,101 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <LoanProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
+      <ProfileProvider>
+        <LoanProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
 
-        <BrowserRouter>
-          <Routes>
-            <Route element={<AppLayout />}>
-              <Route index element={<Navigate replace to='home' />} />
-              <Route path='auth' element={<Auth />} />
-              <Route index element={<Navigate replace to='home' />} />
-              <Route path='auth' element={<Auth />} />
-              <Route path='reset-password' element={<RecoverPassword />} />
-              <Route
-                path='passwordChangeMessage'
-                element={<PasswordChangeMessage />}
-              />
-
-              {/* Rutas protegidas  */}
-              <Route element={<ProtectedRoute />}>
-                <Route path='menu' element={<ClientProfile />} />
-                <Route path='personalSettings' element={<PersonalSettings />} />
-                <Route path='paymentQuotas' element={<PaymentQuotas />} />
-                <Route path='investmentPanel' element={<InvestmentPanel />} />
+          <BrowserRouter>
+            <Routes>
+              <Route element={<AppLayout />}>
+                <Route index element={<Navigate replace to='home' />} />
+                <Route path='auth' element={<Auth />} />
+                <Route index element={<Navigate replace to='home' />} />
+                <Route path='auth' element={<Auth />} />
+                <Route path='reset-password' element={<RecoverPassword />} />
                 <Route
-                  path='messagesStartingLoan'
-                  element={<MessagesStartingLoan />}
+                  path='passwordChangeMessage'
+                  element={<PasswordChangeMessage />}
                 />
 
-                <Route
-                  path='loan-simulation'
-                  element={<CalculatePersonalLoan />}
-                />
-                <Route
-                  path='loan-simulation-result'
-                  element={<LoanSimulationResult />}
-                />
-
-                <Route path='loan' element={<LoanApplication />}>
-                  <Route index element={<Navigate replace to='veriff' />} />
-                  <Route path='veriff' element={<Veriff />} />
-
+                {/* Rutas protegidas  */}
+                <Route element={<ProtectedRoute />}>
+                  <Route path='menu' element={<ClientProfile />} />
                   <Route
-                    path='loan-information'
-                    element={<LoanInformation />}
+                    path='personalSettings'
+                    element={<PersonalSettings />}
+                  />
+                  <Route path='paymentQuotas' element={<PaymentQuotas />} />
+                  <Route path='investmentPanel' element={<InvestmentPanel />} />
+                  <Route
+                    path='messagesStartingLoan'
+                    element={<MessagesStartingLoan />}
                   />
 
                   <Route
-                    path='address-details'
-                    element={<LoanAddressInformation />}
+                    path='loan-simulation'
+                    element={<CalculatePersonalLoan />}
+                  />
+                  <Route
+                    path='loan-simulation-result'
+                    element={<LoanSimulationResult />}
                   />
 
-                  <Route
-                    path='personal-information'
-                    element={<LoanPersonalInformation />}
-                  />
+                  <Route path='loan' element={<LoanApplication />}>
+                    <Route index element={<Navigate replace to='veriff' />} />
+                    <Route path='veriff' element={<Veriff />} />
 
-                  <Route
-                    path='data-summary'
-                    element={<LoanApplicationSummary />}
-                  />
+                    <Route
+                      path='loan-information'
+                      element={<LoanInformation />}
+                    />
+
+                    <Route
+                      path='address-details'
+                      element={<LoanAddressInformation />}
+                    />
+
+                    <Route
+                      path='personal-information'
+                      element={<LoanPersonalInformation />}
+                    />
+
+                    <Route
+                      path='data-summary'
+                      element={<LoanApplicationSummary />}
+                    />
+                  </Route>
                 </Route>
+
+                <Route path='*' element={<PageNotFound />} />
               </Route>
+              <Route path='home' element={<Home />} />
+            </Routes>
+          </BrowserRouter>
 
-              <Route path='*' element={<PageNotFound />} />
-            </Route>
-            <Route path='home' element={<Home />} />
-          </Routes>
-        </BrowserRouter>
-
-        <Toaster
-          position='top-center'
-          gutter={12}
-          containerStyle={{ margin: '8px' }}
-          toastOptions={{
-            success: {
-              duration: 3000,
-            },
-            error: {
-              duration: 5000,
-            },
-            style: {
-              fontSize: '16px',
-              maxWidth: '600px',
-              padding: '16px 24px',
-              backgroundColor: '#FFFFFF',
-              color: '#0D0D0D',
-            },
-          }}
-        />
-        <ChatBot />
-      </LoanProvider>
+          <Toaster
+            position='top-center'
+            gutter={12}
+            containerStyle={{ margin: '8px' }}
+            toastOptions={{
+              success: {
+                duration: 3000,
+              },
+              error: {
+                duration: 5000,
+              },
+              style: {
+                fontSize: '16px',
+                maxWidth: '600px',
+                padding: '16px 24px',
+                backgroundColor: '#FFFFFF',
+                color: '#0D0D0D',
+              },
+            }}
+          />
+          <ChatBot />
+        </LoanProvider>
+      </ProfileProvider>
     </QueryClientProvider>
   );
 }

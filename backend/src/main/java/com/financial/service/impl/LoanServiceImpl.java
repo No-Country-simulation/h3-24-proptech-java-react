@@ -75,6 +75,21 @@ public class LoanServiceImpl implements ILoanService {
     }
 
     @Override
+    public LoanDetailsResponseDTO getLoan(UUID userId) {
+        Loan loan = loanRepository.findLoanByUserId(userId)
+                .orElseThrow(() -> new NotFoundException("Loan not found for user ID: " + userId));
+        User user = loan.getUser();
+        Profile profile = user.getProfile();
+        var loanDocumentationStatuses = loanDocumentsService.getDocumentationStatusForLoan(loan.getLoanId());
+        return new LoanDetailsResponseDTO(
+                loanMapper.toResponseDTO(loan),
+                userMapper.toUserResponseDTO(user),
+                profileMapper.toResponseProfileDto(profile),
+                loanDocumentationStatuses
+        );
+    }
+
+    @Override
     @Transactional
     public void updateLoanStatus(UUID loanId, String status) {
         Loan loan = loanRepository.findById(loanId)

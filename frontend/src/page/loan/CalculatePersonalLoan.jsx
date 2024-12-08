@@ -26,8 +26,8 @@ const months = [
 
 function CalculatePersonalLoan() {
   const navigate = useNavigate();
-  const { loan, simulateLoan, loanSimulation, isPending } = useLoan();
-  console.log(loan);
+  const { simulateLoan, loanSimulation, isPending } = useLoan();
+
   const {
     register,
     handleSubmit,
@@ -48,8 +48,6 @@ function CalculatePersonalLoan() {
       });
     }
   }
-
-  console.log(loanSimulation);
 
   return (
     <section className='px-5  py-8 h-[68vh]'>

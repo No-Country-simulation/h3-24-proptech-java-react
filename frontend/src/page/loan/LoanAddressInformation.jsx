@@ -8,17 +8,22 @@ import useLoanApplication from '../../features/loan/useLoanApplication';
 import useCurrentUser from '../../features/user/useCurrentUser';
 import useUserProfile from '../../features/user/useUserProfile';
 import { useLoan } from '../../context/LoanContext';
+import { useProfile } from '../../context/ProfileContext';
+import { useEffect } from 'react';
 
 function LoanAddressInformation() {
   const navigate = useNavigate();
-  const { setDataProfileForms } = useLoan();
-  const { user } = useCurrentUser();
-  const { userProfile } = useUserProfile(user?.user?.dni);
 
+  const {
+    getProfile,
+    profile: userProfile,
+    setDataProfileForms,
+  } = useProfile();
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     defaultValues: {
       country: userProfile?.country || '',
@@ -29,6 +34,23 @@ function LoanAddressInformation() {
       houseNumber: userProfile?.houseNumber || '',
     },
   });
+
+  useEffect(() => {
+    if (!userProfile) getProfile();
+  }, []);
+
+  useEffect(() => {
+    if (userProfile !== undefined) {
+      reset({
+        country: userProfile?.country || '',
+        state: userProfile?.state || '',
+        city: userProfile?.city || '',
+        zipCode: userProfile?.zipCode || '',
+        road: userProfile?.road || '',
+        houseNumber: userProfile?.houseNumber || '',
+      });
+    }
+  }, [reset, userProfile]);
 
   ////////////////////////
 

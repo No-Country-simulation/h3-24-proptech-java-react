@@ -6,11 +6,9 @@ import { OctagonAlert } from 'lucide-react';
 import FormRow from '../../ui/FormRow';
 import Button from '../../ui/Button';
 import SubmitButton from '../../ui/SubmitButton';
-
-import useLoanApplication from '../../features/loan/useLoanApplication';
-import useUserProfile from '../../features/user/useUserProfile';
 import useCurrentUser from '../../features/user/useCurrentUser';
-import { useLoan } from '../../context/LoanContext';
+
+import { useProfile } from '../../context/ProfileContext';
 
 const paises = {
   AR: 'Argentina',
@@ -33,8 +31,16 @@ const paises = {
 function LoanPersonalInformation() {
   const navigate = useNavigate();
   const { user } = useCurrentUser();
-  const { userProfile } = useUserProfile(user?.user?.dni);
-  const { setDataProfileForms } = useLoan();
+  const {
+    getProfile,
+    profile: userProfile,
+    setDataProfileForms,
+  } = useProfile();
+
+  useEffect(() => {
+    getProfile();
+  }, []);
+
   const {
     register,
     handleSubmit,
@@ -97,7 +103,9 @@ function LoanPersonalInformation() {
             Este campo es necesario para validar tu identidad y garantizar la
             seguridad de tu información.
           </p>
-          <Button type={user.isVerified ? 'greenColor' : 'secondary'}>
+          <Button
+            type={user.user.isVerified ? 'greenColor' : 'secondary'}
+            disabled={user.user.isVerified}>
             Datos VERIFFicados
           </Button>
         </div>

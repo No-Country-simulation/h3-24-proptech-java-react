@@ -1,20 +1,12 @@
-import axios from 'axios';
-import { useState } from 'react';
-import { CirclePlus } from 'lucide-react';
+import { useEffect } from 'react';
+
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import FormRow from '../../ui/FormRow';
 import SubmitButton from '../../ui/SubmitButton';
 
-import useUserProfile from '../../features/user/useUserProfile';
-import useCurrentUser from '../../features/user/useCurrentUser';
-import { useLoanSimulationResult } from '../../features/loan/useLoanSimulationResult';
-import useLoanApplication from '../../features/loan/useLoanApplication';
-
-import { getData } from '../../utils/saveDataLocalStore';
-import { baseURL } from '../../utils/constants';
-import { useLoan } from '../../context/LoanContext';
+import { useProfile } from '../../context/ProfileContext';
 
 ////////////////////////
 
@@ -32,22 +24,39 @@ function LoanInformation() {
   // const [salaryReceipts, setSalaryReceipts] = useState([]);
   // const [serviceReceipt, setServiceReceipt] = useState(null);
 
-  const { user } = useCurrentUser();
-  const { userProfile } = useUserProfile(user?.user?.dni);
-  const { setDataProfileForms } = useLoan();
+  const {
+    getProfile,
+    profile: userProfile,
+    setDataProfileForms,
+  } = useProfile();
+
+  useEffect(() => {
+    if (!userProfile) getProfile();
+  }, []);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     defaultValues: {
-      economicActivity: userProfile?.economicActivity || '',
-      monthlyIncome: userProfile?.monthlyIncome || 0,
-      bankAccountCbu: userProfile?.bankAccountCbu || '',
+      economicActivity: userProfile?.economicActivity,
+      monthlyIncome: userProfile?.monthlyIncome,
+      bankAccountCbu: userProfile?.bankAccountCbu,
     },
   });
 
+  useEffect(() => {
+    if (userProfile !== undefined) {
+      reset({
+        economicActivity: userProfile?.economicActivity || '',
+        monthlyIncome: userProfile?.monthlyIncome || 0,
+        bankAccountCbu: userProfile?.bankAccountCbu || '',
+      });
+    }
+  }, [reset, userProfile]);
+  console.log(userProfile?.economicActivity);
   ////////////////////////
   //  Subida de documentos
 

@@ -1,70 +1,60 @@
 import { useEffect } from 'react';
-import useLoanApplication from '../../features/loan/useLoanApplication';
+
 import { useNavigate } from 'react-router-dom';
-import { CirclePlus } from 'lucide-react';
+
 import Button from '../../ui/Button';
-import useCurrentUser from '../../features/user/useCurrentUser';
-import useUserProfile from '../../features/user/useUserProfile';
-import { useLoanSimulationResult } from '../../features/loan/useLoanSimulationResult';
+
 import { formatNumber } from '../../utils/helpers';
 import { useLoan } from '../../context/LoanContext';
+import { useProfile } from '../../context/ProfileContext';
 
 //const sameStyle = "";
 
 function LoanApplicationSummary() {
   const navigate = useNavigate();
 
-  const { user } = useCurrentUser();
-  const { userProfile } = useUserProfile(user?.user?.dni);
-  const { loanResults: loan, submitLoanData } = useLoanApplication();
-  const loanSimulationData = useLoanSimulationResult();
-  const { dataProfile } = useLoan();
-  useEffect(
-    function () {
-      if (!loan) navigate('/messagesStartingLoan', { replace: true });
-    },
-    [loan, loanSimulationData, userProfile, navigate]
-  );
-
-  /////////////////////////
-
-  const getMergedData = () => {
-    const mergedData = { ...loan };
-
-    for (const key in userProfile) {
-      if (!mergedData[key]) {
-        mergedData[key] = userProfile[key];
-      }
-    }
-
-    return mergedData;
-  };
-
-  /////////////////////////
-
-  const mergedData = getMergedData();
+  const { loan, getLoan } = useLoan();
+  // const { loanResults: loan, submitLoanData } = useLoanApplication();
 
   const {
-    economicActivity,
-    monthlyIncome,
-    bankAccountCbu,
-    firstNameAsInDni,
-    lastNameAsInDni,
-    dateOfBirth,
-    nationality,
-    country,
-    city,
-    state,
-    houseNumber,
-    road,
-    zipCode,
-    gender,
-    mobilePhone,
-    landlinePhone,
-    educationLevel,
-  } = mergedData;
+    getProfile,
+    profile: userProfile,
+    dataProfile,
+    rellenarDataProfile,
+    updateProfile,
+  } = useProfile();
 
-  console.log('Resumen de datos', loan);
+  useEffect(() => {
+    rellenarDataProfile();
+    getLoan();
+  }, []);
+
+  useEffect(() => {
+    if (!userProfile) getProfile();
+  }, []);
+
+  // useEffect(
+  //   function () {
+  //     if (!loan) navigate('/messagesStartingLoan', { replace: true });
+  //   },
+  //   [loan, loanSimulationData, userProfile, navigate]
+  // );
+
+  /////////////////////////
+
+  // const getMergedData = () => {
+  //   const mergedData = { ...loan };
+
+  //   for (const key in userProfile) {
+  //     if (!mergedData[key]) {
+  //       mergedData[key] = userProfile[key];
+  //     }
+  //   }
+
+  //   return mergedData;
+  // };
+
+  /////////////////////////
 
   return (
     <div>
@@ -84,7 +74,7 @@ function LoanApplicationSummary() {
         <p className='flex items-center justify-between gap-1 '>
           Monto solicitado
           <span className=' font-medium'>
-            {formatNumber(loanSimulationData?.requestedAmount)}$ USD
+            {formatNumber(loan?.requestedAmount)}$ USD
           </span>
         </p>
 
@@ -227,16 +217,7 @@ function LoanApplicationSummary() {
         <Button type='secondary' to='/loan/personal-information'>
           Modificar datos
         </Button>
-        <Button
-          type='secondary'
-          onClick={() => {
-            submitLoanData({
-              userDni: user?.user?.dni,
-              profileId: userProfile?.profileId,
-              data: mergedData,
-              loanSimulation: loanSimulationData,
-            });
-          }}>
+        <Button type='secondary' onClick={updateProfile}>
           Continuar
         </Button>
       </div>

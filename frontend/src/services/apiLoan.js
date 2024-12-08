@@ -117,6 +117,26 @@ export async function loanCreateApi(requestedAmount, termMonths) {
   }
 }
 
+export async function getLoanApi() {
+  const token = getData('token');
+  if (!token) {
+    throw new Error('No estás autenticado. Inicia sesión para continuar.');
+  }
+  try {
+    const { data } = await axios.get(`${baseURL}/api/loans/get-loan`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+
+    return data.loan;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Error al buscar prestamo');
+  }
+}
+
 ////////////////////////////
 
 export async function pendingQuotasApi(loanId) {

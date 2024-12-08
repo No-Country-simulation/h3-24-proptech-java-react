@@ -1,5 +1,9 @@
 import { createContext, useContext, useState } from 'react';
-import { loanCreateApi, loanSimulationApi } from '../services/apiLoan';
+import {
+  getLoanApi,
+  loanCreateApi,
+  loanSimulationApi,
+} from '../services/apiLoan';
 import toast from 'react-hot-toast';
 
 const LoanContext = createContext();
@@ -50,11 +54,21 @@ export const LoanProvider = ({ children }) => {
     }
   };
 
+  const getLoan = async () => {
+    try {
+      console.log('get loan');
+      const res = await getLoanApi();
+      setLoan(res);
+    } catch (error) {
+      console.log(error);
+      toast.error('Errror al buscar el prestamo.');
+    }
+  };
+
   function setDataProfileForms(data) {
     console.log(data);
     setDataProfile({ ...dataProfile, ...data });
   }
-  console.log(dataProfile);
 
   return (
     <LoanContext.Provider
@@ -68,6 +82,7 @@ export const LoanProvider = ({ children }) => {
         simulateLoan,
         createLoan,
         setDataProfileForms,
+        getLoan,
       }}>
       {children}
     </LoanContext.Provider>

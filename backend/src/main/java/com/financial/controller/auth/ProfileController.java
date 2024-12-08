@@ -1,7 +1,9 @@
 package com.financial.controller.auth;
 
+import com.financial.config.CurrentUser;
 import com.financial.dto.request.profile.RequestCreateProfileDTO;
 import com.financial.dto.response.profile.ResponseProfileDTO;
+import com.financial.model.User;
 import com.financial.service.IProfileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,14 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/users/{userIdOrDni}/profiles")
+@RequestMapping("/api/users/profiles")
 @RequiredArgsConstructor
 public class ProfileController {
     private final IProfileService profileService;
 
     @GetMapping
-    public ResponseEntity<ResponseProfileDTO> getProfile(@PathVariable String userIdOrDni) {
-        ResponseProfileDTO profile = profileService.findProfileByUserIdOrDni(userIdOrDni);
+    public ResponseEntity<ResponseProfileDTO> getProfile(@CurrentUser User user) {
+        ResponseProfileDTO profile = profileService.findProfileByUserIdOrDni(user.getUserId().toString());
         return ResponseEntity.ok(profile);
     }
 
@@ -32,13 +34,12 @@ public class ProfileController {
         return new ResponseEntity<>(createdProfile, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{profileId}")
+    @PutMapping
     public ResponseEntity<ResponseProfileDTO> updateProfile(
-            @PathVariable String userIdOrDni,
-            @PathVariable UUID profileId,
+            @CurrentUser User user,
             @RequestBody @Valid RequestCreateProfileDTO profileDto
     ) {
-        ResponseProfileDTO updatedProfile = profileService.updateProfile(userIdOrDni, profileId, profileDto);
+        ResponseProfileDTO updatedProfile = profileService.updateProfile(user.getUserId(), profileDto);
         return ResponseEntity.ok(updatedProfile);
     }
 

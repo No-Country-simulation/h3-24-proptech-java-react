@@ -1,10 +1,22 @@
 import { useNavigate } from 'react-router-dom';
 import { useLoan } from '../../context/LoanContext';
 import Button from '../../ui/Button';
+import { useEffect } from 'react';
 
 function StartLoanRequest() {
-  const { createLoan, isPending } = useLoan();
+  const { createLoan, isPending, loan, getLoan } = useLoan();
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log('asdasd');
+    getLoan();
+  }, []);
+
+  useEffect(() => {
+    if (loan) navigate('/loan/veriff', { replace: true });
+  }, [loan]);
+
   const handleCreateLoan = () => {
     createLoan().then((res) => {
       if (res) {
@@ -12,6 +24,7 @@ function StartLoanRequest() {
       }
     });
   };
+
   return (
     <div className='flex flex-col  min-h-[90vh]'>
       <div className='flex-grow px-5  py-8 '>
