@@ -112,7 +112,6 @@ public class JwtService {
     public String generateActivationToken(String username) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("purpose", "account_activation");
-
         return createToken(username, claims);
     }
 

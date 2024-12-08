@@ -9,6 +9,7 @@ import com.financial.service.AuthService;
 import com.financial.service.IEmailService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<AuthResponseDto> register (@Valid @RequestBody RegisterRequestDto dto) {
         AuthResponseDto response = authService.register(dto);
-        emailService.sendWelcomeEmail(dto.getEmail());
+        emailService.sendAccountActivationEmail(dto.getEmail());
         return ResponseEntity.status(201).body(response);
     }
 
@@ -37,6 +38,14 @@ public class AuthController {
     public ResponseEntity<AuthResponseDto> checkLogin (@CurrentUser User user) {
 
         return ResponseEntity.ok().body(authService.checkLogin(user.getEmail()));
+    }
+
+    @GetMapping("/activate")
+    public ResponseEntity<Void> activateAccount(@RequestParam("token") String token) {
+        authService.activateAccount(token);
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .location(URI.create("https://financialal.up.railway.app/auth"))
+                .build();
     }
 }
 

@@ -57,6 +57,9 @@ server:
 frontend:
   url: ${FRONTEND_URL}
 
+backend:
+  url: ${BACKEND_URL}
+
 logging:
   level:
     org.hibernate.SQL: DEBUG

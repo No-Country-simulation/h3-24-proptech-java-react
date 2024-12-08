@@ -1,5 +1,6 @@
 package com.financial.service.impl;
 
+import com.financial.dto.request.EmailDetails;
 import com.financial.exception.EmailServiceException;
 import com.financial.model.enums.LoanStatus;
 import com.financial.service.IEmailService;
@@ -33,6 +34,8 @@ public class EmailServiceImpl implements IEmailService {
 
     @Value("spring.mail.username")
     private String emailSender;
+    @Value("${backend.url}")
+    private String backendUrl;
 
     /**
      * Sends an email for password recovery.
@@ -73,14 +76,15 @@ public class EmailServiceImpl implements IEmailService {
      * @throws EmailServiceException if an error occurs while sending the email.
      */
     @Override
-    public void sendEmail(String subject, String toEmail, String userName, String senderName) {
-        validateEmailParameters(toEmail, subject, userName, senderName);
-        String emailTitle, messageBody, extraMessage = null;
+    public void sendEmail(String subject, EmailDetails emailDetails, String redirectLink) {
+        validateEmailParameters(emailDetails.toEmail(), subject, emailDetails.userName(), emailDetails.senderName());
+        String emailTitle, messageBody, extraMessage, callToActionMessage = null;
         switch (subject) {
             case REGISTRATION_CONFIRMATION_SUBJECT:
                 emailTitle = "Confirmación de Registro";
                 messageBody = "Gracias por registrarte en Financia.al. Estamos encantados  e que formes parte de nuestra comunidad.";
-                extraMessage = "Si tienes alguna duda o necesitas asistencia, no dudes en contactarnos.";
+                callToActionMessage = "Para completar tu registro y comenzar a disfrutar de nuestros servicios, por favor confirma tu dirección de correo electrónico haciendo clic en el siguiente enlace:";
+                extraMessage = "Este paso nos permite garantizar la seguridad de tu cuenta y mantener una comunicación confiable contigo.";
                 break;
 
             case PASSWORD_CHANGE_CONFIRMATION_SUBJECT:
@@ -95,15 +99,17 @@ public class EmailServiceImpl implements IEmailService {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setFrom(emailSender, senderName);
-            helper.setTo(toEmail);
+            helper.setFrom(emailSender, emailDetails.senderName());
+            helper.setTo(emailDetails.toEmail());
             helper.setSubject(subject);
 
             Context context = new Context();
             context.setVariable("emailTitle", emailTitle);
-            context.setVariable("userName", userName);
+            context.setVariable("userName", emailDetails.userName());
             context.setVariable("messageBody", messageBody);
             context.setVariable("extraMessage", extraMessage);
+            context.setVariable("callToActionMessage", callToActionMessage);
+            context.setVariable("redirectLink", redirectLink);
             String htmlContent = templateEngine.process(CONFIRMATION_TEMPLATE, context);
 
             helper.setText(htmlContent, true);
@@ -114,35 +120,10 @@ public class EmailServiceImpl implements IEmailService {
     }
 
     @Override
-    @Async
-    public void sendWelcomeEmail(String toEmail) {
-        String userName = getUserNameByEmail(toEmail);
-        sendEmail(REGISTRATION_CONFIRMATION_SUBJECT, toEmail, userName, WELCOME_TEAM_NAME);
-    }
-
-    @Override
     public void sendPasswordChangeConfirmationEmail(String toEmail) {
         String userName = getUserNameByEmail(toEmail);
-        sendEmail(PASSWORD_CHANGE_CONFIRMATION_SUBJECT, toEmail, userName, SUPPORT_NAME);
-    }
-
-    private String getUserNameByEmail(String email) {
-        return authService .getUserNameByEmail(email).orElse(DEFAULT_USER_NAME);
-    }
-
-    private void validateEmailParameters(String toEmail, String subject, String userName, String senderName) {
-        if (toEmail == null || toEmail.isEmpty()) {
-            throw new IllegalArgumentException("El correo del destinatario (toEmail) no debe ser nulo ni estar vacío.");
-        }
-        if (subject == null || subject.isEmpty()) {
-            throw new IllegalArgumentException("El asunto del correo no debe ser nulo ni estar vacío.");
-        }
-        if (userName == null || userName.isEmpty()) {
-            throw new IllegalArgumentException("El nombre de usuario no debe ser nulo ni estar vacío.");
-        }
-        if (senderName == null || senderName.isEmpty()) {
-            throw new IllegalArgumentException("El nombre del remitente no debe ser nulo ni estar vacío.");
-        }
+        EmailDetails emailDetails = new EmailDetails(toEmail, userName, SUPPORT_NAME);
+        sendEmail(PASSWORD_CHANGE_CONFIRMATION_SUBJECT, emailDetails, null);
     }
 
     @Async
@@ -239,4 +220,36 @@ public class EmailServiceImpl implements IEmailService {
         }
     }
 
+    @Override
+    @Async
+    public void sendAccountActivationEmail(String toEmail) {
+        String userName = getUserNameByEmail(toEmail);
+        String token = generateActivationToken(toEmail);
+        String activationLink = String.format("%s/api/auth/activate?token=%s", backendUrl, token);
+        EmailDetails emailDetails = new EmailDetails(toEmail, userName, WELCOME_TEAM_NAME);
+        sendEmail(REGISTRATION_CONFIRMATION_SUBJECT, emailDetails, activationLink);
+    }
+
+    private String generateActivationToken(String email) {
+        return authService.generateActivationToken(email);
+    }
+
+    private String getUserNameByEmail(String email) {
+        return authService .getUserNameByEmail(email).orElse(DEFAULT_USER_NAME);
+    }
+
+    private void validateEmailParameters(String toEmail, String subject, String userName, String senderName) {
+        if (toEmail == null || toEmail.isEmpty()) {
+            throw new IllegalArgumentException("El correo del destinatario (toEmail) no debe ser nulo ni estar vacío.");
+        }
+        if (subject == null || subject.isEmpty()) {
+            throw new IllegalArgumentException("El asunto del correo no debe ser nulo ni estar vacío.");
+        }
+        if (userName == null || userName.isEmpty()) {
+            throw new IllegalArgumentException("El nombre de usuario no debe ser nulo ni estar vacío.");
+        }
+        if (senderName == null || senderName.isEmpty()) {
+            throw new IllegalArgumentException("El nombre del remitente no debe ser nulo ni estar vacío.");
+        }
+    }
 }
