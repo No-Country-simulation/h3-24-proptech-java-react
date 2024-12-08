@@ -8,6 +8,7 @@ import com.financial.dto.response.TokenValidationResponseDTO;
 import com.financial.dto.response.auth.AuthResponseDto;
 import com.financial.dto.response.auth.RoleResponseDto;
 import com.financial.dto.response.auth.UserResponseDto;
+import com.financial.exception.AccountActivationException;
 import com.financial.exception.BadRequestException;
 import com.financial.exception.EmailServiceException;
 import com.financial.exception.NotFoundException;
@@ -86,6 +87,29 @@ public class AuthServiceImpl implements AuthService {
     public User getUserById(UUID userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(String.format("User not found with ID: %s", userId)));
+    }
+
+    @Transactional
+    @Override
+    public void activateAccount(String token) {
+        if (!jwtService.isActivationTokenValid(token)) {
+            throw new AccountActivationException("Activation token is invalid or expired.");
+        }
+        String username = jwtService.getUsernameFromToken(token);
+        User user = userRepository.findUserByEmail(username)
+                .orElseThrow(() -> new AccountActivationException("User not found with username: " + username));
+        if (Boolean.TRUE.equals(user.getActive())) {
+            throw new AccountActivationException("Account is already enabled.");
+        }
+        user.setActive(true);
+        userRepository.save(user);
+    }
+
+    @Override
+    public String generateActivationToken(String email) {
+        User user = userRepository.findUserByEmail(email)
+                .orElseThrow(() -> new EmailServiceException("User not found with email: " + email));
+        return jwtService.generateActivationToken(user.getUsername());
     }
 
     private AuthResponseDto generateResponse(User user) {

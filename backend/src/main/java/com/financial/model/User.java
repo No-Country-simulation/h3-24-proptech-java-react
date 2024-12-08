@@ -43,6 +43,8 @@ public class User extends Auditable implements UserDetails {
     @Column(name = "is_verified")
     private Boolean isVerified = false;
 
+    private Boolean active = false;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",

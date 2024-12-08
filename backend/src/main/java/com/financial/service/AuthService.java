@@ -12,4 +12,6 @@ public interface AuthService {
     AuthResponseDto register(RegisterRequestDto dto);
     AuthResponseDto checkLogin(String email);
     User getUserById(UUID userId);
+    void activateAccount(String token);
+    String generateActivationToken(String email);
 }
