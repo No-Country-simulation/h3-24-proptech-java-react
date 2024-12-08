@@ -32,6 +32,4 @@ public interface IUserRepository extends JpaRepository<User, UUID> {
             "WHERE l.status IN ('PENDING', 'PRE_APPROVED')",
             nativeQuery = true)
     List<User> findUsersPendingPreApproved();
-
-    Optional<User> findById(UUID userId);
 }

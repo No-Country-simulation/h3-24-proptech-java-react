@@ -108,4 +108,21 @@ public class JwtService {
                 .signWith(getKey())
                 .compact();
     }
+
+    public String generateActivationToken(String username) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("purpose", "account_activation");
+        return createToken(username, claims);
+    }
+
+    public boolean isActivationTokenValid(String token) {
+        try {
+            String purpose = getClaim(token, claims -> (String) claims.get("purpose"));
+            return "account_activation".equals(purpose) && !isTokenExpired(token);
+        } catch (Exception e) {
+            log.error("Error al validar el token de activación: {}", e.getMessage());
+            return false;
+        }
+    }
+
 }

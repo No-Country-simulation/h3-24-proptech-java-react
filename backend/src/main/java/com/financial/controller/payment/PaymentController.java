@@ -1,11 +1,9 @@
-package com.financial.controller;
+package com.financial.controller.payment;
 
 import com.financial.dto.response.PaymentResponseDTO;
-import com.financial.scheduler.PaymentScheduler;
 import com.financial.model.Payment;
 import com.financial.model.enums.PaymentStatus;
 import com.financial.service.IPaymentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +14,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/payments")
 public class PaymentController {
-    @Autowired
-    PaymentScheduler paymentScheduler;
     private final IPaymentService paymentService;
 
     public PaymentController(IPaymentService paymentService) {

@@ -104,6 +104,9 @@
         <p style="margin: 20px 20px 0 20px;; font-size: 15px;" th:text="${messageBody}"></p>
         <p style="margin: 20px 20px 0 20px;; font-size: 15px;" th:if="${extraMessage != null}" th:text="${extraMessage}"></p>
         <p style="margin: 20px 20px 0 20px;; font-size: 15px;" th:if="${callToActionMessage != null}" th:text="${callToActionMessage}"></p>
+        <a th:href="${redirectLink}"
+           style="display: inline-block; background-color: #2962FF; color: #FFFFFF; padding: 10px 20px; border-radius: 5px;">
+            Confirmar mi correo electrónico</a>
         <p style="font-size: 14px; margin: 40px 40px 0 40px;">Atentamente, <b>Financia.al</b></p>
     </div>
     <div class="footer">

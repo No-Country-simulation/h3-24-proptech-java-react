@@ -102,7 +102,10 @@
     <h1 style="margin-bottom: 20px;" th:text="${emailTitle}"></h1>
     <h3 style="font-size: 16px; font-weight: 400; margin-bottom: 20px;">Estimado/a, <span th:text="${userName}"></span></h3>
     <p style="margin: 0; font-size: 15px;" th:text="${messageBody}"></p>
+    <p style="margin: 20px 20px 0 20px;; font-size: 15px;" th:if="${callToActionMessage != null}" th:text="${callToActionMessage}"></p>
+    <a th:href="${redirectLink}" style="display: inline-block; background-color: #2962FF; color: #FFFFFF; padding: 10px 20px; border-radius: 5px; text-decoration: none; cursor: pointer; margin-top: 10px; margin-bottom: 10px;">Confirmar mi correo electrónico</a>
     <p style="margin: 0; font-size: 15px;" th:if="${extraMessage != null}" th:text="${extraMessage}"></p>
+    <p style="margin: 0; font-size: 15px;" >Si tienes alguna duda o necesitas asistencia, no dudes en contactarnos.</p>
     <p style="font-size: 14px; margin: 40px 40px 0 40px;">Atentamente, <b>Financia.al</b></p>
   </div>
   <div class="footer">
