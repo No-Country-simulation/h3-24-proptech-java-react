@@ -10,13 +10,6 @@ import { useProfile } from '../../context/ProfileContext';
 
 ////////////////////////
 
-function createFormDataUpload(file, docType) {
-  const formData = new FormData();
-  formData.append('document', file);
-  formData.append('docType', docType);
-  return formData;
-}
-
 ////////////////////////
 
 function LoanInformation() {

@@ -29,6 +29,7 @@ import PasswordChangeMessage from './page/PasswordChangeMessage';
 import { ChatBot } from './features/chat/ChatBot';
 import { LoanProvider } from './context/LoanContext';
 import { ProfileProvider } from './context/ProfileContext';
+import { LoanDocumentation } from './page/loan/LoanDocumentation';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -103,6 +104,10 @@ function App() {
                     <Route
                       path='data-summary'
                       element={<LoanApplicationSummary />}
+                    />
+                    <Route
+                      path='upload-documentation'
+                      element={<LoanDocumentation />}
                     />
                   </Route>
                 </Route>
