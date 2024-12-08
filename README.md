@@ -40,18 +40,6 @@ La documentación de la API se puede acceder a través de Swagger. Utiliza la si
 
 Este proyecto fue posible gracias a la organización de Hackathon por parte de [No Country](https://www.nocountry.tech/). Agradecemos a todo su equipo por brindar un espacio donde los desarrolladores pueden poner en práctica sus habilidades y colaborar en proyectos reales, contribuyendo al crecimiento profesional de todos los participantes.
 
-<p align="center">
-    <img src="https://github.com/MatiasJB95.png?size=100" alt="Matías JB" style="border-radius: 50%; width: 100px; height: 100px;">
-    <br>
-    <strong>Matías JB</strong> | Team Leader
-</p>
-
-<p align="center"> Matías desempeñó un papel esencial como TL en este proyecto, apoyando al equipo en cada etapa. Su capacidad para gestionar los desafíos y mantener la moral alta, incluso en momentos difíciles, fue fundamental. Siempre disponible para escuchar y ofrecer soluciones, su acompañamiento continuo permitió que el equipo avanzara con confianza, garantizando la finalización exitosa del proyecto. </p>
-
-<p align="center">
-    <a href="https://www.linkedin.com/in/matiasjb95/"><img src="https://img.shields.io/badge/LinkedIn-Matias%20JB-blue" alt="LinkedIn"></a>
-    <a href="https://github.com/MatiasJB95"><img src="https://img.shields.io/badge/GitHub-MatiasJB95-blue" alt="GitHub"></a>
-</p>
 
 
 ## Autores
@@ -59,6 +47,20 @@ Este proyecto fue posible gracias a la organización de Hackathon por parte de [
 Proyecto creado por:
 
 <table style="display: flex; justify-content: center;">
+  <p align="center">
+    <img src="https://github.com/Catriel-Escobar.png?size=100" alt="Catriel Escobar" style="border-radius: 50%; width: 100px; height: 100px;">
+    <br>
+    <strong>Catriel Escobar</strong> | Full-Stack
+</p>
+<p align="center">
+     <a href="https://github.com/Catriel-Escobar" style="text-decoration: none;">
+          <img src="https://img.shields.io/badge/GitHub-CatrielEscobar-blue" alt="GitHub">
+        </a>
+   <a href="https://www.linkedin.com/in/catrielescobar/" style="text-decoration: none;">
+          <img src="https://img.shields.io/badge/LinkedIn-Catriel%20Escobar-blue?style=flat-square" alt="LinkedIn">
+        </a>
+    <a href="https://github.com/Catriel-Escobar" style="text-decoration: none;">
+</p>
   <tr align="center">
     <td>
       <div style="display: flex; align-items: center;">
@@ -102,17 +104,17 @@ Proyecto creado por:
   <tr align="center">
    <td>
       <div style="display: flex; align-items: center;">
-        <img src="https://github.com/Catriel-Escobar.png?size=100" alt="Catriel Escobar" style="border-radius: 50%; margin-right: 10px;">
+        <img src="https://github.com/DVTecno.png?size=100" alt="Diego Veras" style="border-radius: 50%; margin-right: 10px;">
         <p>
-          <strong>Catriel Escobar</strong> | Full-Stack
+          <strong>Diego Veras</strong> | Back-End
         </p>
       </div>
       <div>
-       <a href="https://github.com/Catriel-Escobar" style="text-decoration: none;">
-          <img src="https://img.shields.io/badge/GitHub-CatrielEscobar-blue" alt="GitHub">
+        <a href="https://github.com/DVTecno" style="text-decoration: none;">
+          <img src="https://img.shields.io/badge/GitHub-DVTecno-blue" alt="GitHub">
         </a>
-        <a href="https://www.linkedin.com/in/catrielescobar/" style="text-decoration: none;">
-          <img src="https://img.shields.io/badge/LinkedIn-Catriel%20Escobar-blue?style=flat-square" alt="LinkedIn">
+        <a href="https://www.linkedin.com/in/diego-cristian-alfredo-v-54b459249/" style="text-decoration: none;">
+          <img src="https://img.shields.io/badge/LinkedIn-Diego_Cristian_Alfredo_Veras-blue" alt="LinkedIn">
         </a>
       </div>
     </td>
@@ -134,24 +136,20 @@ Proyecto creado por:
     </td>
 
   </tr>
-  <tr align="center">
-    <td>
-      <div style="display: flex; align-items: center;">
-        <img src="https://github.com/DVTecno.png?size=100" alt="Diego Veras" style="border-radius: 50%; margin-right: 10px;">
-        <p>
-          <strong>Diego Veras</strong> | Back-End
-        </p>
-      </div>
-      <div>
-        <a href="https://github.com/DVTecno" style="text-decoration: none;">
-          <img src="https://img.shields.io/badge/GitHub-DVTecno-blue" alt="GitHub">
-        </a>
-        <a href="https://www.linkedin.com/in/diego-cristian-alfredo-v-54b459249/" style="text-decoration: none;">
-          <img src="https://img.shields.io/badge/LinkedIn-Diego_Cristian_Alfredo_Veras-blue" alt="LinkedIn">
-        </a>
-      </div>
-    </td>
-  </tr>
 </table>
 
+<p align="center">
+    <img src="https://github.com/MatiasJB95.png?size=100" alt="Matías JB" style="border-radius: 50%; width: 100px; height: 100px;">
+    <br>
+    <strong>Matías JB</strong> | Team Leader
+</p>
+
+<p align="center"> Matías desempeñó un papel esencial como TL en este proyecto, apoyando al equipo en cada etapa. Su capacidad para gestionar los desafíos y mantener la moral alta, incluso en momentos difíciles, fue fundamental. Siempre disponible para escuchar y ofrecer soluciones, su acompañamiento continuo permitió que el equipo avanzara con confianza, garantizando la finalización exitosa del proyecto. </p>
+
+<p align="center">
+    <a href="https://www.linkedin.com/in/matiasjb95/"><img src="https://img.shields.io/badge/LinkedIn-Matias%20JB-blue" alt="LinkedIn"></a>
+    <a href="https://github.com/MatiasJB95"><img src="https://img.shields.io/badge/GitHub-MatiasJB95-blue" alt="GitHub"></a>
+</p>
+
+<br>
 
