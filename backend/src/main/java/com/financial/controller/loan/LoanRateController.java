@@ -1,4 +1,4 @@
-package com.financial.controller;
+package com.financial.controller.loan;
 
 import com.financial.dto.response.LoanRateResponseDTO;
 import com.financial.service.impl.LoanRateServiceImpl;

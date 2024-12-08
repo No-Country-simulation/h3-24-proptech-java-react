@@ -1,4 +1,4 @@
-package com.financial.controller;
+package com.financial.controller.auth;
 
 import com.financial.config.CurrentUser;
 import com.financial.model.User;
@@ -26,13 +26,13 @@ public class VeriffController {
     }
 
     @PostMapping("/decision")
-    public  ResponseEntity webhookDecision(@RequestBody VerificationDecisionResponse payload) {
+    public  ResponseEntity<String> webhookDecision(@RequestBody VerificationDecisionResponse payload) {
         log.info(payload.toString());
         veriffService.decision(payload);
         return ResponseEntity.ok().body("OK");
     }
     @PostMapping("/full-auto")
-    public  ResponseEntity webhookFullAuto(@RequestBody VerificationFullAutoResponse payload) {
+    public  ResponseEntity<String> webhookFullAuto(@RequestBody VerificationFullAutoResponse payload) {
         log.info(payload.toString());
         veriffService.fullAuto(payload);
         return ResponseEntity.ok().body("OK");

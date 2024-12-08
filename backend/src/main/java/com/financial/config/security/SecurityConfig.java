@@ -31,7 +31,7 @@ public class SecurityConfig {
             "/api/forgot-password",
             "/api/reset-password",
             "/api/mp/webhooks/payment",
-            "/api/faq/ask"
+            "/api/faq/ask",
     };
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;

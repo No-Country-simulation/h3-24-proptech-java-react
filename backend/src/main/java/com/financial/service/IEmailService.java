@@ -9,7 +9,6 @@ public interface IEmailService {
     void sendLoanStatusUpdateEmail(String recipientEmail, String userName, String loanStatus);
     // Método para enviar un correo de rechazo de préstamo
     void sendLoanRejectionEmail(String toEmail, String userName, String status, String message);
-    // Método para enviar un correo de solicitud de préstamo
     // Nuevo método para enviar el correo de activación de cuenta
-    //void sendAccountActivationEmail(String toEmail, String activationToken);
+    //void sendAccountActivationEmail(String toEmail);
 }

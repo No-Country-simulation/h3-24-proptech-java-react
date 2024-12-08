@@ -1,4 +1,4 @@
-package com.financial.controller;
+package com.financial.controller.auth;
 
 import com.financial.dto.request.profile.RequestCreateProfileDTO;
 import com.financial.dto.response.profile.ResponseProfileDTO;
