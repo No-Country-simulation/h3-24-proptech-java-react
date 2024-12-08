@@ -17,23 +17,13 @@ import org.thymeleaf.context.Context;
 
 import java.io.UnsupportedEncodingException;
 
+import static com.financial.utils.EmailMessageUtils.*;
+
 @Service
 public class EmailServiceImpl implements IEmailService {
-
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;
     private final AuthServiceImpl authService ;
-
-    public static final String REGISTRATION_CONFIRMATION_SUBJECT = "Gracias por registrarte en nuestro sitio.";
-    public static final String PASSWORD_CHANGE_CONFIRMATION_SUBJECT = "Tu cambio de contraseña fue exitoso.";
-    public static final String PASSWORD_RECOVERY_SUBJECT = "Password Recovery Request";
-    public static final String SUPPORT_NAME = "Soporte";
-    public static final String ADMIN_NAME = "Administración";
-    public static final String WELCOME_TEAM_NAME = "Equipo de Bienvenida";
-    public static final String PASSWORD_RECOVERY_TEMPLATE = "password-recovery";
-    public static final String CONFIRMATION_TEMPLATE = "confirmation";
-    public static final String LOAN_STATUS_NOTIFICATION_TEMPLATE = "loan-status-notification";
-    public static final String DEFAULT_USER_NAME = "Usuario";
 
     public EmailServiceImpl(JavaMailSender javaMailSender, TemplateEngine templateEngine, AuthServiceImpl authService) {
         this.javaMailSender = javaMailSender;
@@ -155,6 +145,7 @@ public class EmailServiceImpl implements IEmailService {
         }
     }
 
+    @Async
     @Override
     public void sendLoanStatusUpdateEmail(String toEmail, String userName, String loanStatus) {
         String subject = LoanStatusEmailUtil.getSubjectForLoanStatus(LoanStatus.valueOf(loanStatus));
@@ -221,6 +212,7 @@ public class EmailServiceImpl implements IEmailService {
         }
     }
 
+    @Async
     @Override
     public void sendLoanRejectionEmail(String toEmail, String userName, String loanStatus, String notification) {
         String subject = LoanStatusEmailUtil.getSubjectForLoanStatus(LoanStatus.valueOf(loanStatus));

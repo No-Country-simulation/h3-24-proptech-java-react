@@ -1,4 +1,4 @@
-package com.financial.controller;
+package com.financial.controller.payment;
 
 import com.financial.config.mapper.GeneratedPaymentMapper;
 import com.financial.dto.response.PaymentResponseDTO;

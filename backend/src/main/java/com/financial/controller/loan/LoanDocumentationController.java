@@ -1,4 +1,4 @@
-package com.financial.controller;
+package com.financial.controller.loan;
 
 import com.financial.dto.request.loan.UploadLoanDocumentationDTO;
 import com.financial.dto.response.loan.LoanDocumentationResponseDTO;

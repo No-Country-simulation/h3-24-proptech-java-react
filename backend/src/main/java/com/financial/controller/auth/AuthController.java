@@ -1,4 +1,4 @@
-package com.financial.controller;
+package com.financial.controller.auth;
 
 import com.financial.config.CurrentUser;
 import com.financial.dto.request.auth.LoginRequestDto;
@@ -11,6 +11,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -37,3 +39,4 @@ public class AuthController {
         return ResponseEntity.ok().body(authService.checkLogin(user.getEmail()));
     }
 }
+
