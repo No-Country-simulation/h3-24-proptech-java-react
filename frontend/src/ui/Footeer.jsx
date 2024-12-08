@@ -1,10 +1,13 @@
 import { Instagram, Linkedin, Facebook, AtSign } from 'lucide-react';
 import styles from './footer.module.css';
-import { Link } from 'react-router-dom';
-import { LogoSvg } from './LogoSvg';
-import TextLogo from './TextLogo';
+import { Link, useNavigate } from 'react-router-dom';
+
+import Logo from './Logo';
+import { TextLogoWhite } from './TextLogoWhite';
 
 export const Footeer = () => {
+  const navigate = useNavigate();
+
   const productLinks = [
     { name: 'Home', path: '/' },
     { name: 'Panel de inversión', path: '/inversor' },
@@ -32,9 +35,9 @@ export const Footeer = () => {
     <footer className={`${styles.footerBackground} text-white py-10`}>
       <div className='container mx-auto px-4 space-y-12'>
         {/* Call to Action Section */}
-        <div className='text-center lg:text-left lg:flex lg:items-center lg:justify-between lg:gap-8'>
+        <div className='text-start flex flex-col w-[90%] m-auto   lg:text-left lg:flex lg:flex-row lg:items-center lg:justify-between lg:gap-8'>
           {/* Contenedor para título y párrafo */}
-          <div>
+          <div className='w-[90%] md:w-auto'>
             <h3 className='text-2xl font-bold mb-4'>
               Tu préstamo personal. Más fácil que nunca.
             </h3>
@@ -43,24 +46,29 @@ export const Footeer = () => {
               necesites, hoy.
             </p>
           </div>
-
+          <div className=' lg:text-center'>
+            <button
+              className=' w-[273px] lg:w-[486px] font-semibold text-white h-[51px] rounded-md bg-[#2962FF] hover:bg-blue-500'
+              onClick={() => navigate('/loan-simulation')}>
+              Simular préstamo
+            </button>
+          </div>
           {/* Botón */}
-          <Link to='/calculator' className={`${styles.ctaButton} inline-block`}>
-            Simula tu préstamo
-          </Link>
         </div>
+
+        <hr />
 
         {/* Logo, Description, and Links Section */}
         <div className='lg:flex lg:justify-between lg:items-start'>
           {/* Logo y Descripción (30%) */}
 
           <div
-            className={`${styles.footerAdjust_LogoDescription} text-center lg:text-left mt-8 lg:mt-0`}>
+            className={`${styles.footerAdjust_LogoDescription}  w-[90%] m-auto md:w-auto text-center lg:text-left mt-8 lg:mt-0 mb-12`}>
             <div className='text-center mb-8 flex items-center gap-1 justify-start'>
-              <LogoSvg />
-              <TextLogo />
+              <Logo />
+              <TextLogoWhite />
             </div>
-            <p className='text-gray-300 text-center lg:text-justify'>
+            <p className='text-gray-300 text-start lg:text-justify'>
               Financia tus compras de hoy, y págalas mañana. Gracias por confiar
               en nuestros activos.
             </p>
@@ -68,13 +76,15 @@ export const Footeer = () => {
 
           {/* Links Section (70%) */}
           <div
-            className={`${styles.footerAdjust_LinkSection} grid grid-cols-2 gap-8 lp:gap-4 text-center lg:text-right`}>
+            className={`${styles.footerAdjust_LinkSection} grid grid-cols-2 gap-8 lp:gap-4 text-start lg:text-right  w-[90%] m-auto md:w-auto`}>
             {[
               { title: 'Producto', links: productLinks },
               { title: 'Legales', links: legalLinks },
             ].map((section) => (
               <div key={section.title}>
-                <h6 className='text-lg font-bold mb-4'>{section.title}</h6>
+                <h6 className='text-sm text-[#E2E8F0] font-bold mb-4'>
+                  {section.title}
+                </h6>
                 <ul className='space-y-2'>
                   {section.links.map((link) => (
                     <li key={link.name}>
@@ -90,7 +100,7 @@ export const Footeer = () => {
         </div>
 
         {/* Línea divisoria y redes sociales */}
-        <hr className='border-white/20 my-8' />
+        <hr />
         <div className='flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0'>
           {/* Copyright */}
           <p className='text-sm text-gray-300 lg:order-1 lg:self-start'>
