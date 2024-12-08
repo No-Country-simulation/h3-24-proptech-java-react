@@ -127,7 +127,7 @@ Proyecto creado por:
         <a href="https://github.com/HikingCarrot7" style="text-decoration: none;">
           <img src="https://img.shields.io/badge/GitHub-HikingCarrot7-blue" alt="GitHub">
         </a>
-        <a href="https://www.linkedin.com/in/nicolas-ibarra-4522b3127/" style="text-decoration: none;">
+        <a href="https://www.linkedin.com/in/nicol%C3%A1s-canul-ibarra/" style="text-decoration: none;">
           <img src="https://img.shields.io/badge/LinkedIn-Nicolás%20Ibarra-blue?style=flat-square" alt="LinkedIn">
         </a>
       </div>
