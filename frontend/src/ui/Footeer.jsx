@@ -35,7 +35,7 @@ export const Footeer = () => {
     <footer className={`${styles.footerBackground} text-white py-10`}>
       <div className='container mx-auto px-4 space-y-12'>
         {/* Call to Action Section */}
-        <div className='text-start flex flex-col w-[90%] m-auto   lg:text-left lg:flex lg:items-center lg:justify-between lg:gap-8'>
+        <div className='text-start flex flex-col w-[90%] m-auto   lg:text-left lg:flex lg:flex-row lg:items-center lg:justify-between lg:gap-8'>
           {/* Contenedor para título y párrafo */}
           <div className='w-[90%] md:w-auto'>
             <h3 className='text-2xl font-bold mb-4'>
@@ -46,9 +46,9 @@ export const Footeer = () => {
               necesites, hoy.
             </p>
           </div>
-          <div className=' text-center'>
+          <div className=' lg:text-center'>
             <button
-              className=' w-[273px] md:w-[486px] font-semibold text-white h-[51px] rounded-md bg-[#2962FF] hover:bg-blue-500'
+              className=' w-[273px] lg:w-[486px] font-semibold text-white h-[51px] rounded-md bg-[#2962FF] hover:bg-blue-500'
               onClick={() => navigate('/loan-simulation')}>
               Simular préstamo
             </button>
