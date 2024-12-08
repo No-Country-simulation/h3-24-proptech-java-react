@@ -3,36 +3,44 @@ import { useForm } from "react-hook-form";
 
 import FormRow from "../../ui/FormRow";
 import SubmitButton from "../../ui/SubmitButton";
+
 import useLoanApplication from "../../features/loan/useLoanApplication";
+import useCurrentUser from "../../features/user/useCurrentUser";
+import useUserProfile from "../../features/user/useUserProfile";
 
 function LoanAddressInformation() {
   const navigate = useNavigate();
+
+  const { user } = useCurrentUser();
+  const { userProfile } = useUserProfile(user?.user?.dni);
   const { addLoanData, loanResults } = useLoanApplication();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm({
     defaultValues: {
-      country: loanResults?.country,
-      state: loanResults?.state,
-      city: loanResults?.city,
-      zipCode: loanResults?.zipCode,
-      road: loanResults?.road,
-      houseNumber: loanResults?.houseNumber,
+      country: userProfile?.country || loanResults?.country || "",
+      state: userProfile?.state || loanResults?.state || "",
+      city: userProfile?.city || loanResults?.city || "",
+      zipCode: loanResults?.zipCode || "",
+      road: userProfile?.road || loanResults?.road || "",
+      houseNumber: userProfile?.houseNumber || loanResults?.houseNumber || "",
     },
   });
 
+  ////////////////////////
+
   async function onSubmit(data) {
-    addLoanData("form3", data);
-    reset();
+    addLoanData("loan-address-info", data);
 
     navigate("/loan/data-summary", {
       replace: true,
     });
   }
+
+  ////////////////////////
 
   return (
     <form

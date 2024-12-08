@@ -12,14 +12,28 @@ const Nav = () => {
   const { user } = useCurrentUser();
 
   return (
-    <nav className='border-b-2 h-16 flex z-50 bg-white border-lightGrey p-4 fixed w-full md:w-full md:max-w-[1920px]'>
+    <nav className='border-b-2 h-16 flex z-50 transition-all xl:px-32 md:px-4 bg-white border-lightGrey p-4 fixed w-full md:w-full md:max-w-[1920px]'>
       <ul className='flex items-center w-full  gap-2'>
-        <li className=' text-xs font-medium flex items-center '>
+        <li className=' text-xs font-medium flex gap-10 items-center '>
           <Link to='/home' className='flex items-center gap-1'>
             {' '}
             <LogoSvg height={28} width={28} />
             <TextLogo height={12.84} width={76.77} />
           </Link>
+          <ul className='hidden xl:flex gap-10'>
+            <li className='text-base text-[#475569]'>
+              <Link to='/loan-simulation'>Solicitar préstamo</Link>
+            </li>
+            <li className='text-base text-[#475569]'>
+              <Link to='/home#quienes-somos'>Quienes somos</Link>
+            </li>
+            <li className='text-base text-[#475569]'>
+              <Link to='/home#prestamos-personales'>Prestamos personales</Link>
+            </li>
+            <li className='text-base text-[#475569]'>
+              <Link to='/home#panel-inversores'>Inversores</Link>
+            </li>
+          </ul>
         </li>
 
         <li className='ml-[auto]  '>
