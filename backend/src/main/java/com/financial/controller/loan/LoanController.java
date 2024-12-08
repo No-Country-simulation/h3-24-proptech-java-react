@@ -1,4 +1,4 @@
-package com.financial.controller;
+package com.financial.controller.loan;
 
 import com.financial.config.CurrentUser;
 import com.financial.dto.request.loan.RequestLoanSimulationDTO;

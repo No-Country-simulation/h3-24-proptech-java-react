@@ -1,4 +1,4 @@
-package com.financial.controller;
+package com.financial.controller.auth;
 
 import com.financial.dto.request.PasswordRecoveryRequestDTO;
 import com.financial.dto.request.PasswordResetRequestDTO;

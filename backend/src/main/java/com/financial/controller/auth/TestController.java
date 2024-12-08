@@ -1,4 +1,4 @@
-package com.financial.controller;
+package com.financial.controller.auth;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
