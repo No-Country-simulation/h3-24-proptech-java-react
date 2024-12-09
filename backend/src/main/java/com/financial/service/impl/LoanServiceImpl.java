@@ -39,6 +39,26 @@ public class LoanServiceImpl implements ILoanService {
     private final UserMapper userMapper;
     private final ProfileMapper profileMapper;
 
+    @Override
+    public List<ResponseLoanDTO> getLoansOfUser(UUID userId) {
+        List<Loan> loans = loanRepository.findByUserId(userId);
+        return loanMapper.toResponseDtoList(loans);
+    }
+
+    @Override
+    public LoanDetailsResponseDTO getLoanDetails(UUID loanId) {
+        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new LoanNotFoundException(loanId));
+        User user = loan.getUser();
+        Profile profile = user.getProfile();
+        var loanDocumentationStatuses = loanDocumentsService.getDocumentationStatusForLoan(loanId);
+        return new LoanDetailsResponseDTO(
+                loanMapper.toResponseDTO(loan),
+                userMapper.toUserResponseDTO(user),
+                profileMapper.toResponseProfileDto(profile),
+                loanDocumentationStatuses
+        );
+    }
+
     @Transactional
     @Override
     public ResponseLoanDTO createLoan(UUID userId, RequestLoanSimulationDTO request) {
@@ -56,20 +76,6 @@ public class LoanServiceImpl implements ILoanService {
                 .build();
         loanRepository.save(loan);
         return loanMapper.toResponseDTO(loan);
-    }
-
-    @Override
-    public LoanDetailsResponseDTO getLoanDetails(UUID loanId) {
-        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new LoanNotFoundException(loanId));
-        User user = loan.getUser();
-        Profile profile = user.getProfile();
-        var loanDocumentationStatuses = loanDocumentsService.getDocumentationStatusForLoan(loanId);
-        return new LoanDetailsResponseDTO(
-                loanMapper.toResponseDTO(loan),
-                userMapper.toUserResponseDTO(user),
-                profileMapper.toResponseProfileDto(profile),
-                loanDocumentationStatuses
-        );
     }
 
     @Override

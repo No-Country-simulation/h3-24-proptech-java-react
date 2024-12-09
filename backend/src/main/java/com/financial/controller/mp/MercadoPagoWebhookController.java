@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -26,10 +27,13 @@ public class MercadoPagoWebhookController {
     @PostMapping
     public ResponseEntity<Void> mpWebhookPayment(@RequestBody MercadoPagoPaymentNotificationDTO notificationDto) {
         if ("payment.created".equals(notificationDto.action())) {
+            log.info("Payment processed from MP: {}", notificationDto.data());
             String mpPaymentId = (String) notificationDto.data().get("id");
-            UUID paymentId = mercadoPagoService.getPaymentIdFromMpPayment(Long.valueOf(mpPaymentId));
-            paymentService.updatePaymentStatus(paymentId, PaymentStatus.PAID);
-            log.info("Payment {} updated to status {}", paymentId, PaymentStatus.PAID);
+            Map<String, Object> paymentMetadata = mercadoPagoService.getMetadataFromMpPayment(Long.valueOf(mpPaymentId));
+            String loanId = paymentMetadata.get("loan_id").toString();
+            int installmentNumber = Integer.parseInt(paymentMetadata.get("installment_number").toString());
+            paymentService.processPayment(UUID.fromString(loanId), installmentNumber);
+            log.info("Installment N° {} for loan {} set to status {}", installmentNumber, loanId, PaymentStatus.PAID);
         }
         return ResponseEntity.ok().build();
     }
