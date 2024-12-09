@@ -3,10 +3,8 @@ package com.financial.service.impl;
 import com.financial.dto.response.mp.PreferenceResponseDTO;
 import com.financial.exception.PaymentNotFoundException;
 import com.financial.exception.ProfileNotFoundException;
-import com.financial.model.Loan;
-import com.financial.model.Payment;
-import com.financial.model.Profile;
-import com.financial.model.User;
+import com.financial.model.*;
+import com.financial.repository.IGeneratedPaymentRepository;
 import com.financial.repository.IPaymentRepository;
 import com.financial.service.IMercadoPagoService;
 import com.mercadopago.MercadoPagoConfig;
@@ -22,16 +20,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class MercadoPagoServiceImpl implements IMercadoPagoService {
     private final IPaymentRepository paymentRepository;
+    private final IGeneratedPaymentRepository generatedPaymentRepository;
 
     @Value("${mercadopago.access_token}")
     private String accessToken;
@@ -46,7 +44,8 @@ public class MercadoPagoServiceImpl implements IMercadoPagoService {
     private String pendingCallbackUrl;
 
     @Value("${mercadopago.webhook_callback_url}")
-    private String webhookUrl ;
+    private String webhookUrl;
+
     @Override
     public PreferenceResponseDTO createPreference(UUID paymentId) {
         try {
@@ -65,8 +64,12 @@ public class MercadoPagoServiceImpl implements IMercadoPagoService {
         if (profile == null) {
             throw new ProfileNotFoundException("User with ID " + user.getUserId() + " does NOT have a profile");
         }
-        String title = String.format("Payment N° %d for loan %s", payment.getInstallmentNumber(), loan.getLoanId().toString());
+        GeneratedPayment generatedPayment = generatedPaymentRepository.findByPaymentId(paymentId).orElseThrow(() -> new PaymentNotFoundException(paymentId));
+        String title = String.format("Cuota N° %d para préstamo con referencia %s", payment.getInstallmentNumber(), loan.getLoanId().toString());
         String description = String.format("Monthly quota with status %s and amount $%s.", payment.getStatus(), payment.getAmount());
+        BigDecimal percentageDiscountDecimal = generatedPayment.getDiscountPercentage().divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP);
+        BigDecimal discountAmount = generatedPayment.getAmount().multiply(percentageDiscountDecimal);
+        BigDecimal unitPrice = generatedPayment.getAmount().subtract(discountAmount);
         PreferenceItemRequest itemRequest = PreferenceItemRequest.builder()
                 .id(paymentId.toString())
                 .title(title)
@@ -74,13 +77,15 @@ public class MercadoPagoServiceImpl implements IMercadoPagoService {
                 .categoryId("quota")
                 .quantity(1)
                 .currencyId("ARS")
-                .unitPrice(payment.getAmount())
+                .unitPrice(unitPrice)
                 .build();
         List<PreferenceItemRequest> items = new ArrayList<>();
         items.add(itemRequest);
         PreferenceRequest preferenceRequest = PreferenceRequest.builder()
                 .items(items)
                 .metadata(new HashMap<>() {{
+                    put("loan_id", generatedPayment.getLoanId());
+                    put("installment_number", generatedPayment.getInstallmentNumber().toString());
                     put("payment_id", paymentId.toString());
                 }})
                 .notificationUrl(webhookUrl)
@@ -110,20 +115,19 @@ public class MercadoPagoServiceImpl implements IMercadoPagoService {
     }
 
     @Override
-    public UUID getPaymentIdFromMpPayment(Long mpPaymentId) {
+    public Map<String, Object> getMetadataFromMpPayment(Long mpPaymentId) {
         try {
             MercadoPagoConfig.setAccessToken(accessToken);
-            return tryGetPaymentIdFromMpPayment(mpPaymentId);
+            return tryGetMetadataFromMpPayment(mpPaymentId);
         } catch (MPException | MPApiException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private UUID tryGetPaymentIdFromMpPayment(Long mpPaymentId) throws MPException, MPApiException {
+    private Map<String, Object> tryGetMetadataFromMpPayment(Long mpPaymentId) throws MPException, MPApiException {
         PaymentClient client = new PaymentClient();
         com.mercadopago.resources.payment.Payment mpPayment = client.get(mpPaymentId);
-        String paymentIdString = (String) mpPayment.getMetadata().get("payment_id");
-        return UUID.fromString(paymentIdString);
+        return mpPayment.getMetadata();
     }
 
 }

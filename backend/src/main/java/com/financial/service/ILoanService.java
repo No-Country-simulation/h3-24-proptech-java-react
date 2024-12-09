@@ -11,6 +11,14 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ILoanService {
+
+    List<ResponseLoanDTO> getLoansOfUser(UUID userId);
+
+    /**
+     * Obtiene detalles de un préstamo.
+     */
+    LoanDetailsResponseDTO getLoanDetails(UUID loanId);
+
     /**
      * Crea un nuevo préstamo basado en los datos proporcionados.
      *
@@ -19,11 +27,6 @@ public interface ILoanService {
      * @throws IllegalArgumentException si el usuario asociado no existe.
      */
     ResponseLoanDTO createLoan(UUID userId, RequestLoanSimulationDTO request);
-
-    /**
-     * Obtiene detalles de un préstamo.
-     */
-    LoanDetailsResponseDTO getLoanDetails(UUID loanId);
 
     /**
      * Actualiza el estado de un préstamo existente.

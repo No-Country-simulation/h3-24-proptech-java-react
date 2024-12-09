@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -22,18 +23,24 @@ import java.util.UUID;
 public class LoanController {
     private final ILoanService loanService;
 
-    @PostMapping("/create")
-    public ResponseEntity<ResponseLoanDTO> createLoan(
-            @CurrentUser User user,
-            @RequestBody RequestLoanSimulationDTO request
-    ) {
-        return ResponseEntity.ok(loanService.createLoan(user.getUserId(), request));
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<ResponseLoanDTO>> getLoansOfUser(@PathVariable UUID userId) {
+        List<ResponseLoanDTO> loans = loanService.getLoansOfUser(userId);
+        return ResponseEntity.ok(loans);
     }
 
     @GetMapping("/{loanId}/details")
     public ResponseEntity<LoanDetailsResponseDTO> loanDetails(@PathVariable UUID loanId) {
         LoanDetailsResponseDTO response = loanService.getLoanDetails(loanId);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<ResponseLoanDTO> createLoan(
+            @CurrentUser User user,
+            @RequestBody RequestLoanSimulationDTO request
+    ) {
+        return ResponseEntity.ok(loanService.createLoan(user.getUserId(), request));
     }
 
     @PostMapping("/{loanId}/refinance")
