@@ -19,7 +19,7 @@ function useRegister() {
       queryClient.setQueryData(['user'], user?.user);
       saveData('token', user?.token);
 
-      navigate('/loan-simulation', {
+      navigate('/home', {
         replace: true,
       });
     },

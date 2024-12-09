@@ -75,6 +75,21 @@ public class LoanServiceImpl implements ILoanService {
     }
 
     @Override
+    public LoanDetailsResponseDTO getLoan(UUID userId) {
+        Loan loan = loanRepository.findLoanByUserId(userId)
+                .orElseThrow(() -> new NotFoundException("Loan not found for user ID: " + userId));
+        User user = loan.getUser();
+        Profile profile = user.getProfile();
+        var loanDocumentationStatuses = loanDocumentsService.getDocumentationStatusForLoan(loan.getLoanId());
+        return new LoanDetailsResponseDTO(
+                loanMapper.toResponseDTO(loan),
+                userMapper.toUserResponseDTO(user),
+                profileMapper.toResponseProfileDto(profile),
+                loanDocumentationStatuses
+        );
+    }
+
+    @Override
     @Transactional
     public void updateLoanStatus(UUID loanId, String status) {
         Loan loan = loanRepository.findById(loanId)
@@ -202,23 +217,23 @@ public class LoanServiceImpl implements ILoanService {
             return new LoanMovedToPendingResultDTO(false, "Monthly income must be at least 3 times than loan quota");
         }
 
-        // There's at least 2 guarantees
-        Set<String> guaranteeIds = loan.getTrackedGuaranteeIds();
-        if (guaranteeIds.size() < 2) {
-            return new LoanMovedToPendingResultDTO(false, "At least 2 guarantees are required");
-        }
+//        // There's at least 2 guarantees
+//        Set<String> guaranteeIds = loan.getTrackedGuaranteeIds();
+//        if (guaranteeIds.size() < 2) {
+//            return new LoanMovedToPendingResultDTO(false, "At least 2 guarantees are required");
+//        }
 
         // The holder and each guarantee have successfully uploaded all the required documents.
         LoanDocumentationStatusDTO holderStatus = loanDocumentsService.getDocumentationStatusForHolderOrGuarantee(loanId, null);
         if (!holderStatus.isAllDocumentsUploaded()) {
             return new LoanMovedToPendingResultDTO(false, "Not all documents are uploaded for the holder");
         }
-        for (String guaranteeId : guaranteeIds) {
-            LoanDocumentationStatusDTO guaranteeStatus = loanDocumentsService.getDocumentationStatusForHolderOrGuarantee(loanId, guaranteeId);
-            if (!guaranteeStatus.isAllDocumentsUploaded()) {
-                return new LoanMovedToPendingResultDTO(false, "Not all documents are uploaded for guarantee " + guaranteeId);
-            }
-        }
+//        for (String guaranteeId : guaranteeIds) {
+//            LoanDocumentationStatusDTO guaranteeStatus = loanDocumentsService.getDocumentationStatusForHolderOrGuarantee(loanId, guaranteeId);
+//            if (!guaranteeStatus.isAllDocumentsUploaded()) {
+//                return new LoanMovedToPendingResultDTO(false, "Not all documents are uploaded for guarantee " + guaranteeId);
+//            }
+//        }
 
         loan.setStatus(LoanStatus.PENDING);
         loanRepository.save(loan);

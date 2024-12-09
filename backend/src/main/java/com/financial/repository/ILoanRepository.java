@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -20,4 +21,6 @@ public interface ILoanRepository extends JpaRepository<Loan, UUID> {
 
     @Query(value = "SELECT * FROM loans l WHERE l.user_id = :userId and l.deleted = false", nativeQuery = true)
     List<Loan> findByUserId(@Param("userId") UUID userId);
+    @Query(value = "SELECT * FROM loans l WHERE l.user_id = :userId and l.deleted = false and l.status NOT IN ('REFUSED', 'DEFAULTED')", nativeQuery = true)
+    Optional<Loan> findLoanByUserId(@Param("userId") UUID userId);
 }

@@ -13,5 +13,6 @@ public interface IProfileService {
     ResponseProfileDTO findProfileByUserIdOrThrowIfNotFound(UUID userId);
     ResponseProfileDTO findProfileByDniOrThrowIfNotFound(String dni);
     ResponseProfileDTO updateProfile(String userIdOrDni, UUID profileId, RequestCreateProfileDTO profileDto);
+    ResponseProfileDTO updateProfile(UUID userIdOrDni, RequestCreateProfileDTO profileDto);
     void deleteProfile(String userIdOrDni, UUID profileId);
 }

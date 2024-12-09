@@ -6,7 +6,7 @@ function AppLayout() {
     <>
       <Nav />
 
-      <main className='pt-[30px]'>
+      <main className='pt-14'>
         <Outlet />
       </main>
     </>

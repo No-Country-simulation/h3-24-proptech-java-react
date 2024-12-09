@@ -44,7 +44,7 @@ public class ProfileServiceImpl implements IProfileService {
     @Override
     public ResponseProfileDTO findProfileByUserIdOrThrowIfNotFound(UUID userId) {
         Profile profile = profileRepository.findByUserId(userId)
-                .orElseThrow(() -> new NotFoundException("Profile not found for user ID: " + userId));
+                .orElseThrow(() -> new ProfileNotFoundException("Profile not found for user ID: " + userId));
         return profileMapper.toResponseProfileDto(profile);
     }
 

@@ -36,6 +36,12 @@ public class LoanController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/get-loan")
+    public ResponseEntity<LoanDetailsResponseDTO> getLoan(@CurrentUser User user) {
+        LoanDetailsResponseDTO response = loanService.getLoan(user.getUserId());
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/{loanId}/refinance")
     public ResponseEntity<ResponseLoanDTO> refinanceLoan(
             @PathVariable UUID loanId,
