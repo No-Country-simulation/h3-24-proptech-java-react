@@ -1,9 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
-import { saveData } from "../../utils/saveDataLocalStore";
-import { loginApi } from "../../services/apiAuth";
+import { saveData } from '../../utils/saveDataLocalStore';
+import { loginApi } from '../../services/apiAuth';
 
 export function useLogin() {
   const navigate = useNavigate();
@@ -17,18 +17,18 @@ export function useLogin() {
     mutationFn: loginApi,
 
     onSuccess: (user) => {
-      toast.success("¡Has iniciado sesión correctamente! 🎉");
+      toast.success('¡Has iniciado sesión correctamente! 🎉');
 
-      queryClient.setQueryData(["user"], user);
-      saveData("token", user?.token);
+      queryClient.setQueryData(['user'], user);
+      saveData('token', user?.token);
 
-      navigate("/loan-simulation", {
+      navigate('/home', {
         replace: true,
       });
     },
 
     onError: () => {
-      toast.error("Correo o contraseña incorrectos");
+      toast.error('Correo o contraseña incorrectos');
     },
   });
 

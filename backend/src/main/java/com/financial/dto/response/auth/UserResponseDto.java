@@ -11,6 +11,7 @@ public record UserResponseDto(
         String name,
         String lastname,
         String dni,
+        Boolean isVerified,
         Set<RoleResponseDto> roles
 ) {
 }

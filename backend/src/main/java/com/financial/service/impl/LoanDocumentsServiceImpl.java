@@ -104,6 +104,7 @@ public class LoanDocumentsServiceImpl implements ILoanDocumentsService {
                     .build()
             );
         }
+        status.setGuaranteeId(guaranteeId);
         status.setAllDocumentsUploaded(allDocumentsUploaded);
         return status;
     }

@@ -1,14 +1,14 @@
-import axios from "axios";
-import { baseURL } from "../utils/constants";
+import axios from 'axios';
+import { baseURL } from '../utils/constants';
 
-import { getData } from "../utils/saveDataLocalStore";
+import { getData } from '../utils/saveDataLocalStore';
 
 export async function loanSimulationApi(data) {
   try {
-    const token = getData("token");
+    const token = getData('token');
 
     if (!token) {
-      throw new Error("No estás autenticado. Inicia sesión para continuar.");
+      throw new Error('No estás autenticado. Inicia sesión para continuar.');
     }
 
     const response = await axios.post(`${baseURL}/api/loans/simulate`, data, {
@@ -19,13 +19,13 @@ export async function loanSimulationApi(data) {
 
     if (response.status !== 200 || !response.data) {
       throw new Error(
-        "Ocurrió un error al procesar la simulación. Intenta nuevamente.."
+        'Ocurrió un error al procesar la simulación. Intenta nuevamente..'
       );
     }
 
     return response.data;
   } catch (error) {
-    console.error("💥Error:", error);
+    console.error('💥Error:', error);
     throw error;
   }
 }
@@ -37,12 +37,12 @@ export async function loanApplicationApi({
   loanSimulation,
 }) {
   try {
-    console.log("dataaa", userDni, profileId, data, loanSimulation);
+    console.log('dataaa', userDni, profileId, data, loanSimulation);
 
-    const token = getData("token");
+    const token = getData('token');
 
     if (!token) {
-      throw new Error("No estás autenticado. Inicia sesión para continuar.");
+      throw new Error('No estás autenticado. Inicia sesión para continuar.');
     }
 
     ////////////////////////////
@@ -62,7 +62,7 @@ export async function loanApplicationApi({
 
     if (loanResponse.status !== 200 || !loanResponse.data) {
       throw new Error(
-        "Ocurrió un error en crear el prestamo. Intenta nuevamente.."
+        'Ocurrió un error en crear el prestamo. Intenta nuevamente..'
       );
     }
 
@@ -81,7 +81,7 @@ export async function loanApplicationApi({
 
     if (profileResponse.status !== 200 || !profileResponse.data) {
       throw new Error(
-        "Ocurrió un error al actualizar el perfil. Intenta nuevamente."
+        'Ocurrió un error al actualizar el perfil. Intenta nuevamente.'
       );
     }
 
@@ -89,8 +89,51 @@ export async function loanApplicationApi({
 
     return { loan: loanResponse.data, profile: profileResponse.data };
   } catch (error) {
-    console.error("💥Error:", error);
+    console.error('💥Error:', error);
     throw error;
+  }
+}
+
+export async function loanCreateApi(requestedAmount, termMonths) {
+  const token = getData('token');
+  if (!token) {
+    throw new Error('No estás autenticado. Inicia sesión para continuar.');
+  }
+  try {
+    const { data } = await axios.post(
+      `${baseURL}/api/loans/create`,
+      { requestedAmount, termMonths },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Error al crear el prestamo');
+  }
+}
+
+export async function getLoanApi() {
+  const token = getData('token');
+  if (!token) {
+    throw new Error('No estás autenticado. Inicia sesión para continuar.');
+  }
+  try {
+    const { data } = await axios.get(`${baseURL}/api/loans/get-loan`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Error al buscar prestamo');
   }
 }
 
@@ -98,10 +141,10 @@ export async function loanApplicationApi({
 
 export async function pendingQuotasApi(loanId) {
   try {
-    const token = getData("token");
+    const token = getData('token');
 
     if (!token) {
-      throw new Error("No estás autenticado. Inicia sesión para continuar.");
+      throw new Error('No estás autenticado. Inicia sesión para continuar.');
     }
 
     const response = await axios.get(
@@ -114,12 +157,35 @@ export async function pendingQuotasApi(loanId) {
     );
 
     if (response.status !== 200 || !response.data) {
-      throw new Error("Ocurrió un error. Intenta nuevamente..");
+      throw new Error('Ocurrió un error. Intenta nuevamente..');
     }
 
     return response.data;
   } catch (error) {
-    console.error("💥Error:", error);
+    console.error('💥Error:', error);
+    throw error;
+  }
+}
+
+export async function loanToPendingApi(loanId) {
+  try {
+    const token = getData('token');
+    if (!token) {
+      throw new Error('No estás autenticado. Inicia sesión para continuar.');
+    }
+    const { data } = await axios.post(
+      `${baseURL}/api/loans/${loanId}/pending`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
     throw error;
   }
 }

@@ -9,13 +9,12 @@ function Auth() {
   const location = useLocation();
   useEffect(() => {
     const response = location.state;
-    console.log(response);
     if (response) {
       setIsLogin(response === 'login');
     }
   }, [location.state]);
   return (
-    <section className='pt-8 w-full'>
+    <section className='w-full'>
       {isLogin ? (
         <Login>
           <p className='text-center mb-3'>

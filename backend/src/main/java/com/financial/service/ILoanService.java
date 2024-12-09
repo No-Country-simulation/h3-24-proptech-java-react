@@ -25,6 +25,8 @@ public interface ILoanService {
      */
     LoanDetailsResponseDTO getLoanDetails(UUID loanId);
 
+    LoanDetailsResponseDTO getLoan(UUID userId);
+
     /**
      * Actualiza el estado de un préstamo existente.
      *

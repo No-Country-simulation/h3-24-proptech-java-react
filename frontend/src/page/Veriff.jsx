@@ -4,11 +4,19 @@ import { useNavigate } from 'react-router-dom';
 
 import Button from '../ui/Button';
 import { useStartVerification } from '../features/auth/useStartVerification';
+import useCurrentUser from '../features/user/useCurrentUser';
 
 function Veriff() {
   const navigate = useNavigate();
   const { startVerification, veriffData, isSuccess, isPending } =
     useStartVerification();
+  const { user } = useCurrentUser();
+  useEffect(() => {
+    console.log(user.user);
+    if (user.user.isVerified) {
+      navigate('/loan/personal-information');
+    }
+  }, [user]);
 
   useEffect(() => {
     let checkWindowClosed;
