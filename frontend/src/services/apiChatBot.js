@@ -9,7 +9,6 @@ export async function sendMessage(message) {
     console.log(data);
     return data;
   } catch (error) {
-    console.error('💥Error:', error);
-    throw error;
+    throw new Error(error);
   }
 }

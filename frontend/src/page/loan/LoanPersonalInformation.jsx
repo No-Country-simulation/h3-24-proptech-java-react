@@ -93,7 +93,7 @@ function LoanPersonalInformation() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className='  max-w-[500px] mx-auto  min-h-[75vh]  flex flex-col gap-5'>
+      className='  max-w-[500px] mx-auto pb-4  min-h-[75vh]  flex flex-col gap-5'>
       <h1 className='text-2xl font-semibold mb-3'>Datos personales</h1>
       <div className='bg-[#F1F5F9] p-5 rounded-xl flex gap-3 w-full '>
         <OctagonAlert className='text-dark w-8 h-8' />

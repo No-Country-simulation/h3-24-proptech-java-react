@@ -20,7 +20,7 @@ function LoanSimulationResult() {
   );
 
   return (
-    <section className=''>
+    <section className='lg:w-[50%] m-auto'>
       {!show ? (
         <>
           <div className=' px-5  py-8 '>
@@ -60,13 +60,6 @@ function LoanSimulationResult() {
                   {formatNumber(loan?.monthlyQuota)}$ USD
                 </span>
               </p>
-
-              {/*   <p className={sameStyle}>
-            Total a pagar
-            <span className=" font-medium text-dark">
-              {formatNumber(loan?.totalPayment)}$ USD
-            </span>
-          </p>*/}
             </div>
 
             <div className='bg-[#F1F5F9] p-5 rounded-xl flex gap-3 '>

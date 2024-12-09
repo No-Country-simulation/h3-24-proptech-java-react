@@ -1,14 +1,14 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { getData } from "../utils/saveDataLocalStore";
-import { baseURL } from "../utils/constants";
+import { getData } from '../utils/saveDataLocalStore';
+import { baseURL } from '../utils/constants';
 
 export async function getCurrentUser() {
   try {
-    const token = getData("token");
+    const token = getData('token');
 
     if (!token) {
-      throw new Error("No estás autenticado. Inicia sesión para continuar.");
+      throw new Error('No estás autenticado. Inicia sesión para continuar.');
     }
 
     const response = await axios.get(`${baseURL}/api/auth/check-login`, {
@@ -18,22 +18,21 @@ export async function getCurrentUser() {
     });
 
     if (response.status !== 200 || !response.data) {
-      throw new Error("Ocurrió un error. Intenta nuevamente..");
+      throw new Error('Ocurrió un error. Intenta nuevamente..');
     }
 
     return response.data;
   } catch (error) {
-    console.error("💥Error:", error);
-    throw error;
+    throw new Error(error);
   }
 }
 
 export async function getUserProfile(userId) {
   try {
-    const token = getData("token");
+    const token = getData('token');
 
     if (!token) {
-      throw new Error("No estás autenticado. Inicia sesión para continuar.");
+      throw new Error('No estás autenticado. Inicia sesión para continuar.');
     }
 
     const response = await axios.get(
@@ -46,12 +45,11 @@ export async function getUserProfile(userId) {
     );
 
     if (response.status !== 200 || !response.data) {
-      throw new Error("Ocurrió un error. Intenta nuevamente..");
+      throw new Error('Ocurrió un error. Intenta nuevamente..');
     }
 
     return response.data;
   } catch (error) {
-    console.error("💥Error:", error);
-    throw error;
+    throw new Error(error);
   }
 }

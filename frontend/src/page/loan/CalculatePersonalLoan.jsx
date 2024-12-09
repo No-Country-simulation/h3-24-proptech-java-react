@@ -50,7 +50,7 @@ function CalculatePersonalLoan() {
   }
 
   return (
-    <section className='px-5  py-8 h-[68vh]'>
+    <section className='px-5  py-8 h-[68vh] md:w-[60%] lg:w-[50%] lg:max-w-[600px]  m-auto'>
       <h1 className=' text-2xl font-semibold mb-5'>
         Calcula tu préstamo personal
       </h1>
@@ -100,8 +100,10 @@ function CalculatePersonalLoan() {
           </select>
         </FormRow>
 
-        <div className=' mt-auto'>
-          <SubmitButton isPending={isPending}>Ver resultados</SubmitButton>
+        <div className=' text-center'>
+          <button className='bg-[#2962FF] w-[90%] sm:max-w-[386px] m-auto hover:bg-[#1F47B4] transition-all text-white px-4 py-2 rounded-md'>
+            Ver resultados
+          </button>
         </div>
       </form>
     </section>

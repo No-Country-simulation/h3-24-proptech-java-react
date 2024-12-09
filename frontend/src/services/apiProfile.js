@@ -22,8 +22,7 @@ export async function updateProfileApi(formdata) {
     console.log(data);
     return data;
   } catch (error) {
-    console.error('💥Error:', error);
-    throw error;
+    throw new Error(error);
   }
 }
 
@@ -43,7 +42,6 @@ export async function getProfileApi() {
     console.log(data);
     return data;
   } catch (error) {
-    console.error('💥Error:', error);
-    throw error;
+    throw new Error(error);
   }
 }

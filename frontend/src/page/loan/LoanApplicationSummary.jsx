@@ -40,7 +40,7 @@ function LoanApplicationSummary() {
   };
 
   return (
-    <div>
+    <div className='md:w-[60%] m-auto lg:w-[50%] lg:max-w-[600px]'>
       <h1 className='text-2xl font-semibold mb-3 text-center'>
         Resumen de datos
       </h1>

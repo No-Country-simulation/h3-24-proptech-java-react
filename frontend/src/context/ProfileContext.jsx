@@ -44,7 +44,7 @@ export const ProfileProvider = ({ children }) => {
             : 'Error al buscar el perfil'
         );
       }
-      toast.error('Error al actualizar la data del perfil!');
+      //   toast.error('Error al actualizar la data del perfil!');
     }
   }
 

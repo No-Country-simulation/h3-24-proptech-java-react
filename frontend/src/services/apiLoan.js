@@ -89,8 +89,7 @@ export async function loanApplicationApi({
 
     return { loan: loanResponse.data, profile: profileResponse.data };
   } catch (error) {
-    console.error('💥Error:', error);
-    throw error;
+    throw new Error(error);
   }
 }
 
@@ -112,7 +111,7 @@ export async function loanCreateApi(requestedAmount, termMonths) {
     console.log(data);
     return data;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     throw new Error('Error al crear el prestamo');
   }
 }
@@ -132,7 +131,7 @@ export async function getLoanApi() {
 
     return data;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     throw new Error('Error al buscar prestamo');
   }
 }
@@ -140,6 +139,7 @@ export async function getLoanApi() {
 ////////////////////////////
 
 export async function pendingQuotasApi(loanId) {
+  // eslint-disable-next-line no-useless-catch
   try {
     const token = getData('token');
 
@@ -162,7 +162,6 @@ export async function pendingQuotasApi(loanId) {
 
     return response.data;
   } catch (error) {
-    console.error('💥Error:', error);
     throw error;
   }
 }
@@ -185,7 +184,6 @@ export async function loanToPendingApi(loanId) {
     console.log(data);
     return data;
   } catch (error) {
-    console.log(error);
-    throw error;
+    throw new Error(error);
   }
 }

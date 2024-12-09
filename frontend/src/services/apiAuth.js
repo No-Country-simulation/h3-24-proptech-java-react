@@ -11,8 +11,7 @@ export async function registerApi(data) {
 
     return response.data;
   } catch (error) {
-    console.error('💥Error:', error);
-    throw error;
+    throw new Error(error);
   }
 }
 
@@ -26,7 +25,6 @@ export async function loginApi(data) {
 
     return response.data;
   } catch (error) {
-    console.error('💥Error:', error);
-    throw error;
+    throw new Error(error);
   }
 }
