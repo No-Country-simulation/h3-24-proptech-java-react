@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ILoanService {
+
+    List<ResponseLoanDTO> getLoansOfUser(UUID userId);
+
     /**
      * Crea un nuevo préstamo basado en los datos proporcionados.
      *

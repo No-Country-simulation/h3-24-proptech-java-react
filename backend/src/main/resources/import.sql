@@ -17,7 +17,7 @@ INSERT INTO loans (loan_id,interest_rate,status,term_months,monthly_quota,total_
 -- INSERT INTO loans (loan_id,interest_rate,status,term_months,monthly_quota,total_amount,user_id,requested_amount,created_at,created_by,last_modified_at,last_modified_by,deleted,date_accepted) VALUES ('ed740a82-12ae-4588-bf37-1a5debac62f2',18.45,'INITIATED',6,2121.70,12732.00,'5244d5da-f08b-44fb-bcc9-3ecb5e561e69',11500.00,'2024-11-17','SYSTEM','2024-11-17','SYSTEM',false,'2024-11-21');
 -- INSERT INTO loans (loan_id,interest_rate,status,term_months,monthly_quota,total_amount,user_id,requested_amount,created_at,created_by,last_modified_at,last_modified_by,deleted,date_accepted) VALUES ('3340d766-a958-4f9d-b2f3-c6ddaa02327c',18.45,'INITIATED',6,2121.70,12732.00,'5244d5da-f08b-44fb-bcc9-3ecb5e561e69',11500.00,'2024-11-17','SYSTEM','2024-11-17','SYSTEM',false,'2024-11-21');
 
-INSERT INTO payments (payment_id, loan_id, cloud_file_id, amount, due_date, pay_limit_date, payment_date, status, late_fee, late_fee_applied, interest_rate, paid_on_time, installment_number, is_generated) VALUES ('3f2b23d1-1de0-4997-ba16-96e2dfb9c839', '3340d766-a958-4f9d-b2f3-c6ddaa02327c', NULL, 2121.70, '2024-12-15', '2024-12-10', NULL, 'PENDING', 0, false, 0.03, false, 1, false);
+INSERT INTO payments (payment_id, loan_id, cloud_file_id, amount, due_date, pay_limit_date, payment_date, status, late_fee, late_fee_applied, interest_rate, paid_on_time, installment_number, is_generated) VALUES ('3f2b23d1-1de0-4997-ba16-96e2dfb9c839', '6e239572-72bd-4d41-ba1c-07ca234d9399', NULL, 2121.70, '2024-12-15', '2024-12-10', NULL, 'PENDING', 0, false, 0.03, false, 1, false);
 
 -- HOLDER
 -- IDENTITY

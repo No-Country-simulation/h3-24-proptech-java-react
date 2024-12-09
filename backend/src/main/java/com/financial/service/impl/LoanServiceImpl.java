@@ -40,6 +40,26 @@ public class LoanServiceImpl implements ILoanService {
     private final UserMapper userMapper;
     private final ProfileMapper profileMapper;
 
+    @Override
+    public List<ResponseLoanDTO> getLoansOfUser(UUID userId) {
+        List<Loan> loans = loanRepository.findByUserId(userId);
+        return loanMapper.toResponseDtoList(loans);
+    }
+
+    @Override
+    public LoanDetailsResponseDTO getLoanDetails(UUID loanId) {
+        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new LoanNotFoundException(loanId));
+        User user = loan.getUser();
+        Profile profile = user.getProfile();
+        var loanDocumentationStatuses = loanDocumentsService.getDocumentationStatusForLoan(loanId);
+        return new LoanDetailsResponseDTO(
+                loanMapper.toResponseDTO(loan),
+                userMapper.toUserResponseDTO(user),
+                profileMapper.toResponseProfileDto(profile),
+                loanDocumentationStatuses
+        );
+    }
+
     @Transactional
     @Override
     public ResponseLoanDTO createLoan(UUID userId, RequestLoanSimulationDTO request) {
@@ -60,19 +80,6 @@ public class LoanServiceImpl implements ILoanService {
         return loanMapper.toResponseDTO(loan);
     }
 
-    @Override
-    public LoanDetailsResponseDTO getLoanDetails(UUID loanId) {
-        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new LoanNotFoundException(loanId));
-        User user = loan.getUser();
-        Profile profile = user.getProfile();
-        var loanDocumentationStatuses = loanDocumentsService.getDocumentationStatusForLoan(loanId);
-        return new LoanDetailsResponseDTO(
-                loanMapper.toResponseDTO(loan),
-                userMapper.toUserResponseDTO(user),
-                profileMapper.toResponseProfileDto(profile),
-                loanDocumentationStatuses
-        );
-    }
 
     @Override
     public LoanDetailsResponseDTO getLoan(UUID userId) {
@@ -157,7 +164,6 @@ public class LoanServiceImpl implements ILoanService {
         loanFound.setStatus(LoanStatus.valueOf(dto.status()));
         loanRepository.save(loanFound);
         // TODO: AGREGAR EMAIL
-        emailService.sendLoanStatusUpdateEmail(loanFound.getUser().getEmail(), loanFound.getUser().getName(), LoanStatus.PRE_APPROVED.name());
         return "Préstamo actualizado correctamente";
     }
 
@@ -169,7 +175,7 @@ public class LoanServiceImpl implements ILoanService {
         }
         loanFound.setStatus(LoanStatus.PRE_APPROVED);
         loanRepository.save(loanFound);
-        emailService.sendLoanStatusUpdateEmail(loanFound.getUser().getEmail(), loanFound.getUser().getName(), LoanStatus.PRE_APPROVED.name());
+        //  TODO: ENVIAR UN EMAIL
         return "Préstamo pre aprobado correctamente!";
     }
 
@@ -181,7 +187,8 @@ public class LoanServiceImpl implements ILoanService {
         }
         loanFound.setStatus(LoanStatus.APPROVED);
         loanRepository.save(loanFound);
-        emailService.sendLoanStatusUpdateEmail(loanFound.getUser().getEmail(), loanFound.getUser().getName(), LoanStatus.APPROVED.name());
+        // TODO: ENVIAR UN EMAIL
+        // TODO: GENERAR CUOTAS
         paymentService.createPaymentSchedule(loanFound.getLoanId());
         return "Préstamo aprobado correctamente!";
     }
@@ -191,7 +198,7 @@ public class LoanServiceImpl implements ILoanService {
         Loan loanFound = loanRepository.findById(dto.loanId()).orElseThrow(() -> new NotFoundException("Préstamo no encontrado"));
         loanFound.setStatus(LoanStatus.REFUSED);
         loanRepository.save(loanFound);
-        emailService.sendLoanRejectionEmail(loanFound.getUser().getEmail(), loanFound.getUser().getName(), LoanStatus.REFUSED.name(), dto.message());
+        // TODO: enviar el email al usuario
         return "Préstamo declinado correctamente!";
     }
 
@@ -217,27 +224,27 @@ public class LoanServiceImpl implements ILoanService {
             return new LoanMovedToPendingResultDTO(false, "Monthly income must be at least 3 times than loan quota");
         }
 
-//        // There's at least 2 guarantees
-//        Set<String> guaranteeIds = loan.getTrackedGuaranteeIds();
-//        if (guaranteeIds.size() < 2) {
-//            return new LoanMovedToPendingResultDTO(false, "At least 2 guarantees are required");
-//        }
+        // There's at least 2 guarantees
+        Set<String> guaranteeIds = loan.getTrackedGuaranteeIds();
+        if (guaranteeIds.size() < 2) {
+            return new LoanMovedToPendingResultDTO(false, "At least 2 guarantees are required");
+        }
 
         // The holder and each guarantee have successfully uploaded all the required documents.
         LoanDocumentationStatusDTO holderStatus = loanDocumentsService.getDocumentationStatusForHolderOrGuarantee(loanId, null);
         if (!holderStatus.isAllDocumentsUploaded()) {
             return new LoanMovedToPendingResultDTO(false, "Not all documents are uploaded for the holder");
         }
-//        for (String guaranteeId : guaranteeIds) {
-//            LoanDocumentationStatusDTO guaranteeStatus = loanDocumentsService.getDocumentationStatusForHolderOrGuarantee(loanId, guaranteeId);
-//            if (!guaranteeStatus.isAllDocumentsUploaded()) {
-//                return new LoanMovedToPendingResultDTO(false, "Not all documents are uploaded for guarantee " + guaranteeId);
-//            }
-//        }
+        for (String guaranteeId : guaranteeIds) {
+            LoanDocumentationStatusDTO guaranteeStatus = loanDocumentsService.getDocumentationStatusForHolderOrGuarantee(loanId, guaranteeId);
+            if (!guaranteeStatus.isAllDocumentsUploaded()) {
+                return new LoanMovedToPendingResultDTO(false, "Not all documents are uploaded for guarantee " + guaranteeId);
+            }
+        }
 
         loan.setStatus(LoanStatus.PENDING);
         loanRepository.save(loan);
-        emailService.sendLoanStatusUpdateEmail(loan.getUser().getEmail(), loan.getUser().getName(), LoanStatus.PENDING.name());
+
         return new LoanMovedToPendingResultDTO(true, "Loan successfully moved to PENDING status");
     }
 
