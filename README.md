@@ -75,7 +75,7 @@ Este sitio web se presta a recibir la información, que un cliente tiene que pro
 <p>La documentación para el cliente y un video a modo de presentación se encuentra en un archivo de drive compartido en el cual se podrá acceder a toda la información y flujos del proyecto</p>
 
 <img src="https://res.cloudinary.com/dbai2k4fx/image/upload/v1733762665/imagen_documentacion_n5ywdw.png" alt="imagen que dice documentación para el cliente">
-<a href="https://drive.google.com/drive/folders/1cm2A9T_efStivOhEFVLYhzpFN-l-jBoG">Ver Documentación y Vídeo de presentación</a>
+<a href="https://drive.google.com/drive/u/1/folders/1EhN7MZSECpnFU-psKvexuB8CIMjc4xRb">Ver Documentación y Vídeo de presentación</a>
 
 <br>
 
