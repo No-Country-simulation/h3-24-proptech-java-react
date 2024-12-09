@@ -1,6 +1,4 @@
-import { LogOut } from 'lucide-react';
 import AccountData from '../features/user/AccountData';
-import Button from '../ui/Button';
 
 function PersonalSettings() {
   return (
@@ -11,16 +9,6 @@ function PersonalSettings() {
       </div>
 
       <AccountData />
-
-      <div className=' p-5'>
-        <h2 className=' text-lg font-bold mb-4'>Ajustes de sesión</h2>
-        <Button type='logOut' onClick={() => localStorage.removeItem('token')}>
-          <div className='flex gap-2 items-center'>
-            <LogOut className='w-[20px] h-[20px]' />
-            Cerrar Sesión
-          </div>
-        </Button>
-      </div>
     </section>
   );
 }
