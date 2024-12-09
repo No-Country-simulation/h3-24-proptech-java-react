@@ -26,6 +26,8 @@ function LoanApplicationSummary() {
 
   useEffect(() => {
     rellenarDataProfile();
+  }, [userProfile]);
+  useEffect(() => {
     getLoan();
   }, []);
 
@@ -33,28 +35,9 @@ function LoanApplicationSummary() {
     if (!userProfile) getProfile();
   }, []);
 
-  // useEffect(
-  //   function () {
-  //     if (!loan) navigate('/messagesStartingLoan', { replace: true });
-  //   },
-  //   [loan, loanSimulationData, userProfile, navigate]
-  // );
-
-  /////////////////////////
-
-  // const getMergedData = () => {
-  //   const mergedData = { ...loan };
-
-  //   for (const key in userProfile) {
-  //     if (!mergedData[key]) {
-  //       mergedData[key] = userProfile[key];
-  //     }
-  //   }
-
-  //   return mergedData;
-  // };
-
-  /////////////////////////
+  const handleUpdateProfile = () => {
+    updateProfile().then(() => navigate('/loan/upload-documentation'));
+  };
 
   return (
     <div>
@@ -110,27 +93,6 @@ function LoanApplicationSummary() {
           CBU / CVU
           <span className=' font-medium'>{dataProfile.bankAccountCbu}</span>
         </p>
-
-        {/* <div className="flex items-center gap-3">
-          <div className=" p-2  bg-dark rounded-xl">
-            <CirclePlus className=" text-light w-[25px] h-[25px]" />
-          </div>
-
-          <div>
-            <p className="  text-xs">Adjunte 3 documentos de:</p>
-            <p className="  font-medium text-base">Recibos de sueldos</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className=" p-2  bg-dark rounded-xl">
-            <CirclePlus className=" text-light w-[25px] h-[25px]" />
-          </div>
-
-          <div>
-            <p className="  text-xs">Adjunte 1 documento de:</p>
-            <p className="  font-medium text-base">Factura de servicios</p>
-          </div>
-        </div> */}
       </div>
 
       <div className='border-t-2 border-lightGrey py-4 mb-4 flex flex-col gap-2'>
@@ -217,7 +179,7 @@ function LoanApplicationSummary() {
         <Button type='secondary' to='/loan/personal-information'>
           Modificar datos
         </Button>
-        <Button type='secondary' onClick={updateProfile}>
+        <Button type='secondary' onClick={handleUpdateProfile}>
           Continuar
         </Button>
       </div>

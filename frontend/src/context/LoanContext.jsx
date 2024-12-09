@@ -3,8 +3,11 @@ import {
   getLoanApi,
   loanCreateApi,
   loanSimulationApi,
+  loanToPendingApi,
 } from '../services/apiLoan';
 import toast from 'react-hot-toast';
+import { uploadDocumentation } from '../services/apiLoanDoc';
+import { isAxiosError } from 'axios';
 
 const LoanContext = createContext();
 
@@ -18,6 +21,8 @@ export const useLoan = () => {
 
 export const LoanProvider = ({ children }) => {
   const [loan, setLoan] = useState(null);
+  const [allDocumentationUploaded, setAllDocumentationUploaded] =
+    useState(false);
   const [loanSimulation, setLoanSimulation] = useState(null);
   const [loanFormData, setLoanFormData] = useState(null);
   const [isPending, setIsPending] = useState(false);
@@ -56,19 +61,51 @@ export const LoanProvider = ({ children }) => {
 
   const getLoan = async () => {
     try {
-      console.log('get loan');
       const res = await getLoanApi();
-      setLoan(res);
+      setLoan(res.loan);
+      const newArray = res.documentationStatuses.filter(
+        (l) => l.allDocumentsUploaded === true
+      );
+      setAllDocumentationUploaded(newArray.length >= 3);
     } catch (error) {
       console.log(error);
-      toast.error('Errror al buscar el prestamo.');
     }
   };
 
   function setDataProfileForms(data) {
-    console.log(data);
     setDataProfile({ ...dataProfile, ...data });
   }
+
+  const uploadDoc = (arrayPromise) => {
+    setIsPending(true);
+    return Promise.allSettled(arrayPromise)
+      .then(() => {
+        setIsPending(false);
+        toast.success('Documentacion cargada con exito!✔️');
+        return true;
+      })
+      .catch((error) => {
+        toast.error('Error al cargar la documentacion! ❌');
+        console.error('Error en la ejecución de las promesas', error);
+        setIsPending(false);
+        return false;
+      });
+  };
+
+  const loanToPending = async (loanId) => {
+    try {
+      const res = await loanToPendingApi(loanId);
+      if (res.movedSuccessfullyToPendingStatus) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
+      return res.movedSuccessfullyToPendingStatus;
+    } catch (error) {
+      if (isAxiosError(error) && error.response)
+        toast.error(error.response.data.message);
+    }
+  };
 
   return (
     <LoanContext.Provider
@@ -78,11 +115,14 @@ export const LoanProvider = ({ children }) => {
         loanFormData,
         isPending,
         dataProfile,
+        allDocumentationUploaded,
         setLoanFormData,
         simulateLoan,
         createLoan,
         setDataProfileForms,
         getLoan,
+        uploadDoc,
+        loanToPending,
       }}>
       {children}
     </LoanContext.Provider>

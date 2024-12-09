@@ -2,21 +2,37 @@ import { useEffect } from 'react';
 import { useLoan } from '../../context/LoanContext';
 import { LoanDocumentationPending } from './LoanDocumentationPending';
 import { LoanDocumentationPreApproved } from './LoanDocumentationPreApproved';
+import { useNavigate } from 'react-router-dom';
 
 export const LoanDocumentation = () => {
-  const { loan, getLoan } = useLoan();
+  const navigate = useNavigate();
+  const { loan, getLoan, allDocumentationUploaded } = useLoan();
   useEffect(() => {
     getLoan();
   }, []);
-  console.log(loan);
+  useEffect(() => {
+    if (!loan) {
+      navigate('/home');
+    } else if (loan?.status === 'INITIATED') {
+      return;
+    } else if (loan?.status === 'PENDING') {
+      navigate('/loan/loan-send-information');
+    } else if (loan?.status === 'APPROVED') {
+      navigate('/menu/paymentQuotas');
+    } else if (allDocumentationUploaded) {
+      navigate('/loan/loan-send-information');
+    }
+  }, [loan]);
+
   return (
-    <>
-      <div>Carga la data</div>
-      {loan?.status === 'PENDING' ? (
-        <LoanDocumentationPending />
+    <div className='pt-8  h-[100vh]'>
+      {loan?.status === 'INITIATED' ? (
+        <LoanDocumentationPending loanId={loan.loanId} />
       ) : (
-        <LoanDocumentationPreApproved />
+        loan?.status === 'PRE_APPROVED' && (
+          <LoanDocumentationPreApproved loanId={loan.loanId} />
+        )
       )}
-    </>
+    </div>
   );
 };

@@ -30,6 +30,7 @@ import { ChatBot } from './features/chat/ChatBot';
 import { LoanProvider } from './context/LoanContext';
 import { ProfileProvider } from './context/ProfileContext';
 import { LoanDocumentation } from './page/loan/LoanDocumentation';
+import { LoanSendInfo } from './page/loan/LoanSendInfo';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -108,6 +109,10 @@ function App() {
                     <Route
                       path='upload-documentation'
                       element={<LoanDocumentation />}
+                    />
+                    <Route
+                      path='loan-send-information'
+                      element={<LoanSendInfo />}
                     />
                   </Route>
                 </Route>

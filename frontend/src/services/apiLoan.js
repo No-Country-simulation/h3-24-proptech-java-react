@@ -130,7 +130,7 @@ export async function getLoanApi() {
     });
     console.log(data);
 
-    return data.loan;
+    return data;
   } catch (error) {
     console.log(error);
     throw new Error('Error al buscar prestamo');
@@ -163,6 +163,29 @@ export async function pendingQuotasApi(loanId) {
     return response.data;
   } catch (error) {
     console.error('💥Error:', error);
+    throw error;
+  }
+}
+
+export async function loanToPendingApi(loanId) {
+  try {
+    const token = getData('token');
+    if (!token) {
+      throw new Error('No estás autenticado. Inicia sesión para continuar.');
+    }
+    const { data } = await axios.post(
+      `${baseURL}/api/loans/${loanId}/pending`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
     throw error;
   }
 }

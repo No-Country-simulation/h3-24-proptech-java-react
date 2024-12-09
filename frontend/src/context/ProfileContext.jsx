@@ -25,9 +25,11 @@ export const ProfileProvider = ({ children }) => {
     try {
       const res = await updateProfileApi(dataProfile);
       setProfile(res);
+      return true;
     } catch (error) {
       console.log(error);
       toast.error('Error al actualizar la data del perfil!');
+      return false;
     }
   }
   async function getProfile() {

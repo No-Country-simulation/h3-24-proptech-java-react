@@ -14,7 +14,13 @@ function StartLoanRequest() {
   }, []);
 
   useEffect(() => {
-    if (loan) navigate('/loan/veriff', { replace: true });
+    if (loan) {
+      if (loan.status === 'PENDING') {
+        navigate('/loan/loan-send-information', { replace: true });
+      } else {
+        navigate('/loan/veriff', { replace: true });
+      }
+    }
   }, [loan]);
 
   const handleCreateLoan = () => {
