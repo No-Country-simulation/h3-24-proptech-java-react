@@ -8,16 +8,63 @@
 <br>
 
 
-![Estado del Proyecto](https://img.shields.io/badge/Estado-Lanzamiento-green) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green) ![Java](https://img.shields.io/badge/Java-007396?logo=java&logoColor=white&color=007396) ![Spring Boot](https://img.shields.io/badge/Spring--Boot-6DB33F?logo=spring-boot&logoColor=white&color=6DB33F) ![Spring Security](https://img.shields.io/badge/Spring--Security-6DB33F?logo=spring-security&logoColor=white&color=6DB33F) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?logo=postgresql&logoColor=white&color=336791) ![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB&color=61DAFB) ![JWT](https://img.shields.io/badge/JWT-black?logo=json-web-tokens&logoColor=white&color=black) ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?logo=swagger&logoColor=black&color=85EA2D) ![Postman](https://img.shields.io/badge/Postman-FF6C37?logo=postman&logoColor=white&color=FF6C37) ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-005F0F?logo=thymeleaf&logoColor=white&color=005F0F) ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?logo=tailwindcss&logoColor=white&color=06B6D4) ![Veriff](https://img.shields.io/badge/Veriff-14E5C5?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDUxMiA1MTIiPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0yNTYuMDcgMEwxMy41MTUgMTkzLjkxOWw5OS44MzQgNzIuMTU1IDIwMi41MjMtMTQ3Ljg5NS0yMC44MjEtMjQuOTQtMTU4LjE3MSAxMTQuOTkxIDE0Ny42Ny0xMzAuMzU0TDI1Ni4wNyAwem0tMjAuMjQ4IDQxNy41MzRMMyAxNzcuNDQ4bDQwLjM5NiAzMC45NTQgMTkyLjYzIDE0MC44MzctMTQ3LjEzIDEwOS42MjQgMjAuNDMgMjQuOTQgMTI2LjY5Mi05Mi44NjggMTYyLjYwMiAxMjcuNzQ5LTEzLjgxNyAxMi40MDF6Ii8+PC9zdmc+&logoColor=white&color=00302C) ![OpenAI](https://img.shields.io/badge/OpenAI-000000?logo=openai&logoColor=white&color=000000) ![PGVector](https://img.shields.io/badge/PGVector-336791?logo=postgresql&logoColor=white&color=336791) ![Google API](https://img.shields.io/badge/Google_API-4285F4?logo=google&logoColor=white&color=4285F4) ![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white&color=2496ED) ![Docker Compose](https://img.shields.io/badge/Docker%20Compose-2496ED?logo=docker&logoColor=white&color=2496ED) ![Figma](https://img.shields.io/badge/Figma-000000?logo=figma&logoColor=white&color=000000) ![Git](https://img.shields.io/badge/Git-F05032?logo=git&logoColor=white&color=F05032) ![Slack](https://img.shields.io/badge/Slack-4A154B?logo=slack&logoColor=white&color=4A154B) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white&color=3178C6)
+![Estado del Proyecto](https://img.shields.io/badge/Estado-Lanzamiento-green) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green) ![Java](https://img.shields.io/badge/Java-007396?logo=java&logoColor=white&color=007396) ![Spring Boot](https://img.shields.io/badge/Spring--Boot-6DB33F?logo=spring-boot&logoColor=white&color=6DB33F) ![Spring Security](https://img.shields.io/badge/Spring--Security-6DB33F?logo=spring-security&logoColor=white&color=6DB33F) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?logo=postgresql&logoColor=white&color=336791) ![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB&color=61DAFB) ![JWT](https://img.shields.io/badge/JWT-black?logo=json-web-tokens&logoColor=white&color=black) ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?logo=swagger&logoColor=black&color=85EA2D) ![Postman](https://img.shields.io/badge/Postman-FF6C37?logo=postman&logoColor=white&color=FF6C37) ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-005F0F?logo=thymeleaf&logoColor=white&color=005F0F) ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?logo=tailwindcss&logoColor=white&color=06B6D4) ![Veriff](https://img.shields.io/badge/Veriff-14E5C5?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDUxMiA1MTIiPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0yNTYuMDcgMEwxMy41MTUgMTkzLjkxOWw5OS44MzQgNzIuMTU1IDIwMi41MjMtMTQ3Ljg5NS0yMC44MjEtMjQuOTQtMTU4LjE3MSAxMTQuOTkxIDE0Ny42Ny0xMzAuMzU0TDI1Ni4wNyAwem0tMjAuMjQ4IDQxNy41MzRMMyAxNzcuNDQ4bDQwLjM5NiAzMC45NTQgMTkyLjYzIDE0MC44MzctMTQ3LjEzIDEwOS42MjQgMjAuNDMgMjQuOTQgMTI2LjY5Mi05Mi44NjggMTYyLjYwMiAxMjcuNzQ5LTEzLjgxNyAxMi40MDF6Ii8+PC9zdmc+&logoColor=white&color=00302C) ![OpenAI](https://img.shields.io/badge/OpenAI-000000?logo=openai&logoColor=white&color=000000) ![PGVector](https://img.shields.io/badge/PGVector-336791?logo=postgresql&logoColor=white&color=336791) ![Google API](https://img.shields.io/badge/Google_API-4285F4?logo=google&logoColor=white&color=4285F4) ![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white&color=2496ED) ![Docker Compose](https://img.shields.io/badge/Docker%20Compose-2496ED?logo=docker&logoColor=white&color=2496ED) ![Figma](https://img.shields.io/badge/Figma-000000?logo=figma&logoColor=white&color=000000) ![Git](https://img.shields.io/badge/Git-F05032?logo=git&logoColor=white&color=F05032) ![Slack](https://img.shields.io/badge/Slack-4A154B?logo=slack&logoColor=white&color=4A154B) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white&color=3178C6) 
 
 
 <h1 align="center">Equipo h3-24-proptech-java-react</h1>
 
+<h2>Resumen del Sitio Web</h2>
+<h3>Descripción general:</h3>
+<p>Financia.al es un sitio web el cual está orientado a captar clientes y facilitar el trabajo de una prestataria.
+El sitio web está pensado para facilitar el trabajo de cargar sus propios datos a los clientes. Ordenando la forma en la que se pide estos datos, se busca filtrar a posibles clientes y gente que no cumpla con los requisitos mínimos de una manera más rápida para enfocar las energías de la empresa en los que verdaderamente pudieran convertirse en clientes a futuro.<br>
+En cuanto al administrador, se le brindan herramientas de organización automáticas. Estas permiten acelerar esos controles y devolverle una respuesta positiva o negativa a los clientes. De ser negativa siempre se prioriza la claridad del porqué fue negada, para que dicho cliente pueda explicar su situación y proseguir con el préstamo de forma normal.</p>
+<h3>Objetivos principales:</h3>
+<p>El objetivo principal del sitio web es facilitar la carga de datos y la lectura de dicha información. Mientras que a su vez busca ampliar el nivel de posibles clientes llegando a toda Latinoamérica. 
+Dentro de los objetivos principales se priorizó la verificación de identidad, La claridad a la hora de cargar datos y la respuesta permanente que se le da a cualquier persona que esté intentando conseguir un préstamo.
+Este sitio web se presta a recibir la información, que un cliente tiene que proporcionar para acceder al préstamo, en pantallas ordenadas y con claridad. Una vez completada toda la primera instancia, el administrador podrá validar esos datos de manera manual en función de si desea probarlo o negarle el préstamo. Una vez aclarado esto se pasará una segunda y tercera instancia, las cuales son similares únicamente el tipo de información que el cliente deberá cargar.
+</p>
+
+<h3>Flujos de navegación:</h3> 
+<p>El flujo del cliente y el administrador obviamente están separados y nunca se podrán cruzar de manera azarosa.</p>
+<h4>Flujo de navegación del cliente:</h4>
+<ol>
+  <li>Página de inicio.</li>
+  <li>Calculadora.</li>
+  <li>Logueo o registro.</li>
+  <li>Ver el resultado del cálculo hecho.</li>
+  <li>Ingresar todos sus datos personales.</li>
+  <li>Recibir una respuesta afirmativa del administrador.</li>
+  <li>Continuar con  la carga de sus datos.</li>
+  <li>Acceder a un préstamo.</li>
+  <li>Cargar los comprobantes de pago y tener su seguimiento mensual en el sitio web.</li>
+</ol>
+ 
+<h4>Flujo de navegación del Administrador:</h4>
+<p>Se lo loguea de forma inmediata, apenas ingresa a la página de inicio y de ahí su flujo es:</p>
+<ol>
+  <li>Mediante un menú podrá acceder a las diferentes etapas de los préstamos.</li>
+  <li>Acceder a una ficha de cliente.</li>
+  <li>Podrá revisar todos los datos, ya sean redactados (texto) o cargados (PDF o imágenes).</li>
+  <li>Aceptará o rechazará.
+      <ul>
+      <li>Si acepta. Le permitirá al cliente que cargue la siguiente tanda de datos.</li>
+      <li>Si rechaza. Podrá aclarar cuál fue el motivo y esperar la respuesta del cliente.</li>
+      </ul></li>
+</ol>
+
+<h3>Panel de Administración y Gestión de Datos</h3>
+<h4>Función del administrador:</h4>
+<p>La función del administrador es la segunda más importante de la web luego del usuario.  allí una persona de la empresa se encargará de revisar toda la información cargada por cada uno de los posibles clientes y de validar todas las instancias. Desde luego ninguna va a poder ser empezada sin una previa confirmación de dicha persona. A su vez pensamos en una interfaz que le permita aclarar las decisiones de rechazo.</p>
+<h4>Herramientas disponibles:</h4>
+<p>Las herramientas son 100% de la web y en ella se puede Simplificar toda la experiencia a la hora de validar la información. Con tan solo ingresar en su perfil, de administrador, encontrarás toda la información necesaria para poder aceptar  un préstamo y en lugares donde los campos estén faltando se les marcará de forma visual.</p>
+
+
+## Documentación y vídeo de presentación
+
+<p>La documentación para el cliente y un video a modo de presentación se encuentra en un archivo de drive compartido en el cual se podrá acceder a toda la información y flujos del proyecto</p>
+<a href="https://drive.google.com/drive/folders/1cm2A9T_efStivOhEFVLYhzpFN-l-jBoG">Ver Documentación y Vídeo de presentación</a>
+
 <br>
-
-
-
-
 
 ## Organización
 
