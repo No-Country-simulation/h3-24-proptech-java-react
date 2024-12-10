@@ -18,10 +18,6 @@ export async function loginApi(data) {
   try {
     const response = await axios.post(`${baseURL}/api/auth/login`, data);
 
-    if (response.status !== 200 || !response.data) {
-      throw new Error('Credenciales incorrectas');
-    }
-
     return response.data;
   } catch (error) {
     throw new Error(error);

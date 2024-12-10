@@ -9,9 +9,11 @@ import { TextLogoWhite } from '../../ui/TextLogoWhite';
 import Logo from '../../ui/Logo';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useUser } from '../../context/UserContext';
 
 const Login = ({ children }) => {
-  const { login, isPending: isLoading } = useLogin();
+  // const { login, isPending: isLoading } = useLogin();
+  const { login, isPending: isLoading } = useUser();
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     const handleResize = () => {
