@@ -131,13 +131,14 @@ public class EmailServiceImpl implements IEmailService {
     public void sendLoanStatusUpdateEmail(String toEmail, String userName, String loanStatus) {
         String subject = LoanStatusEmailUtil.getSubjectForLoanStatus(LoanStatus.valueOf(loanStatus));
         validateEmailParameters(toEmail, loanStatus, userName, ADMIN_NAME);
-        String emailTitle, messageBody, extraMessage, callToActionMessage = null;
+        String emailTitle, messageBody, extraMessage, callToActionMessage, buttonText = null;
         switch (loanStatus) {
             case "INITIATED":
                 emailTitle = "Solicitud de préstamo";
                 messageBody = "Te informamos que hemos recibido tu solicitud de préstamo en nuestro sistema.";
                 extraMessage = "Nuestro equipo ya está evaluando los datos proporcionados y pronto recibirás novedades sobre el estado de tu solicitud.";
                 callToActionMessage = "Si necesitas modificar o agregar información, puedes acceder a tu cuenta aquí:";
+                buttonText = "Acceder a mi cuenta";
                 break;
 
             case "PRE_APPROVED":
@@ -145,6 +146,7 @@ public class EmailServiceImpl implements IEmailService {
                 messageBody = "¡Buenas noticias! Tu solicitud de préstamo, así como la información de tus garantes, han sido validadas exitosamente.";
                 extraMessage = "Nuestro equipo se pondrá en contacto contigo pronto para coordinar los siguientes pasos. ";
                 callToActionMessage = "Mientras tanto, puedes verificar el estado de tu solicitud aquí: ";
+                buttonText = "Ver estado de solicitud";
                 break;
 
             case "APPROVED":
@@ -152,6 +154,7 @@ public class EmailServiceImpl implements IEmailService {
                 messageBody = "Nos complace informarte que tu préstamo ha sido aprobado. ";
                 extraMessage = "En las próximas 24 a 48 horas, podrás acceder a tu cuenta para consultar la tabla de pagos y las fechas de vencimiento de tus cuotas.";
                 callToActionMessage = "Accede aquí para más información:";
+                buttonText = "Ver detalles del préstamo";
                 break;
 
             case "REFUSED":
@@ -159,6 +162,7 @@ public class EmailServiceImpl implements IEmailService {
                 messageBody = "Te recordamos que tu cuenta presenta una mora de 3 meses en el pago de las cuotas de tu préstamo.";
                 extraMessage = "Es importante que regularices tu situación para evitar posibles acciones legales.";
                 callToActionMessage = "Por favor, ingresá al sistema para acreditar del pago o contáctanos para analizar alternativas:";
+                buttonText = "Regularizar pago";
                 break;
 
             case "PENDING":
@@ -166,6 +170,7 @@ public class EmailServiceImpl implements IEmailService {
                 messageBody = "Nos complace informarte que tus datos han sido validados correctamente.";
                 extraMessage = "Ahora necesitamos que completes la información de tus garantes para continuar con el proceso.";
                 callToActionMessage = "Por favor, ingresa al siguiente enlace para proporcionar estos datos: ";
+                buttonText = "Ingresar datos de garantes";
                 break;
 
             default:
@@ -184,6 +189,7 @@ public class EmailServiceImpl implements IEmailService {
             context.setVariable("messageBody", messageBody);
             context.setVariable("extraMessage", extraMessage);
             context.setVariable("callToActionMessage", callToActionMessage);
+            context.setVariable("buttonText", buttonText);
             String htmlContent = templateEngine.process(LOAN_STATUS_NOTIFICATION_TEMPLATE, context);
 
             helper.setText(htmlContent, true);

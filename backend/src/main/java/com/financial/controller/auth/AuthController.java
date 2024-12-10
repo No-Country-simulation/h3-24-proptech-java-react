@@ -1,6 +1,7 @@
 package com.financial.controller.auth;
 
 import com.financial.config.CurrentUser;
+import com.financial.dto.request.auth.EmailRequestDto;
 import com.financial.dto.request.auth.LoginRequestDto;
 import com.financial.dto.request.auth.RegisterRequestDto;
 import com.financial.dto.response.auth.AuthResponseDto;
@@ -47,5 +48,11 @@ public class AuthController {
                 .location(URI.create("https://financialal.up.railway.app/auth"))
                 .build();
     }
-}
 
+    @PostMapping("/generate-token")
+    public ResponseEntity<String> generateActivationToken(@RequestBody @Valid EmailRequestDto emailRequestDto) {
+        emailService.sendAccountActivationEmail(emailRequestDto.email());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body("Token de activación generado y enviado al correo.");
+    }
+}

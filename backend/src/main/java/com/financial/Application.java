@@ -370,6 +370,9 @@ public class Application implements CommandLineRunner {
 //						"Saludo inicial",
 //						Map.of(
 //								"question", List.of(
+//										"Holaaaaaaaaa",
+//										"Hola como estas?",
+//										"Holaaaaaaaa como estas",
 //										"Hola",
 //										"Buenas",
 //										"Qué tal",

@@ -35,12 +35,12 @@ spring:
         options:
           model: gpt-4
           temperature: 0.7
-    vectorstore:
-      pgvector:
-        distance-type: COSINE_DISTANCE
-        index-type: HNSW
-        dimensions: 1536
-        remove-existing-vector-store-table: true
+#    vectorstore:
+#      pgvector:
+#        distance-type: COSINE_DISTANCE
+#        index-type: HNSW
+#        dimensions: 1536
+#        remove-existing-vector-store-table: true
 
 cloudinary:
   name: "dzmzrbuta"
