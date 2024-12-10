@@ -36,7 +36,7 @@ Este sitio web se presta a recibir la información, que un cliente tiene que pro
 </p>
 
 <h3>Flujos de navegación:</h3> 
-<p>El flujo del cliente y el administrador obviamente están separados y nunca se podrán cruzar de manera azarosa.</p>
+<p>El flujo del cliente y el administrador están separados y nunca se podrán cruzar de manera azarosa.</p>
 <h4>Flujo de navegación del cliente:</h4>
 <ol>
   <li>Página de inicio.</li>
@@ -84,6 +84,27 @@ Este sitio web se presta a recibir la información, que un cliente tiene que pro
 
 
 <br>
+
+
+## Demo de la Aplicación
+
+Puedes probar las funcionalidades de la aplicación accediendo a los siguientes enlaces:
+
+### Panel de Administración  
+[Panel de Administración - Iniciar Sesión](https://panel-admin-production.up.railway.app/login)  
+Este es el acceso al panel administrativo donde puedes gestionar datos y configuraciones.
+
+- **Usuario:** admin@admin.com  
+- **Contraseña:** Password123@
+
+### Plataforma Financiera  
+[Financia.al](https://financialal.up.railway.app)  
+Este es el acceso para gestionar los aspectos financieros de la aplicación.
+
+**Notas:**
+- Usa las credenciales proporcionadas para acceder a las funcionalidades protegidas o regístrate para crear tu propia cuenta.
+- Si necesitas más información, contáctanos.
+
 
 ## Organización
 

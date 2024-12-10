@@ -40,7 +40,7 @@ export const LoanDocumentationPreApproved = ({ loanId }) => {
   const isInvalid = useMemo(() => {
     return (
       salaryReceiptGuarantedTwo.length < 3 ||
-      serviceReceiptGuarantedOne.length < 3 ||
+      salaryReceiptGuarantedOne.length < 3 ||
       !serviceReceiptGuarantedTwo ||
       !serviceReceiptGuarantedOne ||
       !identityFrontGuarantedTwo ||
