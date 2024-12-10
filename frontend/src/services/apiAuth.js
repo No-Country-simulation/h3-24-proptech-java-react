@@ -20,6 +20,7 @@ export async function loginApi(data) {
 
     return response.data;
   } catch (error) {
-    throw new Error(error);
+    console.log(error);
+    throw error;
   }
 }
