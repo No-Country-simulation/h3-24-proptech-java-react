@@ -27,49 +27,125 @@ function UserLoans() {
   return (
     <div className="mt-[30px]">
       <LoanList
-        header={<div>Préstamos aprobados</div>}
         loans={loans.filter((loan) => loan.status === 'APPROVED')}
-        status={'Aprobadas'}
-        canBeOpened={true}
+        status={'Aprobada'}
+        urlProvider={(loanId) => `/payment-quotas/${loanId}`}
+        buttonLabel={'Pagar cuota'}
       />
       <LoanList
         loans={loans.filter((loan) => loan.status === 'PRE_APPROVED')}
-        status={'Preaprobados'}
+        status={'Preaprobada'}
+        urlProvider={() => `/loan/upload-documentation`}
+        buttonLabel={'Subir documentos de garantes'}
       />
       <LoanList
         loans={loans.filter((loan) => loan.status === 'PENDING')}
-        status={'Pendientes'}
+        status={'Pendiente'}
       />
       <LoanList
         loans={loans.filter((loan) => loan.status === 'INITIATED')}
-        status={'Iniciados'}
+        status={'Iniciada'}
       />
     </div>
   );
 }
 
-function LoanList({ header, loans, status, canBeOpened = false }) {
+const LoanCard = ({ loan, status, urlProvider, buttonLabel }) => {
+  function getStatusChipStyling() {
+    switch (status) {
+      case 'Aprobada':
+        return 'bg-green-100 text-green-80';
+      case 'Preaprobada':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'Pendiente':
+        return 'bg-blue-100 text-blue-800';
+      case 'Iniciada':
+        return 'bg-gray-100 text-gray-800';
+      default:
+        return 'bg-red-100 text-red-800';
+    }
+  }
+
   return (
-    <div>
-      {header}
-      {header ? null : <div>{status}</div>}
-      {loans.map((loan) => {
-        return (
-          <div key={loan.loanId} className="my-5">
-            <div>{loan.loanId}</div>
-            <div>{loan.requestedAmount}</div>
-            <div>{loan.monthlyQuota}</div>
-            {canBeOpened ? (
-              <>
-                <Button to={`/payment-quotas/${loan.loanId}`}>
-                  Pagar couta
-                </Button>
-              </>
-            ) : null}
-          </div>
-        );
-      })}
-      <hr className="my-3" />
+    <div className="bg-white shadow-md rounded-lg p-6 mb-4 border border-gray-200">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-lg font-semibold text-gray-800">
+          Préstamo con referencia:{' '}
+          <span className="italic underline">{loan.loanId}</span>
+        </h3>
+        <span
+          className={` px-3 py-1 rounded-full text-sm font-medium ${getStatusChipStyling()}`}
+        >
+          {status}
+        </span>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <p className="text-sm text-gray-500">Monto Solicitado</p>
+          <p className="font-bold text-gray-800">
+            ${loan.requestedAmount.toLocaleString()}
+          </p>
+        </div>
+        <div>
+          <p className="text-sm text-gray-500">Tasa de Interés</p>
+          <p className="font-bold text-gray-800">
+            {loan.interestRate.toFixed(2)}%
+          </p>
+        </div>
+        <div>
+          <p className="text-sm text-gray-500">Capital restante</p>
+          <p className="font-bold text-gray-800">
+            ${loan.remainingBalance.toLocaleString()}
+          </p>
+        </div>
+        <div>
+          <p className="text-sm text-gray-500">Cuota Mensual</p>
+          <p className="font-bold text-gray-800">
+            ${loan.monthlyQuota.toLocaleString()}
+          </p>
+        </div>
+      </div>
+
+      {urlProvider && (
+        <div className="mt-4 flex justify-end">
+          <Button
+            variant="outline"
+            className="w-full"
+            to={urlProvider(loan.loanId)}
+          >
+            {buttonLabel || 'Ver Detalles'}
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+function LoanList({ loans, status, buttonLabel, urlProvider }) {
+  if (loans.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto p-4">
+      {loans.length === 0 ? (
+        <div className="text-center text-gray-500 py-10">
+          No hay préstamos para mostrar
+        </div>
+      ) : (
+        <div>
+          {loans.map((loan) => (
+            <LoanCard
+              key={loan.loanId}
+              loan={loan}
+              status={status}
+              urlProvider={urlProvider}
+              buttonLabel={buttonLabel}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

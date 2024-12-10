@@ -53,7 +53,7 @@ function Quotas({ loanId }) {
             <div className="rounded-lg bg-gray-100 p-3">
               <h4 className="text-sm">Total a pagar</h4>
               <p className="text-lg font-bold">
-                {formatToARSCurrency(loan.totalPayment)} ARS
+                {formatToARSCurrency(loan.totalPayment)} USD
               </p>
             </div>
             <div className="rounded-lg bg-gray-100 p-3 min-w-[100px]">
@@ -135,7 +135,7 @@ const PendingPayment = ({ title, emptyPaymentTitle, loanId, paymentType }) => {
                     ? pendingPayment.totalAmountWithDiscount
                     : pendingPayment.amount
                 )}{' '}
-                ARS
+                USD
               </div>
               {pendingPayment.discountAmount ? (
                 <div className="rounded-lg border border-green-300 ml-3 px-2.5 text-center text-sm transition-all shadow-sm text-green-600">
