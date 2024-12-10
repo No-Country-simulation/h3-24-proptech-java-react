@@ -3,7 +3,6 @@ import { baseURL } from '../utils/constants';
 
 export async function registerApi(data) {
   try {
-    console.log(data);
     const response = await axios.post(`${baseURL}/api/auth/register`, {
       ...data,
       userType: true,
@@ -11,7 +10,7 @@ export async function registerApi(data) {
 
     return response.data;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.response.data);
   }
 }
 

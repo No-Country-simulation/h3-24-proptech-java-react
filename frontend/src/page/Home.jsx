@@ -78,7 +78,9 @@ const Home = () => {
         className={`text-center w-full pt-32  md:pb-8 h-auto lg:h-screen  flex flex-col lg:flex-row md:items-center  md:justify-between  relative  `}>
         <div className='md:w-3/3 px-8 w-full text-start flex flex-col  gap-8'>
           <div className='flex flex-col   md:px-0  gap-6 '>
-            <h2 className='text-[#1F47B4] text-start   font-bold text-6xl md:text-7xl'>
+            <h2
+              className='text-[#1F47B4] text-start   font-bold text-6xl md:text-7xl'
+              id='home-title'>
               Triplicamos los montos y plazos
             </h2>
             <p className='text-[#142B6A]text-xl md:text-2xl  lg:w-[76%]'>

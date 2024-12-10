@@ -15,7 +15,7 @@ const Nav = () => {
     <nav className='border-b-2 h-16 flex z-50 transition-all xl:px-32 md:px-4 bg-white border-lightGrey p-4 fixed w-full md:w-full md:max-w-[1920px]'>
       <ul className='flex items-center w-full  gap-2'>
         <li className=' text-xs font-medium flex gap-10 items-center '>
-          <Link to='/home' className='flex items-center gap-1'>
+          <Link to='/home#home-title' className='flex items-center gap-1'>
             {' '}
             <LogoSvg height={28} width={28} />
             <TextLogo height={12.84} width={76.77} />

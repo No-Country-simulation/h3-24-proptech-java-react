@@ -25,8 +25,8 @@ function useRegister() {
     },
 
     onError: (error) => {
-      toast.error(error.response.data.details);
       console.log(error);
+      toast.error(error.response.data.password);
     },
   });
 

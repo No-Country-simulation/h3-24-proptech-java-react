@@ -6,7 +6,6 @@ import {
   loanToPendingApi,
 } from '../services/apiLoan';
 import toast from 'react-hot-toast';
-import { uploadDocumentation } from '../services/apiLoanDoc';
 import { isAxiosError } from 'axios';
 
 const LoanContext = createContext();
