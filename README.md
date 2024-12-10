@@ -85,6 +85,27 @@ Este sitio web se presta a recibir la información, que un cliente tiene que pro
 
 <br>
 
+
+## Demo de la Aplicación
+
+Puedes probar las funcionalidades de la aplicación accediendo a los siguientes enlaces:
+
+### Panel de Administración  
+[Panel de Administración - Iniciar Sesión](https://panel-admin-production.up.railway.app/login)  
+Este es el acceso al panel administrativo donde puedes gestionar datos y configuraciones.
+
+- **Usuario:** admin@admin.com  
+- **Contraseña:** Password123@
+
+### Plataforma Financiera  
+[Financia.al](https://financialal.up.railway.app)  
+Este es el acceso para gestionar los aspectos financieros de la aplicación.
+
+**Notas:**
+- Usa las credenciales proporcionadas para acceder a las funcionalidades protegidas o regístrate para crear tu propia cuenta.
+- Si necesitas más información, contáctanos.
+
+
 ## Organización
 
 [![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)](https://slack.com)
