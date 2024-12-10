@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
-import useCurrentUser from './useCurrentUser';
+
+import { useUser } from '../../context/UserContext';
 
 function UserPhoto() {
-  const {
-    user: { user },
-  } = useCurrentUser();
+  const { user } = useUser();
 
   return (
     <Link to='/menu'>

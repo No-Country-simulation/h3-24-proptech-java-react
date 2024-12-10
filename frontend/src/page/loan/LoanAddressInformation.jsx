@@ -103,7 +103,7 @@ function LoanAddressInformation() {
         />
       </FormRow>
 
-      <FormRow label='Código postal' error={errors?.zipCode?.message}>
+      {/* <FormRow label='Código postal' error={errors?.zipCode?.message}>
         <input
           type='number'
           placeholder='Ingrese un numero'
@@ -111,7 +111,7 @@ function LoanAddressInformation() {
             required: 'Este campo es obligatorio',
           })}
         />
-      </FormRow>
+      </FormRow> */}
 
       <FormRow label='Nombre de la calle' error={errors?.road?.message}>
         <input

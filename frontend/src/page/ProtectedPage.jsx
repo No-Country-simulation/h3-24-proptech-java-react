@@ -1,7 +1,8 @@
-import useCurrentUser from "../features/user/useCurrentUser";
+import { useUser } from '../context/UserContext';
+import useCurrentUser from '../features/user/useCurrentUser';
 
 function ProtectedPage() {
-  const { user } = useCurrentUser();
+  const { user } = useUser();
 
   return (
     <div>

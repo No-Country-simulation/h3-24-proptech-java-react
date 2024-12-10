@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { LoanProvider } from './context/LoanContext';
+import { LoanProvider, useLoan } from './context/LoanContext';
 import { ProfileProvider } from './context/ProfileContext';
 import { ChatBot } from './features/chat/ChatBot';
 import { SuccessPaymentPage } from './features/loan/mp/SuccessPaymentPage';
@@ -30,7 +30,9 @@ import RecoverPassword from './page/RecoverPassword';
 import Veriff from './page/Veriff';
 import AppLayout from './ui/AppLayout';
 import ProtectedRoute from './ui/ProtectedRoute';
-import { UserProvider } from './context/UserContext';
+import { useEffect } from 'react';
+import { useUser } from './context/UserContext';
+import Spinner from './ui/Spinner';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,121 +43,118 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  const { getUser, isPending } = useUser();
+  const { isPending: loanIsPending } = useLoan();
+  useEffect(() => {
+    getUser();
+  }, []);
+  if (isPending || loanIsPending)
+    return (
+      <div className='z-50 inset-0 backdrop-blur-md fixed '>
+        <div className=' w-full h-full flex justify-center items-center'>
+          <Spinner />
+        </div>
+      </div>
+    );
   return (
     <QueryClientProvider client={queryClient}>
-      <UserProvider>
-        <ProfileProvider>
-          <LoanProvider>
-            <ReactQueryDevtools initialIsOpen={false} />
-
-            <BrowserRouter>
-              <Routes>
-                <Route element={<AppLayout />}>
-                  <Route index element={<Navigate replace to='home' />} />
-                  <Route path='auth' element={<Auth />} />
-                  <Route index element={<Navigate replace to='home' />} />
-                  <Route path='auth' element={<Auth />} />
-                  <Route path='reset-password' element={<RecoverPassword />} />
-                  <Route
-                    path='passwordChangeMessage'
-                    element={<PasswordChangeMessage />}
-                  />
-
-                  {/* Rutas protegidas  */}
-                  <Route element={<ProtectedRoute />}>
-                    <Route path='menu' element={<ClientProfile />} />
-                    <Route
-                      path='personalSettings'
-                      element={<PersonalSettings />}
-                    />
-                    <Route path='loans' element={<UserLoans />} />
-                    <Route
-                      path='payment-quotas/:loanId'
-                      element={<PaymentQuotas />}
-                    />
-                    <Route
-                      path='investmentPanel'
-                      element={<InvestmentPanel />}
-                    />
-                    <Route
-                      path='messagesStartingLoan'
-                      element={<MessagesStartingLoan />}
-                    />
-
-                    <Route
-                      path='loan-simulation'
-                      element={<CalculatePersonalLoan />}
-                    />
-                    <Route
-                      path='loan-simulation-result'
-                      element={<LoanSimulationResult />}
-                    />
-
-                    <Route path='loan' element={<LoanApplication />}>
-                      <Route index element={<Navigate replace to='veriff' />} />
-                      <Route path='veriff' element={<Veriff />} />
-
-                      <Route
-                        path='loan-information'
-                        element={<LoanInformation />}
-                      />
-
-                      <Route
-                        path='address-details'
-                        element={<LoanAddressInformation />}
-                      />
-
-                      <Route
-                        path='personal-information'
-                        element={<LoanPersonalInformation />}
-                      />
-
-                      <Route
-                        path='data-summary'
-                        element={<LoanApplicationSummary />}
-                      />
-                      <Route
-                        path='upload-documentation'
-                        element={<LoanDocumentation />}
-                      />
-                      <Route
-                        path='loan-send-information'
-                        element={<LoanSendInfo />}
-                      />
-                    </Route>
-                  </Route>
-
-                  <Route path='*' element={<PageNotFound />} />
-                </Route>
-                <Route path='home' element={<Home />} />
-                <Route path='mp-success' element={<SuccessPaymentPage />} />
-              </Routes>
-            </BrowserRouter>
-
-            <Toaster
-              position='top-center'
-              gutter={12}
-              containerStyle={{ margin: '8px' }}
-              toastOptions={{
-                success: {
-                  duration: 3000,
-                },
-                error: {
-                  duration: 5000,
-                },
-                style: {
-                  fontSize: '16px',
-                  maxWidth: '600px',
-                  padding: '16px 24px',
-                  backgroundColor: '#FFFFFF',
-                  color: '#0D0D0D',
-                },
-              }}
+      <ReactQueryDevtools initialIsOpen={false} />
+      <BrowserRouter>
+        <Routes>
+          <Route element={<AppLayout />}>
+            <Route index element={<Navigate replace to='home' />} />
+            <Route path='auth' element={<Auth />} />
+            <Route index element={<Navigate replace to='home' />} />
+            <Route path='auth' element={<Auth />} />
+            <Route path='reset-password' element={<RecoverPassword />} />
+            <Route
+              path='passwordChangeMessage'
+              element={<PasswordChangeMessage />}
             />
-            <ChatBot />
-          </LoanProvider>
-        </ProfileProvider>
-      </UserProvider>
+
+            {/* Rutas protegidas  */}
+            <Route element={<ProtectedRoute />}>
+              <Route path='menu' element={<ClientProfile />} />
+              <Route path='personalSettings' element={<PersonalSettings />} />
+              <Route path='loans' element={<UserLoans />} />
+              <Route
+                path='payment-quotas/:loanId'
+                element={<PaymentQuotas />}
+              />
+              <Route path='investmentPanel' element={<InvestmentPanel />} />
+              <Route
+                path='messagesStartingLoan'
+                element={<MessagesStartingLoan />}
+              />
+
+              <Route
+                path='loan-simulation'
+                element={<CalculatePersonalLoan />}
+              />
+              <Route
+                path='loan-simulation-result'
+                element={<LoanSimulationResult />}
+              />
+
+              <Route path='loan' element={<LoanApplication />}>
+                <Route index element={<Navigate replace to='veriff' />} />
+                <Route path='veriff' element={<Veriff />} />
+
+                <Route path='loan-information' element={<LoanInformation />} />
+
+                <Route
+                  path='address-details'
+                  element={<LoanAddressInformation />}
+                />
+
+                <Route
+                  path='personal-information'
+                  element={<LoanPersonalInformation />}
+                />
+
+                <Route
+                  path='data-summary'
+                  element={<LoanApplicationSummary />}
+                />
+                <Route
+                  path='upload-documentation'
+                  element={<LoanDocumentation />}
+                />
+                <Route
+                  path='loan-send-information'
+                  element={<LoanSendInfo />}
+                />
+              </Route>
+            </Route>
+
+            <Route path='*' element={<PageNotFound />} />
+          </Route>
+          <Route path='home' element={<Home />} />
+          <Route path='mp-success' element={<SuccessPaymentPage />} />
+        </Routes>
+      </BrowserRouter>
+
+      <Toaster
+        position='top-center'
+        gutter={12}
+        containerStyle={{ margin: '8px' }}
+        toastOptions={{
+          success: {
+            duration: 3000,
+          },
+          error: {
+            duration: 5000,
+          },
+          style: {
+            fontSize: '16px',
+            maxWidth: '600px',
+            padding: '16px 24px',
+            backgroundColor: '#FFFFFF',
+            color: '#0D0D0D',
+          },
+        }}
+      />
+      <ChatBot />
     </QueryClientProvider>
   );
 }

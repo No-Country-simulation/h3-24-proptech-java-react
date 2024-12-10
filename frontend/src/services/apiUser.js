@@ -17,14 +17,10 @@ export async function getCurrentUser() {
       },
     });
 
-    if (response.status !== 200 || !response.data) {
-      throw new Error('Ocurrió un error. Intenta nuevamente..');
-    }
-
     return response.data;
   } catch (error) {
     localStorage.removeItem('token');
-    throw new Error(error);
+    throw error;
   }
 }
 

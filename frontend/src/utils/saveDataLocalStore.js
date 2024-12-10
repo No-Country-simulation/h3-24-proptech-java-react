@@ -13,7 +13,9 @@ export function getData(KEY) {
 
 export function saveData(key, state) {
   try {
+    console.log(key, state);
     const data = JSON.stringify(state);
+    console.log(key, data);
     localStorage.setItem(key, data);
   } catch (e) {
     console.log(`💥Error: ${e}`);

@@ -2,6 +2,7 @@ import { createContext, useContext, useState } from 'react';
 import { loginApi, registerApi } from '../services/apiAuth';
 import { saveData } from '../utils/saveDataLocalStore';
 import toast from 'react-hot-toast';
+import { getCurrentUser } from '../services/apiUser';
 
 const UserContext = createContext();
 
@@ -20,10 +21,12 @@ export const UserProvider = ({ children }) => {
     try {
       setIsPending(true);
       const data = await loginApi(formData);
-      saveData(data?.token);
+      console.log(data);
+      saveData('token', data?.token);
       setUser(data?.user);
       setIsPending(false);
       toast.success(`Bienvenido! ${data?.user.name}`);
+      return true;
     } catch (error) {
       console.log(error);
       toast.error(
@@ -32,6 +35,7 @@ export const UserProvider = ({ children }) => {
           : 'Error al loguearse'
       );
       setIsPending(false);
+      return false;
     }
   };
 
@@ -39,18 +43,40 @@ export const UserProvider = ({ children }) => {
     try {
       setIsPending(true);
       const data = await registerApi(formData);
-      saveData(data?.token);
+      console.log(data);
+      saveData('token', data?.token);
       setUser(data?.user);
       setIsPending(false);
       toast.success(`Bienvenido! ${data?.user.name}`);
+      return true;
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.details);
       setIsPending(false);
+      return false;
     }
   };
+
+  const getUser = async () => {
+    try {
+      setIsPending(true);
+
+      const data = await getCurrentUser();
+      console.log(data);
+      saveData('token', data?.token);
+      setUser(data?.user);
+      setIsPending(false);
+    } catch (error) {
+      setIsPending(false);
+    }
+  };
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('token');
+  };
   return (
-    <UserContext.Provider value={{ user, isPending, login, register }}>
+    <UserContext.Provider
+      value={{ user, isPending, login, register, getUser, logout }}>
       {children}
     </UserContext.Provider>
   );

@@ -6,10 +6,11 @@ import useCurrentUser from '../features/user/useCurrentUser';
 
 import { LogoSvg } from './LogoSvg';
 import TextLogo from './TextLogo';
+import { useUser } from '../context/UserContext';
 
 const Nav = () => {
   const navigate = useNavigate();
-  const { user } = useCurrentUser();
+  const { user } = useUser();
 
   return (
     <nav className='border-b-2 h-16 flex z-50 transition-all xl:px-32 md:px-4 bg-white border-lightGrey p-4 fixed w-full md:w-full md:max-w-[1920px]'>

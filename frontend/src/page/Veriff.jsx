@@ -5,15 +5,15 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../ui/Button';
 import { useStartVerification } from '../features/auth/useStartVerification';
 import useCurrentUser from '../features/user/useCurrentUser';
+import { useUser } from '../context/UserContext';
 
 function Veriff() {
   const navigate = useNavigate();
   const { startVerification, veriffData, isSuccess, isPending } =
     useStartVerification();
-  const { user } = useCurrentUser();
+  const { user } = useUser();
   useEffect(() => {
-    console.log(user.user);
-    if (user.user.isVerified) {
+    if (user.isVerified) {
       navigate('/loan/personal-information');
     }
   }, [user]);
@@ -24,26 +24,6 @@ function Veriff() {
     const handleVerification = () => {
       if (!veriffData?.verification?.url) return;
       window.location.href = veriffData.verification.url;
-      // const verificationWindow = window.open(
-      //   veriffData.verification.url
-      //   // "_blank"
-      // );
-
-      // if (!verificationWindow) {
-      //   console.warn('No se pudo abrir la ventana de verificación.');
-      //   return;
-      // }
-
-      // if (veriffData?.verification?.status === 'created') {
-      //   navigate('/loan/personal-information', { replace: true });
-      // }
-
-      // checkWindowClosed = setInterval(() => {
-      //   if (verificationWindow.closed) {
-      //     clearInterval(checkWindowClosed);
-      //     navigate('/loan/veriff', { replace: true });
-      //   }
-      // }, 1000);
     };
 
     if (isSuccess) handleVerification();

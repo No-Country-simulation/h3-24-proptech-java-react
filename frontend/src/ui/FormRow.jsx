@@ -1,15 +1,17 @@
+import { EyeOff } from 'lucide-react';
+
 function FormRow({ label, error, children, expand, extraClass }) {
   return (
-    <div className={`formrow flex flex-col gap-2   ${extraClass}`}>
+    <div className={`formrow flex flex-col gap-2  relative ${extraClass}`}>
       {label && (
-        <label htmlFor={children.props.id} className=" text-lg font-semibold">
+        <label htmlFor={children.props.id} className=' text-lg font-semibold'>
           {label}
         </label>
       )}
 
       {children}
 
-      {error && <p className=" text-sm font-medium text-primary">{error}</p>}
+      {error && <p className=' text-sm font-medium text-primary'>{error}</p>}
     </div>
   );
 }

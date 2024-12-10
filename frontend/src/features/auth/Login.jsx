@@ -1,18 +1,21 @@
 import { useForm } from 'react-hook-form';
 
 import FormRow from '../../ui/FormRow';
-import { useLogin } from './useLogin';
+
 import SubmitButton from '../../ui/SubmitButton';
 import { LogoSvg } from '../../ui/LogoSvg';
 import TextLogo from '../../ui/TextLogo';
 import { TextLogoWhite } from '../../ui/TextLogoWhite';
 import Logo from '../../ui/Logo';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
+import { Eye, EyeOff } from 'lucide-react';
 
 const Login = ({ children }) => {
-  // const { login, isPending: isLoading } = useLogin();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
   const { login, isPending: isLoading } = useUser();
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
@@ -37,7 +40,10 @@ const Login = ({ children }) => {
   } = useForm();
 
   async function onSubmit(data) {
-    login(data, { onSettled: () => reset() });
+    login(data).then((res) => {
+      reset();
+      if (res) navigate('/home');
+    });
   }
 
   return (
@@ -83,26 +89,37 @@ const Login = ({ children }) => {
                   />
                 </FormRow>
 
-                <FormRow label='Contraseña' error={errors?.password?.message}>
-                  <input
-                    type='password'
-                    id='password'
-                    placeholder='Ingresa tu contraseña'
-                    {...register('password', {
-                      required: 'Este campo es obligatorio',
-                      minLength: {
-                        value: 8,
-                        message: 'Contraseña',
-                      },
-                      pattern: {
-                        value:
-                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$/,
-                        message:
-                          'La contraseña debe contener al menos una letra mayúscula, una minúscula, un número y un carácter especial.',
-                      },
-                    })}
-                  />
-                </FormRow>
+                <div className='relative'>
+                  <FormRow
+                    label='Contraseña'
+                    error={errors?.password?.message}
+                    eye={true}>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      id='password'
+                      placeholder='Contraseña'
+                      {...register('password', {
+                        required: 'Este campo es obligatorio',
+                        minLength: {
+                          value: 8,
+                          message:
+                            'La contraseña debe tener al menos 8 caracteres.',
+                        },
+                        pattern: {
+                          value:
+                            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$/,
+                          message:
+                            'La contraseña debe contener al menos una letra mayúscula, una minúscula, un número y un carácter especial.',
+                        },
+                      })}
+                    />
+                  </FormRow>
+                  <div
+                    className='absolute right-6 top-[42%] transform translate-y-[50%] cursor-pointer '
+                    onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <EyeOff /> : <Eye />}
+                  </div>
+                </div>
 
                 <div className='flex flex-col items-center justify-between'>
                   <Link to='/reset-password' className=' underline'>
@@ -150,26 +167,37 @@ const Login = ({ children }) => {
                 />
               </FormRow>
 
-              <FormRow label='Contraseña' error={errors?.password?.message}>
-                <input
-                  type='password'
-                  id='password'
-                  placeholder='Ingresa tu contraseña'
-                  {...register('password', {
-                    required: 'Este campo es obligatorio',
-                    minLength: {
-                      value: 8,
-                      message: 'Contraseña',
-                    },
-                    pattern: {
-                      value:
-                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$/,
-                      message:
-                        'La contraseña debe contener al menos una letra mayúscula, una minúscula, un número y un carácter especial.',
-                    },
-                  })}
-                />
-              </FormRow>
+              <div className='relative'>
+                <FormRow
+                  label='Contraseña'
+                  error={errors?.password?.message}
+                  eye={true}>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    id='password'
+                    placeholder='Contraseña'
+                    {...register('password', {
+                      required: 'Este campo es obligatorio',
+                      minLength: {
+                        value: 8,
+                        message:
+                          'La contraseña debe tener al menos 8 caracteres.',
+                      },
+                      pattern: {
+                        value:
+                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$/,
+                        message:
+                          'La contraseña debe contener al menos una letra mayúscula, una minúscula, un número y un carácter especial.',
+                      },
+                    })}
+                  />
+                </FormRow>
+                <div
+                  className='absolute right-6 top-[42%] transform translate-y-[50%] cursor-pointer '
+                  onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? <EyeOff /> : <Eye />}
+                </div>
+              </div>
 
               <div className='flex flex-col items-center justify-between'>
                 <Link to='/reset-password' className=' underline'>

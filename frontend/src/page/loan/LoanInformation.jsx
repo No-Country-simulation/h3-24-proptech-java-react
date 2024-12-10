@@ -49,85 +49,16 @@ function LoanInformation() {
       });
     }
   }, [reset, userProfile]);
-  console.log(userProfile?.economicActivity);
-  ////////////////////////
-  //  Subida de documentos
-
-  // const handleFileChange = (e, setFiles, multiple = false) => {
-  //   const files = Array.from(e.target.files);
-  //   console.log(e.target.files);
-  //   if (multiple) {
-  //     const data = [files];
-  //     console.log(e, files);
-  //     salaryReceipts.length === 0
-  //       ? setFiles(data)
-  //       : setFiles([...salaryReceipts, ...files]);
-  //   } else {
-  //     setFiles(files[0]);
-  //   }
-  // };
-  // console.log({
-  //   salario: salaryReceipts,
-  //   servicio: serviceReceipt,
-  // });
-
-  // const handleUpload = async () => {
-  //   try {
-  //     // Subida de recibos de sueldo ----
-  //     for (const file of salaryReceipts) {
-  //       const formData = createFormDataUpload(file, "SALARY_RECEIPT");
-  //       await axios.post(
-  //         `${baseURL}/api/loans/${loanSimulationData?.loanId}/documents`,
-  //         formData,
-  //         {
-  //           headers: {
-  //             "Content-Type": "multipart/form-data",
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       );
-  //     }
-
-  //     // Subida de factura de servicio ----
-  //     if (serviceReceipt) {
-  //       const formData = createFormDataUpload(
-  //         serviceReceipt,
-  //         "SERVICE_RECEIPT"
-  //       );
-  //       await axios.post(
-  //         `${baseURL}/api/loans/${loanSimulationData?.loanId}/documents`,
-  //         formData,
-  //         {
-  //           headers: {
-  //             "Content-Type": "multipart/form-data",
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       );
-  //     }
-
-  //     setSalaryReceipts([]);
-  //     setServiceReceipt(null);
-  //   } catch (error) {
-  //     console.error("Error subiendo documentos:", error);
-  //   }
-  // };
-
-  ////////////////////////
 
   async function onSubmit(data) {
     const values = { ...data, monthlyIncome: Number(data?.monthlyIncome) };
 
     setDataProfileForms(values);
-    // Subir documentos
-    // await handleUpload();
 
     navigate('/loan/address-details', {
       replace: true,
     });
   }
-
-  ////////////////////////
 
   return (
     <form
@@ -163,6 +94,14 @@ function LoanInformation() {
           placeholder='Ingrese un numero'
           {...register('bankAccountCbu', {
             required: 'Este campo es obligatorio',
+            maxLength: {
+              value: 22,
+              message: 'El cbu debe tener 22 caracteres',
+            },
+            minLength: {
+              value: 22,
+              message: 'El cbu debe tener 22 caracteres',
+            },
           })}
         />
       </FormRow>

@@ -1,19 +1,16 @@
 import { useNavigate, Outlet } from 'react-router-dom';
 import { useEffect } from 'react';
 
-import useCurrentUser from '../features/user/useCurrentUser';
 import Spinner from './Spinner';
+import { useUser } from '../context/UserContext';
 
 function ProtectedRoute() {
   const navigate = useNavigate();
-  const { isPending, isAuthenticated } = useCurrentUser();
+  const { isPending, user } = useUser();
 
-  useEffect(
-    function () {
-      if (!isAuthenticated && !isPending) navigate('/auth', { replace: true });
-    },
-    [isAuthenticated, isPending, navigate]
-  );
+  useEffect(function () {
+    if (!user && !isPending) navigate('/auth', { replace: true });
+  }, []);
 
   if (isPending)
     return (
@@ -23,7 +20,7 @@ function ProtectedRoute() {
         </div>
       </div>
     );
-  if (isAuthenticated) return <Outlet />;
+  if (user) return <Outlet />;
 
   return null;
 }

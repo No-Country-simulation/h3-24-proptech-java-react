@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form';
 
 import FormRow from '../../ui/FormRow';
-import useRegister from './useRegister';
 import SubmitButton from '../../ui/SubmitButton';
 import { LogoSvg } from '../../ui/LogoSvg';
 import TextLogo from '../../ui/TextLogo';
@@ -9,11 +8,14 @@ import Logo from '../../ui/Logo';
 import { TextLogoWhite } from '../../ui/TextLogoWhite';
 import { useEffect, useState } from 'react';
 import { useUser } from '../../context/UserContext';
+import { useNavigate } from 'react-router-dom';
+import { Eye, EyeOff } from 'lucide-react';
 
 function Register({ children }) {
-  // const { register: signup, isPending: isLoading } = useRegister();
+  const navigate = useNavigate();
   const { register: signup, isPending: isLoading } = useUser();
-
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     const handleResize = () => {
@@ -38,7 +40,10 @@ function Register({ children }) {
   } = useForm();
 
   async function onSubmit(data) {
-    signup(data);
+    signup(data).then((res) => {
+      reset();
+      if (res) navigate('/home');
+    });
   }
 
   return (
@@ -66,7 +71,7 @@ function Register({ children }) {
               onSubmit={handleSubmit(onSubmit)}
               className='hidden md:flex flex-grow flex-col md:w-[300px] xl:w-[500px] mx-auto pt-[100px]'>
               <h2 className='font-bold text-3xl mb-6'>Registrate</h2>
-              <div className=' flex flex-col gap-5'>
+              <div className=' flex flex-col gap-5 mb-5'>
                 <FormRow label='Email' error={errors?.email?.message}>
                   <input
                     type='email'
@@ -131,47 +136,66 @@ function Register({ children }) {
                   />
                 </FormRow>
 
-                <FormRow label='Contraseña' error={errors?.password?.message}>
-                  <input
-                    type='password'
-                    id='password'
-                    placeholder='Contraseña'
-                    {...register('password', {
-                      required: 'Este campo es obligatorio',
-                      minLength: {
-                        value: 8,
-                        message:
-                          'La contraseña debe tener al menos 8 caracteres.',
-                      },
-                      pattern: {
-                        value:
-                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$/,
-                        message:
-                          'La contraseña debe contener al menos una letra mayúscula, una minúscula, un número y un carácter especial.',
-                      },
-                    })}
-                  />
-                </FormRow>
+                <div className='relative'>
+                  <FormRow
+                    label='Contraseña'
+                    error={errors?.password?.message}
+                    eye={true}>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      id='password'
+                      placeholder='Contraseña'
+                      {...register('password', {
+                        required: 'Este campo es obligatorio',
+                        minLength: {
+                          value: 8,
+                          message:
+                            'La contraseña debe tener al menos 8 caracteres.',
+                        },
+                        pattern: {
+                          value:
+                            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$/,
+                          message:
+                            'La contraseña debe contener al menos una letra mayúscula, una minúscula, un número y un carácter especial.',
+                        },
+                      })}
+                    />
+                  </FormRow>
+                  <div
+                    className='absolute right-6 top-[42%] transform translate-y-[50%] cursor-pointer '
+                    onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <EyeOff /> : <Eye />}
+                  </div>
+                </div>
 
-                <FormRow
-                  label='Repetir contraseña'
-                  error={errors?.confirmPassword?.message}>
-                  <input
-                    type='confirmPassword'
-                    id='confirmPassword'
-                    placeholder='Repetir contraseña'
-                    disabled={isLoading}
-                    {...register('confirmPassword', {
-                      required: 'Este campo es obligatorio',
-                      validate: (value) =>
-                        value === getValues().password ||
-                        'Passwords need to match',
-                    })}
-                  />
-                </FormRow>
+                <div className='relative'>
+                  <FormRow
+                    label='Repetir contraseña'
+                    error={errors?.confirmPassword?.message}>
+                    <input
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      id='confirmPassword'
+                      placeholder='Repetir contraseña'
+                      disabled={isLoading}
+                      {...register('confirmPassword', {
+                        required: 'Este campo es obligatorio',
+                        validate: (value) =>
+                          value === getValues().password ||
+                          'Passwords need to match',
+                      })}
+                    />
+                  </FormRow>
+                  <div
+                    className='absolute right-6 top-[42%] transform translate-y-[50%] cursor-pointer '
+                    onClick={() =>
+                      setShowConfirmPassword(!showConfirmPassword)
+                    }>
+                    {showConfirmPassword ? <EyeOff /> : <Eye />}
+                  </div>
+                </div>
               </div>
 
-              <div className='mt-[auto]'>{children}</div>
+              <div className='mt-[auto] my-5'>{children}</div>
 
               <div className='border-t-[1px] border-lightGrey p-4'>
                 <SubmitButton isPending={isLoading}>Continuar</SubmitButton>
@@ -253,47 +277,64 @@ function Register({ children }) {
                 />
               </FormRow>
 
-              <FormRow label='Contraseña' error={errors?.password?.message}>
-                <input
-                  type='password'
-                  id='password'
-                  placeholder='Contraseña'
-                  {...register('password', {
-                    required: 'Este campo es obligatorio',
-                    minLength: {
-                      value: 8,
-                      message:
-                        'La contraseña debe tener al menos 8 caracteres.',
-                    },
-                    pattern: {
-                      value:
-                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$/,
-                      message:
-                        'La contraseña debe contener al menos una letra mayúscula, una minúscula, un número y un carácter especial.',
-                    },
-                  })}
-                />
-              </FormRow>
+              <div className='relative'>
+                <FormRow
+                  label='Contraseña'
+                  error={errors?.password?.message}
+                  eye={true}>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    id='password'
+                    placeholder='Contraseña'
+                    {...register('password', {
+                      required: 'Este campo es obligatorio',
+                      minLength: {
+                        value: 8,
+                        message:
+                          'La contraseña debe tener al menos 8 caracteres.',
+                      },
+                      pattern: {
+                        value:
+                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$/,
+                        message:
+                          'La contraseña debe contener al menos una letra mayúscula, una minúscula, un número y un carácter especial.',
+                      },
+                    })}
+                  />
+                </FormRow>
+                <div
+                  className='absolute right-6 top-[42%] transform translate-y-[50%] cursor-pointer '
+                  onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? <EyeOff /> : <Eye />}
+                </div>
+              </div>
 
-              <FormRow
-                label='Repetir contraseña'
-                error={errors?.confirmPassword?.message}>
-                <input
-                  type='confirmPassword'
-                  id='confirmPassword'
-                  placeholder='Repetir contraseña'
-                  disabled={isLoading}
-                  {...register('confirmPassword', {
-                    required: 'Este campo es obligatorio',
-                    validate: (value) =>
-                      value === getValues().password ||
-                      'Passwords need to match',
-                  })}
-                />
-              </FormRow>
+              <div className='relative'>
+                <FormRow
+                  label='Repetir contraseña'
+                  error={errors?.confirmPassword?.message}>
+                  <input
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    id='confirmPassword'
+                    placeholder='Repetir contraseña'
+                    disabled={isLoading}
+                    {...register('confirmPassword', {
+                      required: 'Este campo es obligatorio',
+                      validate: (value) =>
+                        value === getValues().password ||
+                        'Passwords need to match',
+                    })}
+                  />
+                </FormRow>
+                <div
+                  className='absolute right-6 top-[42%] transform translate-y-[50%] cursor-pointer '
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                  {showConfirmPassword ? <EyeOff /> : <Eye />}
+                </div>
+              </div>
             </div>
 
-            <div className='mt-[auto]'>{children}</div>
+            <div className='mt-[auto] my-5'>{children}</div>
 
             <div className='border-t-[1px] border-lightGrey p-4'>
               <SubmitButton isPending={isLoading}>Continuar</SubmitButton>

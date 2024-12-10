@@ -2,10 +2,17 @@ import { useEffect, useState } from 'react';
 import Register from '../features/auth/Register';
 
 import Login from '../features/auth/Login';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 
 function Auth() {
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
+  const { user } = useUser();
+  useEffect(() => {
+    console.log(user);
+    if (user) navigate('/home');
+  }, [user]);
   const location = useLocation();
   useEffect(() => {
     const response = location.state;
