@@ -1,13 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import MessagesStartingLoan from '../../page/loan/MessagesStartingLoan';
 import Button from '../../ui/Button';
-import useCurrentUser from '../user/useCurrentUser';
 import useUserLoans from './useUserLoans';
+import { useUser } from '../../context/UserContext';
 
 function UserLoans() {
   const navigate = useNavigate();
-  const { user } = useCurrentUser();
-  const { loans, isLoading } = useUserLoans(user.user.userId);
+  const { user } = useUser();
+
+  const { loans, isLoading } = useUserLoans(user.userId);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -25,7 +26,7 @@ function UserLoans() {
   }
 
   return (
-    <div className="mt-[30px]">
+    <div className='mt-[30px]'>
       <LoanList
         header={<div>Préstamos aprobados</div>}
         loans={loans.filter((loan) => loan.status === 'APPROVED')}
@@ -55,7 +56,7 @@ function LoanList({ header, loans, status, canBeOpened = false }) {
       {header ? null : <div>{status}</div>}
       {loans.map((loan) => {
         return (
-          <div key={loan.loanId} className="my-5">
+          <div key={loan.loanId} className='my-5'>
             <div>{loan.loanId}</div>
             <div>{loan.requestedAmount}</div>
             <div>{loan.monthlyQuota}</div>
@@ -69,7 +70,7 @@ function LoanList({ header, loans, status, canBeOpened = false }) {
           </div>
         );
       })}
-      <hr className="my-3" />
+      <hr className='my-3' />
     </div>
   );
 }

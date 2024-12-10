@@ -12,17 +12,21 @@ function ProtectedRoute() {
     if (!user && !isPending) navigate('/auth', { replace: true });
   }, []);
 
-  if (isPending)
+  if (user)
     return (
-      <div className='z-50 inset-0 backdrop-blur-md fixed '>
-        <div className=' w-full h-full flex justify-center items-center'>
-          <Spinner />
-        </div>
-      </div>
+      <>
+        {isPending && (
+          <div className='z-50 inset-0 backdrop-blur-md fixed '>
+            <div className=' w-full h-full flex justify-center items-center'>
+              <Spinner />
+            </div>
+          </div>
+        )}
+        <Outlet />
+      </>
     );
-  if (user) return <Outlet />;
 
-  return null;
+  if (!isPending && !user) return navigate('/home');
 }
 
 export default ProtectedRoute;
