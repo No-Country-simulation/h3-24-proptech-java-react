@@ -23,6 +23,7 @@ export async function getCurrentUser() {
 
     return response.data;
   } catch (error) {
+    localStorage.removeItem('token');
     throw new Error(error);
   }
 }
