@@ -36,7 +36,7 @@ Este sitio web se presta a recibir la información, que un cliente tiene que pro
 </p>
 
 <h3>Flujos de navegación:</h3> 
-<p>El flujo del cliente y el administrador obviamente están separados y nunca se podrán cruzar de manera azarosa.</p>
+<p>El flujo del cliente y el administrador están separados y nunca se podrán cruzar de manera azarosa.</p>
 <h4>Flujo de navegación del cliente:</h4>
 <ol>
   <li>Página de inicio.</li>
