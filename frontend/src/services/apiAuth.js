@@ -10,7 +10,7 @@ export async function registerApi(data) {
 
     return response.data;
   } catch (error) {
-    throw new Error(error.response.data);
+    throw error;
   }
 }
 
@@ -20,7 +20,6 @@ export async function loginApi(data) {
 
     return response.data;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }

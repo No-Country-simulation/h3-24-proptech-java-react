@@ -45,7 +45,7 @@ export const UserProvider = ({ children }) => {
       toast.success(`Bienvenido! ${data?.user.name}`);
     } catch (error) {
       console.log(error);
-
+      toast.error(error.response.data.details);
       setIsPending(false);
     }
   };

@@ -8,9 +8,11 @@ import TextLogo from '../../ui/TextLogo';
 import Logo from '../../ui/Logo';
 import { TextLogoWhite } from '../../ui/TextLogoWhite';
 import { useEffect, useState } from 'react';
+import { useUser } from '../../context/UserContext';
 
 function Register({ children }) {
-  const { register: signup, isPending: isLoading } = useRegister();
+  // const { register: signup, isPending: isLoading } = useRegister();
+  const { register: signup, isPending: isLoading } = useUser();
 
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
@@ -36,7 +38,7 @@ function Register({ children }) {
   } = useForm();
 
   async function onSubmit(data) {
-    signup(data, { onSettled: () => reset() });
+    signup(data);
   }
 
   return (
