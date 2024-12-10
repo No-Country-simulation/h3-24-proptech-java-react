@@ -4,6 +4,7 @@ import com.financial.dto.response.mp.PreferenceResponseDTO;
 import com.financial.exception.PaymentNotFoundException;
 import com.financial.exception.ProfileNotFoundException;
 import com.financial.model.*;
+import com.financial.model.enums.PaymentType;
 import com.financial.repository.IGeneratedPaymentRepository;
 import com.financial.repository.IPaymentRepository;
 import com.financial.service.IMercadoPagoService;
@@ -21,7 +22,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.*;
 
 @Service
@@ -67,9 +67,12 @@ public class MercadoPagoServiceImpl implements IMercadoPagoService {
         GeneratedPayment generatedPayment = generatedPaymentRepository.findByPaymentId(paymentId).orElseThrow(() -> new PaymentNotFoundException(paymentId));
         String title = String.format("Cuota N° %d para préstamo con referencia %s", payment.getInstallmentNumber(), loan.getLoanId().toString());
         String description = String.format("Monthly quota with status %s and amount $%s.", payment.getStatus(), payment.getAmount());
-        BigDecimal percentageDiscountDecimal = generatedPayment.getDiscountPercentage().divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP);
-        BigDecimal discountAmount = generatedPayment.getAmount().multiply(percentageDiscountDecimal);
-        BigDecimal unitPrice = generatedPayment.getAmount().subtract(discountAmount);
+        BigDecimal unitPrice;
+        if (PaymentType.ON_TIME.equals(PaymentType.valueOf(generatedPayment.getPaymentType()))) {
+            unitPrice = generatedPayment.getTotalAmountWithInterests();
+        } else {
+            unitPrice = generatedPayment.getTotalAmountWithoutInterests();
+        }
         PreferenceItemRequest itemRequest = PreferenceItemRequest.builder()
                 .id(paymentId.toString())
                 .title(title)
