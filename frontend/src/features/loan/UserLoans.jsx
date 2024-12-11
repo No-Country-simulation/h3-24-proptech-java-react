@@ -23,6 +23,7 @@ function UserLoans() {
       return navigate(`/payment-quotas/${loan?.loanId}`, { replace: true });
     }
   }
+  console.log(loans);
 
   return (
     <div className='mt-[30px]'>
@@ -92,12 +93,12 @@ const LoanCard = ({ loan, status, urlProvider, buttonLabel }) => {
             {loan?.interestRate.toFixed(2)}%
           </p>
         </div>
-        {/* <div>
+        <div>
           <p className='text-sm text-gray-500'>Capital restante</p>
           <p className='font-bold text-gray-800'>
             ${loan?.remainingBalance.toLocaleString()}
           </p>
-        </div> */}
+        </div>
         <div>
           <p className='text-sm text-gray-500'>Cuota Mensual</p>
           <p className='font-bold text-gray-800'>

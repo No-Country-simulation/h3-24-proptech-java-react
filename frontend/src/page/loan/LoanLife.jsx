@@ -21,7 +21,10 @@ export const LoanLife = () => {
       component: <LoanPersonalData loan={loanFullData} profile={profile} />,
     },
     { title: 'Resumen de tu prestamo', component: <LoanSummary /> },
-    { title: 'Datos de garantes', component: <LoanGuarantorData /> },
+    {
+      title: 'Datos de garantes',
+      component: <LoanGuarantorData loan={loanFullData} />,
+    },
     { title: 'Cuotas a pagar', component: <QuotesToPay /> },
     { title: 'Ajustes personales', component: <PersonalSettings /> },
   ];

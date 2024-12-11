@@ -199,9 +199,7 @@ export const LoanPersonalData = ({ loan, profile }) => {
               </div>
               <div className='flex  justify-between'>
                 <h3 className='text-[#475569]'>Apellido(s)</h3>
-                <h3 className='font-semibold'>
-                  {profile?.lastNameAsInDni} $USD
-                </h3>
+                <h3 className='font-semibold'>{profile?.lastNameAsInDni}</h3>
               </div>
               <div className='flex  justify-between'>
                 <h3 className='text-[#475569]'>Genero</h3>

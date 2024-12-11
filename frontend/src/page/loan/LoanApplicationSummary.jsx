@@ -28,7 +28,7 @@ function LoanApplicationSummary() {
     rellenarDataProfile();
   }, [userProfile]);
   useEffect(() => {
-    getLoan();
+    if (!loan) getLoan();
   }, []);
 
   useEffect(() => {
