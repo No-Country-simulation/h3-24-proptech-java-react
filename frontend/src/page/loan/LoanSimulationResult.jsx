@@ -1,4 +1,4 @@
-import { OctagonAlert } from 'lucide-react';
+import { ChevronDown, OctagonAlert } from 'lucide-react';
 import Button from '../../ui/Button';
 import { formatNumber } from '../../utils/helpers';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ const sameStyle = 'flex items-center justify-between text-[#475569]';
 
 function LoanSimulationResult() {
   const [show, setShow] = useState(false);
+  const [showTa, setShowTa] = useState(false);
   const navigate = useNavigate();
   const { loanSimulation: loan } = useLoan();
   useEffect(
@@ -18,7 +19,7 @@ function LoanSimulationResult() {
     },
     [loan, navigate]
   );
-
+  console.log(loan.schedule);
   return (
     <section className='lg:w-[50%] m-auto'>
       {!show ? (
@@ -70,8 +71,45 @@ function LoanSimulationResult() {
                   podes re-simular tu crédito personal.
                 </p>
 
-                <Button to='/loan-simulation'>Simular otro préstamo</Button>
+                <Button to='/loan-simulation'>Simular otro préstamooo</Button>
               </div>
+            </div>
+            <div className='mt-8 '>
+              <div
+                className='flex justify-between items-center mb-1 cursor-pointer'
+                onClick={() => setShowTa(!showTa)}>
+                <h2 className='font-bold text-xl'>Tabla de amortización</h2>
+                <ChevronDown />
+              </div>
+              <h2 className='mb-4 text-[#475569] text-sm'>
+                *Los montos pueden sufrir variaciones de precio{' '}
+              </h2>
+              <div
+                className={`overflow-hidden transition-all  duration-500 max-h-0 ${
+                  showTa && 'max-h-[1000px]'
+                } '`}>
+                <table border='1' className='w-full   '>
+                  <thead>
+                    <tr className='border-y py-4 '>
+                      <th>Mes</th>
+                      <th>Cuota</th>
+                      <th>Interés</th>
+                      <th>Saldo Restante</th>
+                    </tr>
+                  </thead>
+                  <tbody className='w-full text-center mt-4'>
+                    {loan.schedule.map((item) => (
+                      <tr key={item.month}>
+                        <td>{item.month}</td>
+                        <td>{item.quota} $USD</td>
+                        <td>{item.interest}</td>
+                        <td>{item.remaining} $USD</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <h2></h2>
             </div>
           </div>
 

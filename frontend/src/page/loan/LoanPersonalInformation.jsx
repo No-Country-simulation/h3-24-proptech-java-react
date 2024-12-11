@@ -9,6 +9,7 @@ import SubmitButton from '../../ui/SubmitButton';
 import useCurrentUser from '../../features/user/useCurrentUser';
 
 import { useProfile } from '../../context/ProfileContext';
+import { useUser } from '../../context/UserContext';
 
 const paises = {
   AR: 'Argentina',
@@ -30,7 +31,7 @@ const paises = {
 
 function LoanPersonalInformation() {
   const navigate = useNavigate();
-  const { user } = useCurrentUser();
+  const { user } = useUser();
   const {
     getProfile,
     profile: userProfile,
@@ -104,8 +105,8 @@ function LoanPersonalInformation() {
             seguridad de tu información.
           </p>
           <Button
-            type={user.user.isVerified ? 'greenColor' : 'secondary'}
-            disabled={user.user.isVerified}>
+            type={user.isVerified ? 'greenColor' : 'secondary'}
+            disabled={user.isVerified}>
             Datos VERIFFicados
           </Button>
         </div>

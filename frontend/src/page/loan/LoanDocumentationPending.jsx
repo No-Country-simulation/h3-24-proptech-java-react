@@ -86,9 +86,19 @@ export const LoanDocumentationPending = ({ loanId }) => {
   };
   return (
     <div className='flex flex-col items-center  justify-evenly min-h-full  gap-4'>
-      <div className='flex flex-col gap-10 items-center '>
+      <div className=''>
+        <h2 className='text-2xl font-bold'>Aquí podrás adjuntar tus datos</h2>
+        <p className='text-[#475569]'>
+          Adjunta la documentación para podes continuar con el proceso de
+          solicitud.
+        </p>
+      </div>
+      <div className='flex flex-col lg:grid lg:grid-flow-col lg:grid-cols-2 lg:grid-rows-2 lg:gap-20 gap-10 items-center '>
         <div className='flex items-center relative   gap-3'>
-          <div className=' p-2  bg-dark rounded-xl'>
+          <div
+            className={` p-2  rounded-xl ${
+              salaryReceipts.length === 3 ? 'bg-green-400' : 'bg-dark'
+            } `}>
             <CirclePlus className=' text-light ' />
           </div>
 
@@ -112,7 +122,10 @@ export const LoanDocumentationPending = ({ loanId }) => {
           />
         </div>
         <div className='flex items-center relative  gap-3'>
-          <div className=' p-2  bg-dark rounded-xl'>
+          <div
+            className={` p-2  rounded-xl ${
+              serviceReceipt ? 'bg-green-400' : 'bg-dark'
+            } `}>
             <CirclePlus className=' text-light ' />
           </div>
 
@@ -131,7 +144,10 @@ export const LoanDocumentationPending = ({ loanId }) => {
         </div>
 
         <div className='flex items-center relative  gap-3'>
-          <div className=' p-2  bg-dark rounded-xl'>
+          <div
+            className={` p-2  rounded-xl ${
+              identityFront ? 'bg-green-400' : 'bg-dark'
+            } `}>
             <CirclePlus className=' text-light ' />
           </div>
 
@@ -150,7 +166,10 @@ export const LoanDocumentationPending = ({ loanId }) => {
         </div>
 
         <div className='flex items-center relative  gap-3'>
-          <div className=' p-2  bg-dark rounded-xl'>
+          <div
+            className={` p-2  rounded-xl ${
+              identityBack ? 'bg-green-400' : 'bg-dark'
+            } `}>
             <CirclePlus className=' text-light ' />
           </div>
 

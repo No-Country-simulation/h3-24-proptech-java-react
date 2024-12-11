@@ -161,15 +161,28 @@ export const LoanDocumentationPreApproved = ({ loanId }) => {
     }
   };
   return (
-    <div className='flex flex-col items-center gap-10 pb-10 max-w-[940px] m-auto  '>
-      <h2 className='font-bold text-xl'>Documentacion de los garantes</h2>
-      <div className='flex flex-col items-center md:flex-row md:gap-20   min-h-full  w-full md:justify-around  gap-4'>
+    <div className='flex flex-col items-center gap-10 pb-10 max-w-[1280px] m-auto  '>
+      <div className='w-full flex flex-col items-center xl:items-start'>
+        <h2 className='text-2xl font-bold'>
+          Aquí podrás adjuntar los datos de tus garantes
+        </h2>
+        <p className='text-[#475569] sm:text-center'>
+          Adjunte la documentación de sus garantes para podes continuar con el
+          proceso de solicitud.
+        </p>
+      </div>
+      <div className='flex flex-col  items-center md:flex-row md:gap-20   min-h-full  xl:flex-row  w-full md:justify-around  gap-4 md:mb-16 lg:mb-52'>
         <div className='flex flex-col  md gap-4'>
           <h4>Garante 1</h4>
-          <div className='flex flex-col gap-4'>
+          <div className='flex flex-col gap-4 xl:grid xl:grid-flow-col xl:grid-cols-2 xl:grid-rows-2 xl:gap-x-10 xl:gap-y-10  items-center'>
             <div className='flex items-center relative   gap-3'>
-              <div className=' p-2  bg-dark rounded-xl'>
-                <CirclePlus className=' text-light ' />
+              <div
+                className={` p-2  rounded-xl ${
+                  salaryReceiptGuarantedOne.length === 3
+                    ? 'bg-green-400'
+                    : 'bg-dark'
+                } `}>
+                <CirclePlus className=' text-light  ' />
               </div>
 
               <div className='cursor-pointer'>
@@ -194,7 +207,10 @@ export const LoanDocumentationPreApproved = ({ loanId }) => {
               />
             </div>
             <div className='flex items-center relative  gap-3'>
-              <div className=' p-2  bg-dark rounded-xl'>
+              <div
+                className={` p-2  rounded-xl ${
+                  serviceReceiptGuarantedOne ? 'bg-green-400' : 'bg-dark'
+                } `}>
                 <CirclePlus className=' text-light ' />
               </div>
 
@@ -215,7 +231,10 @@ export const LoanDocumentationPreApproved = ({ loanId }) => {
               />
             </div>
             <div className='flex items-center relative  gap-3'>
-              <div className=' p-2  bg-dark rounded-xl'>
+              <div
+                className={` p-2  rounded-xl ${
+                  identityFrontGuarantedOne ? 'bg-green-400' : 'bg-dark'
+                } `}>
                 <CirclePlus className=' text-light ' />
               </div>
 
@@ -237,7 +256,10 @@ export const LoanDocumentationPreApproved = ({ loanId }) => {
             </div>
 
             <div className='flex items-center relative  gap-3'>
-              <div className=' p-2  bg-dark rounded-xl'>
+              <div
+                className={` p-2  rounded-xl ${
+                  identityBackGuarantedOne ? 'bg-green-400' : 'bg-dark'
+                } `}>
                 <CirclePlus className=' text-light ' />
               </div>
 
@@ -261,9 +283,14 @@ export const LoanDocumentationPreApproved = ({ loanId }) => {
         </div>
         <div className='flex flex-col gap-4'>
           <h4>Garante 2</h4>
-          <div className='flex flex-col gap-4'>
+          <div className='flex flex-col gap-4 xl:grid xl:grid-flow-col xl:grid-cols-2 xl:grid-rows-2 xl:gap-x-10 xl:gap-y-10  items-center'>
             <div className='flex items-center relative   gap-3'>
-              <div className=' p-2  bg-dark rounded-xl'>
+              <div
+                className={` p-2  rounded-xl ${
+                  salaryReceiptGuarantedTwo.length === 3
+                    ? 'bg-green-400'
+                    : 'bg-dark'
+                } `}>
                 <CirclePlus className=' text-light ' />
               </div>
 
@@ -289,7 +316,10 @@ export const LoanDocumentationPreApproved = ({ loanId }) => {
               />
             </div>
             <div className='flex items-center relative  gap-3'>
-              <div className=' p-2  bg-dark rounded-xl'>
+              <div
+                className={` p-2  rounded-xl ${
+                  serviceReceiptGuarantedTwo ? 'bg-green-400' : 'bg-dark'
+                } `}>
                 <CirclePlus className=' text-light ' />
               </div>
 
@@ -310,7 +340,10 @@ export const LoanDocumentationPreApproved = ({ loanId }) => {
               />
             </div>
             <div className='flex items-center relative  gap-3'>
-              <div className=' p-2  bg-dark rounded-xl'>
+              <div
+                className={` p-2  rounded-xl ${
+                  identityFrontGuarantedTwo ? 'bg-green-400' : 'bg-dark'
+                } `}>
                 <CirclePlus className=' text-light ' />
               </div>
 
@@ -332,7 +365,10 @@ export const LoanDocumentationPreApproved = ({ loanId }) => {
             </div>
 
             <div className='flex items-center relative  gap-3'>
-              <div className=' p-2  bg-dark rounded-xl'>
+              <div
+                className={` p-2  rounded-xl ${
+                  identityBackGuarantedTwo ? 'bg-green-400' : 'bg-dark'
+                } `}>
                 <CirclePlus className=' text-light ' />
               </div>
 
