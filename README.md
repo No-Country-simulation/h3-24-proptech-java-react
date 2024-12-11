@@ -119,6 +119,17 @@ For detailed information about our security policy, please refer to the [SECURIT
 <br>
 
 
+## Documentación de API
+
+La documentación de la API se puede acceder a través de Swagger. Utiliza la siguiente URL para ver todos los endpoints disponibles, así como los detalles sobre las solicitudes y respuestas.
+
+[Ver Documentación de API en Swagger](https://financial-al.up.railway.app/swagger-ui/index.html)
+
+
+<br>
+
+
+
 ## Organización
 
 [![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)](https://slack.com)
@@ -129,11 +140,7 @@ For detailed information about our security policy, please refer to the [SECURIT
 [![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com)
 
 
-## Documentación de API
-
-La documentación de la API se puede acceder a través de Swagger. Utiliza la siguiente URL para ver todos los endpoints disponibles, así como los detalles sobre las solicitudes y respuestas.
-
-[Ver Documentación de API en Swagger](https://financial-al.up.railway.app/swagger-ui/index.html)
+<br>
 
 
 ## Agradecimientos
