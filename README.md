@@ -83,7 +83,20 @@ Este sitio web se presta a recibir la información, que un cliente tiene que pro
 [Repositorio de GitHub - h3-24-proptech-java-react](https://github.com/No-Country-simulation/h3-24-proptech-java-react)
 
 
+
 <br>
+
+
+## Documentación de API
+
+La documentación de la API se puede acceder a través de Swagger. Utiliza la siguiente URL para ver todos los endpoints disponibles, así como los detalles sobre las solicitudes y respuestas.
+
+[Ver Documentación de API en Swagger](https://financial-al.up.railway.app/swagger-ui/index.html)
+
+
+
+<br>
+
 
 
 ## Demo de la Aplicación
@@ -106,6 +119,30 @@ Este es el acceso para gestionar los aspectos financieros de la aplicación.
 - Si necesitas más información, contáctanos.
 
 
+## Licencia
+
+Este proyecto está bajo la licencia de [Financia.al versión 1.0.0](./LICENSE).
+
+
+## Security Policy
+
+For detailed information about our security policy, please refer to the [SECURITY.md](SECURITY.md) file.
+
+
+<br>
+
+
+## Documentación de API
+
+La documentación de la API se puede acceder a través de Swagger. Utiliza la siguiente URL para ver todos los endpoints disponibles, así como los detalles sobre las solicitudes y respuestas.
+
+[Ver Documentación de API en Swagger](https://financial-al.up.railway.app/swagger-ui/index.html)
+
+
+<br>
+
+
+
 ## Organización
 
 [![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)](https://slack.com)
@@ -116,11 +153,7 @@ Este es el acceso para gestionar los aspectos financieros de la aplicación.
 [![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com)
 
 
-## Documentación de API
-
-La documentación de la API se puede acceder a través de Swagger. Utiliza la siguiente URL para ver todos los endpoints disponibles, así como los detalles sobre las solicitudes y respuestas.
-
-[Ver Documentación de API en Swagger](https://financial-al.up.railway.app/swagger-ui/index.html)
+<br>
 
 
 ## Agradecimientos
@@ -146,7 +179,6 @@ Proyecto creado por:
    <a href="https://www.linkedin.com/in/catrielescobar/" style="text-decoration: none;">
           <img src="https://img.shields.io/badge/LinkedIn-Catriel%20Escobar-blue?style=flat-square" alt="LinkedIn">
         </a>
-    <a href="https://github.com/Catriel-Escobar" style="text-decoration: none;">
 </p>
   <tr align="center">
     <td>
