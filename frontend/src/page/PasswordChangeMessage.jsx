@@ -1,10 +1,10 @@
-import Button from "../ui/Button";
+import Button from '../ui/Button';
 
 function PasswordChangeMessage() {
   return (
-    <section className="flex  flex-col min-h-[95vh] p-5 ">
-      <div className="flex-grow flex flex-col justify-center">
-        <h1 className="mb-5 text-xl font-bold">
+    <section className='flex  flex-col  min-h-[95vh] md:min-h-0 md:h-[70vh]   p-5 md:w-[60%] m-auto lg:w-[50%] max-w-[600px]  mt-5 '>
+      <div className='flex-grow flex flex-col  '>
+        <h1 className='mb-5 text-xl font-bold'>
           Tu contraseña se cambió correctamente.
         </h1>
         <p>
@@ -14,7 +14,7 @@ function PasswordChangeMessage() {
         </p>
       </div>
 
-      <Button to="/home">Volver a la página principal</Button>
+      <Button to='/home'>Volver a la página principal</Button>
     </section>
   );
 }

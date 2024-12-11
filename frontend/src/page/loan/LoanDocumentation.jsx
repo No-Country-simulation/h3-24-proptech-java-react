@@ -18,7 +18,7 @@ export const LoanDocumentation = () => {
     } else if (loan?.status === 'PENDING') {
       navigate('/loan/loan-send-information');
     } else if (loan?.status === 'APPROVED') {
-      navigate('/menu/paymentQuotas');
+      navigate('/loans');
     } else if (allDocumentationUploaded) {
       navigate('/loan/loan-send-information');
     }

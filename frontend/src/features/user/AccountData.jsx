@@ -26,7 +26,7 @@ function AccountData() {
             <span className='text-dark font-semibold'>{email}</span>
           </div>
 
-          <Button type='primary'>Cambiar</Button>
+          {/* <Button type='primary'>Cambiar</Button> */}
         </p>
       </div>
 
