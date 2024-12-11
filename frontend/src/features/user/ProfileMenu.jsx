@@ -5,7 +5,7 @@ import Button from '../../ui/Button';
 import { useUser } from '../../context/UserContext';
 
 const options = [
-  { id: '1', label: 'Datos Prestamo', to: '/loan/loan-life' },
+  // { id: '1', label: 'Datos Prestamo', to: '/loan/loan-life' },
   { id: '2', label: 'Panel de inversion', to: '/investmentPanel' },
   { id: '3', label: 'Datos de garantes', to: '/loan/upload-documentation' },
   { id: '4', label: 'Resumen de tu préstamo', to: '/loan/data-summary' },

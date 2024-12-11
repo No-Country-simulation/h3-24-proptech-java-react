@@ -12,8 +12,8 @@ export const LoanLife = () => {
   const { profile, getProfile } = useProfile();
   const { loanFullData, getLoan, isPending } = useLoan();
   useEffect(() => {
-    if (!profile) getProfile();
-    if (!loanFullData) getLoan();
+    // getProfile();
+    // getLoan();
   }, []);
   const links = [
     {
@@ -28,7 +28,7 @@ export const LoanLife = () => {
     { title: 'Cuotas a pagar', component: <QuotesToPay /> },
     { title: 'Ajustes personales', component: <PersonalSettings /> },
   ];
-
+  console.log(loanFullData);
   const loanStatus = {
     PENDING: {
       status: 'Pendiente',
