@@ -24,6 +24,10 @@
 <img src="https://res.cloudinary.com/dbai2k4fx/image/upload/v1733762666/imagenes_5_hbeh4p.jpg">
 <img src="https://res.cloudinary.com/dbai2k4fx/image/upload/v1733762666/imagenes_1_oolzte.jpg">
 
+
+  
+<br>
+
 <h2>Resumen del Sitio Web</h2>
 <h3>Descripción general:</h3>
 <p>Financia.al es un sitio web el cual está orientado a captar clientes y facilitar el trabajo de una prestataria.
@@ -271,4 +275,17 @@ Proyecto creado por:
 </p>
 
 <br>
+
+
+## Nota sobre el proyecto
+
+Es una pena que este proyecto, completamente funcional y terminado, no haya podido ser presentado al cliente.  
+Curiosamente, NoCountry decidió priorizar otros proyectos aún sin terminar y ni siquiera se tomó el tiempo de mirar este trabajo terminado.  
+A pesar de todo, agradecemos la experiencia y esperamos que este esfuerzo sea valorado en algún momento.
+
+\- Diego Veras  | Backend
+
+
+<br>
+
 
