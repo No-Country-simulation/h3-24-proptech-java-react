@@ -9,6 +9,7 @@ import com.financial.model.enums.PaymentType;
 import com.financial.repository.IGeneratedPaymentRepository;
 import com.financial.repository.ILoanRepository;
 import com.financial.repository.IPaymentRepository;
+import com.financial.service.IGeneratedPayment;
 import com.financial.service.IPaymentService;
 import lombok.extern.java.Log;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -23,11 +24,13 @@ import java.util.List;
 @Component
 public class PaymentScheduler {
     private final IGeneratedPaymentRepository generatedPaymentRepository;
+    private final IGeneratedPayment iGeneratedPayment;
     private final IPaymentService paymentService;
     private final IPaymentRepository paymentRepository;
     private final ILoanRepository loanRepository;
-    public PaymentScheduler(IGeneratedPaymentRepository generatedPaymentRepository, IPaymentService paymentService, IPaymentRepository paymentRepository, ILoanRepository loanRepository) {
+    public PaymentScheduler(IGeneratedPaymentRepository generatedPaymentRepository, IGeneratedPayment iGeneratedPayment, IPaymentService paymentService, IPaymentRepository paymentRepository, ILoanRepository loanRepository) {
         this.generatedPaymentRepository = generatedPaymentRepository;
+        this.iGeneratedPayment = iGeneratedPayment;
         this.paymentService = paymentService;
         this.paymentRepository = paymentRepository;
         this.loanRepository = loanRepository;
@@ -78,25 +81,25 @@ public class PaymentScheduler {
         }
     }
 
-    /**
-     * Marca los pagos vencidos como morosos el día 11 de cada mes a las 3:00 AM.
-     */
-    @Transactional
-    //@Scheduled(cron = "0 0 3 11 * ?")
-    @Scheduled(fixedRate = 70000)
-    public void markLatePayments() {
-        LocalDate dueDate = LocalDate.now();
-        List<Payment> payments = paymentRepository.findByDueDateBeforeAndPaymentDateIsNullAndStatusNot(dueDate, PaymentStatus.PENDING);
-        for (Payment payment : payments) {
-            if (payment.getDueDate().isBefore(dueDate)) {
-                payment.setStatus(PaymentStatus.MOROSA);
-                paymentRepository.save(payment);
-            }
-        }
-    }
+//    /**
+//     * Marca los pagos vencidos como morosos el día 11 de cada mes a las 3:00 AM.
+//     */
+//    @Transactional
+//    //@Scheduled(cron = "0 0 3 11 * ?")
+//    @Scheduled(fixedRate = 70000)
+//    public void markLatePayments() {
+//        LocalDate dueDate = LocalDate.now();
+//        List<Payment> payments = paymentRepository.findByDueDateBeforeAndPaymentDateIsNullAndStatusNot(dueDate, PaymentStatus.PENDING);
+//        for (Payment payment : payments) {
+//            if (payment.getDueDate().isBefore(dueDate)) {
+//                payment.setStatus(PaymentStatus.MOROSA);
+//                paymentRepository.save(payment);
+//            }
+//        }
+//    }
 
     @Transactional
-    @Scheduled(fixedRate = 405000)
+    @Scheduled(fixedRate = 402000)
     public void processMonthlyPaymentsAdvance() {
         List<Loan> loans = loanRepository.findAll();
         for (Loan loan : loans) {
@@ -140,5 +143,12 @@ public class PaymentScheduler {
                 //TODO: Implementar el envío de notificaciones
             }
         }
+    }
+
+   // @Scheduled(cron = "0 0 2 11 * ?") // Ejecuta a las 2 AM del día 11 de cada mes
+    @Scheduled(fixedRate = 432000)
+    public void cancelUnpaidAdvancePayments() {
+        log.info("ejecuntando tareas de limpieza.");
+        iGeneratedPayment.cancelPendingPayments();
     }
 }

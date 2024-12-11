@@ -127,7 +127,6 @@ export async function getLoanApi() {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(data);
 
     return data;
   } catch (error) {

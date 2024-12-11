@@ -51,6 +51,11 @@ public class AuthServiceImpl implements AuthService {
         }
         User user = userRepository.findUserByEmail(dto.getEmail())
                 .orElseThrow(() -> new NotFoundException(String.format("User not found with email: %s",dto.getEmail())));
+
+//        if (!Boolean.TRUE.equals(user.getActive())) {
+//            throw new AccountActivationException("Tu cuenta no está activada. Por favor, activa tu cuenta.");
+//        }
+
         return generateResponse(user);
     }
 
@@ -93,13 +98,13 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void activateAccount(String token) {
         if (!jwtService.isActivationTokenValid(token)) {
-            throw new AccountActivationException("Activation token is invalid or expired.");
+            throw new AccountActivationException("El token de activación es inválido o ha expirado.");
         }
         String username = jwtService.getUsernameFromToken(token);
         User user = userRepository.findUserByEmail(username)
-                .orElseThrow(() -> new AccountActivationException("User not found with username: " + username));
+                .orElseThrow(() -> new AccountActivationException("No se encontró un usuario con el correo: " + username));
         if (Boolean.TRUE.equals(user.getActive())) {
-            throw new AccountActivationException("Account is already enabled.");
+            throw new AccountActivationException("La cuenta ya está activada.");
         }
         user.setActive(true);
         userRepository.save(user);
@@ -109,6 +114,7 @@ public class AuthServiceImpl implements AuthService {
     public String generateActivationToken(String email) {
         User user = userRepository.findUserByEmail(email)
                 .orElseThrow(() -> new EmailServiceException("User not found with email: " + email));
+
         return jwtService.generateActivationToken(user.getUsername());
     }
 

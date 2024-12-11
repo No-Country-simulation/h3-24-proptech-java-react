@@ -134,6 +134,7 @@ function App() {
           <Route path='mp-success' element={<SuccessPaymentPage />} />
         </Routes>
       </BrowserRouter>
+      <ChatBot />
     </QueryClientProvider>
   );
 }

@@ -6,14 +6,13 @@ import { useNavigate } from 'react-router-dom';
 
 export const LoanDocumentation = () => {
   const navigate = useNavigate();
-  const { loan, getLoan, allDocumentationUploaded } = useLoan();
+  const { loan, getLoan, allDocumentationUploaded, isPending } = useLoan();
   useEffect(() => {
-    getLoan();
-  }, []);
+    if (!loan) getLoan();
+  }, [loan]);
   useEffect(() => {
-    if (!loan) {
-      console.log('holaaaaaaaaaa');
-      navigate('/home');
+    if (!loan && !isPending) {
+      // navigate('/home');
     } else if (loan?.status === 'INITIATED') {
       return;
     } else if (loan?.status === 'PENDING') {

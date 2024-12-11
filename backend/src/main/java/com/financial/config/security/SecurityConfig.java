@@ -32,7 +32,8 @@ public class SecurityConfig {
             "/api/reset-password",
             "/api/mp/webhooks/payment",
             "/api/faq/ask",
-            "/api/auth/activate"
+            "/api/auth/activate",
+            "/api/auth/generate-token"
     };
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -61,7 +62,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173","http://localhost:3000","https://panel-admin-production.up.railway.app", "https://financial-al.up.railway.app", "https://financialal.up.railway.app"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5173","http://localhost:3000","https://financiallj.netlify.app","https://panel-admin-production.up.railway.app", "https://financial-al.up.railway.app", "https://financialal.up.railway.app"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

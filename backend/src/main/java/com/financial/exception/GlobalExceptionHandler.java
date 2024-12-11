@@ -119,4 +119,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(ex.getStatusCode())
                 .body(error);
     }
+
+    @ExceptionHandler(AccountActivationException.class)
+    public ResponseEntity<ErrorResponse> handlePaymentNotFoundException(AccountActivationException ex, WebRequest request) {
+        ErrorResponse error = new ErrorResponse(
+                ex.getMessage(),
+                500,
+                request.getDescription(false)
+        );
+        return ResponseEntity.status(500)
+                .body(error);
+    }
 }
