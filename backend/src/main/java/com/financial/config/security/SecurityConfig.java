@@ -32,7 +32,8 @@ public class SecurityConfig {
             "/api/reset-password",
             "/api/mp/webhooks/payment",
             "/api/faq/ask",
-            "/api/auth/activate"
+            "/api/auth/activate",
+            "/api/auth/generate-token"
     };
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;

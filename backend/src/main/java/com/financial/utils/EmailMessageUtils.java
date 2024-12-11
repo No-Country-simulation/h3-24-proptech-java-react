@@ -1,5 +1,7 @@
 package com.financial.utils;
 
+import org.springframework.beans.factory.annotation.Value;
+
 public final class EmailMessageUtils {
 
     public static final String EMAIL_TITLE = "Problemas de documentación";

@@ -32,8 +32,12 @@ public class EmailServiceImpl implements IEmailService {
         this.authService  = authService ;
     }
 
-    @Value("spring.mail.username")
+    @Value("${frontend.url}")
+    private String frontendUrl;
+
+    @Value("${spring.mail.username}")
     private String emailSender;
+
     @Value("${backend.url}")
     private String backendUrl;
 
@@ -189,6 +193,7 @@ public class EmailServiceImpl implements IEmailService {
             context.setVariable("messageBody", messageBody);
             context.setVariable("extraMessage", extraMessage);
             context.setVariable("callToActionMessage", callToActionMessage);
+            context.setVariable("redirectLink", frontendUrl + "/loan/upload-documentation");
             context.setVariable("buttonText", buttonText);
             String htmlContent = templateEngine.process(LOAN_STATUS_NOTIFICATION_TEMPLATE, context);
 
