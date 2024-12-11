@@ -159,7 +159,6 @@ Proyecto creado por:
    <a href="https://www.linkedin.com/in/catrielescobar/" style="text-decoration: none;">
           <img src="https://img.shields.io/badge/LinkedIn-Catriel%20Escobar-blue?style=flat-square" alt="LinkedIn">
         </a>
-    <a href="https://github.com/Catriel-Escobar" style="text-decoration: none;">
 </p>
   <tr align="center">
     <td>
