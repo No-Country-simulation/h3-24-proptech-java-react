@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 export const LoanSendInfo = () => {
   const navigate = useNavigate();
   return (
-    <div className=' flex flex-col w-full md:w-[80%] md:m-auto lg:w-[50%] lg:max-w-[760px]  '>
+    <div className=' flex flex-col w-full pt-8 md:w-[80%] md:m-auto lg:w-[50%] lg:max-w-[760px]  '>
       <div className='pb-8'>
         <div>
           <h2 className='font-bold text-2xl'>Solicitud enviada con éxito!</h2>

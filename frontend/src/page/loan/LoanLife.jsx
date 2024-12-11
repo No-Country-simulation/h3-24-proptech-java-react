@@ -28,11 +28,30 @@ export const LoanLife = () => {
     { title: 'Cuotas a pagar', component: <QuotesToPay /> },
     { title: 'Ajustes personales', component: <PersonalSettings /> },
   ];
+
+  const loanStatus = {
+    PENDING: {
+      status: 'Pendiente',
+      color: 'bg-blue-100 text-blue-800',
+    },
+    INITIATED: {
+      status: 'Iniciado',
+      color: 'bg-gray-100',
+    },
+    PRE_APPROVED: {
+      status: 'Pre aprobado',
+      color: 'bg-yellow-100 text-yellow-800',
+    },
+    APPROVED: {
+      status: 'Pre aprobado',
+      color: 'bg-green-100 text-green-80',
+    },
+  };
   console.log({
     loanFullData,
     profile,
   });
-  console.log(isPending);
+
   const [currentLink, setCurrentLink] = useState('Datos personales');
   return (
     <div className='lg:w-[80%] m-auto mb-10'>
@@ -54,7 +73,16 @@ export const LoanLife = () => {
       {links
         .filter((e) => e.title === currentLink)
         .map((l, i) => (
-          <div key={i} className=''>
+          <div key={i} className='py-8 '>
+            <h2>
+              Estado del prestamo:{' '}
+              <span
+                className={`${
+                  loanFullData && loanStatus[loanFullData?.loan.status].color
+                } p-2 rounded-md`}>
+                {loanFullData && loanStatus[loanFullData?.loan.status].status}
+              </span>
+            </h2>
             {l.component}
           </div>
         ))}

@@ -1,5 +1,6 @@
 import { CirclePlus, FileCheck } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { LoanSendInfo } from '../LoanSendInfo';
 
 export const LoanGuarantorData = ({ loan }) => {
   const [docs, setDocs] = useState(null);
@@ -136,191 +137,214 @@ export const LoanGuarantorData = ({ loan }) => {
   }, [docs]);
 
   return (
-    <div className='mt-8 w-full '>
-      <div className='  mb-8'>
-        <h2 className='text-3xl font-bold'>
-          Aquí podrás adjuntar los datos de tus garantes
-        </h2>
-        <p className='text-[#475569] text-xl'>
-          Adjunte la documentación de sus garantes para podes continuar con el
-          proceso de solicitud.
-        </p>
-      </div>
-      <hr />
-      <div className='flex flex-col bg-red-400  h-[600px]'>
-        <div className='flex justify-around my-8 flex-wrap'>
-          <div className='w-1/2'>
-            <h2 className='font-bold text-xl'>Garante 1</h2>
-            <div className='grid grid-cols-2 grid-rows-2 mt-8 gap-10    '>
-              <div className='flex items-center relative   gap-3'>
-                <div
-                  className={`${
-                    documentUploaded.guarantorOne.salary
-                      ? 'bg-green-500'
-                      : 'bg-red-500 '
-                  } p-2  rounded-xl text-light `}>
-                  {documentUploaded.guarantorOne.salary ? (
-                    <FileCheck />
-                  ) : (
-                    <CirclePlus className=' text-light ' />
-                  )}
-                </div>
-                <div className='cursor-pointer text-black'>
-                  <p className='text-xs'>Adjunte 3 documentos de:</p>
-                  <p className='  font-medium text-base'>Recibos de sueldos</p>
+    <>
+      {loan.loan.status === 'PRE_APPROVED' ||
+      loan.loan.status === 'APPROVED' ? (
+        <div className='mt-8 w-full '>
+          <div className='  mb-8'>
+            <h2 className='text-3xl font-bold'>
+              Aquí podrás adjuntar los datos de tus garantes
+            </h2>
+            <p className='text-[#475569] text-xl'>
+              Adjunte la documentación de sus garantes para podes continuar con
+              el proceso de solicitud.
+            </p>
+          </div>
+          <hr />
+          <div className='flex flex-col justify-between h-[600px]'>
+            <div className='flex justify-around my-8 flex-wrap'>
+              <div className='w-1/2'>
+                <h2 className='font-bold text-xl'>Garante 1</h2>
+                <div className='grid grid-cols-2 grid-rows-2 mt-8 gap-10    '>
+                  <div className='flex items-center relative   gap-3'>
+                    <div
+                      className={`${
+                        documentUploaded.guarantorOne.salary
+                          ? 'bg-green-500'
+                          : 'bg-red-500 '
+                      } p-2  rounded-xl text-light `}>
+                      {documentUploaded.guarantorOne.salary ? (
+                        <FileCheck />
+                      ) : (
+                        <CirclePlus className=' text-light ' />
+                      )}
+                    </div>
+                    <div className='cursor-pointer text-black'>
+                      <p className='text-xs'>Adjunte 3 documentos de:</p>
+                      <p className='  font-medium text-base'>
+                        Recibos de sueldos
+                      </p>
+                    </div>
+                  </div>
+                  <div className='flex items-center relative text-light   gap-3'>
+                    <div
+                      className={`${
+                        documentUploaded.guarantorOne.service
+                          ? 'bg-green-500'
+                          : 'bg-red-500 '
+                      } p-2  rounded-xl`}>
+                      {documentUploaded.guarantorOne.service ? (
+                        <FileCheck />
+                      ) : (
+                        <CirclePlus className=' text-light ' />
+                      )}
+                    </div>
+
+                    <div className='cursor-pointer text-black'>
+                      <p className='text-xs'>Adjunte 1 documentos de:</p>
+                      <p className='  font-medium text-base'>
+                        Factura de servicios
+                      </p>
+                    </div>
+                  </div>
+                  <div className='flex items-center relative text-light   gap-3'>
+                    <div
+                      className={`${
+                        documentUploaded.guarantorOne.identityF
+                          ? 'bg-green-500'
+                          : 'bg-red-500 '
+                      } p-2  rounded-xl`}>
+                      {documentUploaded.guarantorOne.identityF ? (
+                        <FileCheck />
+                      ) : (
+                        <CirclePlus className=' text-light ' />
+                      )}
+                    </div>
+
+                    <div className='cursor-pointer text-black'>
+                      <p className='text-xs'>Adjunte Frente de:</p>
+                      <p className='  font-medium text-base'>
+                        Documento identidad
+                      </p>
+                    </div>
+                  </div>
+                  <div className='flex items-center relative text-light   gap-3'>
+                    <div
+                      className={`${
+                        documentUploaded.guarantorOne.identityB
+                          ? 'bg-green-500'
+                          : 'bg-red-500 '
+                      } p-2  rounded-xl`}>
+                      {documentUploaded.guarantorOne.identityB ? (
+                        <FileCheck />
+                      ) : (
+                        <CirclePlus className=' text-light ' />
+                      )}
+                    </div>
+
+                    <div className='cursor-pointer text-black'>
+                      <p className='text-xs'>Adjunte Dorso de:</p>
+                      <p className='  font-medium text-base'>
+                        Documento identidad
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className='flex items-center relative text-light   gap-3'>
-                <div
-                  className={`${
-                    documentUploaded.guarantorOne.service
-                      ? 'bg-green-500'
-                      : 'bg-red-500 '
-                  } p-2  rounded-xl`}>
-                  {documentUploaded.guarantorOne.service ? (
-                    <FileCheck />
-                  ) : (
-                    <CirclePlus className=' text-light ' />
-                  )}
-                </div>
+              <div className='w-1/2'>
+                <h2 className='font-bold text-xl'>Garante 2</h2>
+                <div className='grid grid-cols-2 grid-rows-2 mt-8 gap-10  '>
+                  <div className='flex items-center relative gap-3'>
+                    <div
+                      className={`${
+                        documentUploaded.guarantorTwo.salary
+                          ? 'bg-green-500'
+                          : 'bg-red-500 '
+                      } p-2  rounded-xl text-light `}>
+                      {documentUploaded.guarantorTwo.salary ? (
+                        <FileCheck />
+                      ) : (
+                        <CirclePlus className=' text-light ' />
+                      )}
+                    </div>
 
-                <div className='cursor-pointer text-black'>
-                  <p className='text-xs'>Adjunte 1 documentos de:</p>
-                  <p className='  font-medium text-base'>
-                    Factura de servicios
-                  </p>
-                </div>
-              </div>
-              <div className='flex items-center relative text-light   gap-3'>
-                <div
-                  className={`${
-                    documentUploaded.guarantorOne.identityF
-                      ? 'bg-green-500'
-                      : 'bg-red-500 '
-                  } p-2  rounded-xl`}>
-                  {documentUploaded.guarantorOne.identityF ? (
-                    <FileCheck />
-                  ) : (
-                    <CirclePlus className=' text-light ' />
-                  )}
-                </div>
+                    <div className='cursor-pointer text-black'>
+                      <p className='text-xs'>Adjunte 3 documentos de:</p>
+                      <p className='  font-medium text-base'>
+                        Recibos de sueldos
+                      </p>
+                    </div>
+                  </div>
 
-                <div className='cursor-pointer text-black'>
-                  <p className='text-xs'>Adjunte Frente de:</p>
-                  <p className='  font-medium text-base'>Documento identidad</p>
-                </div>
-              </div>
-              <div className='flex items-center relative text-light   gap-3'>
-                <div
-                  className={`${
-                    documentUploaded.guarantorOne.identityB
-                      ? 'bg-green-500'
-                      : 'bg-red-500 '
-                  } p-2  rounded-xl`}>
-                  {documentUploaded.guarantorOne.identityB ? (
-                    <FileCheck />
-                  ) : (
-                    <CirclePlus className=' text-light ' />
-                  )}
-                </div>
+                  <div className='flex items-center relative text-light   gap-3'>
+                    <div
+                      className={`${
+                        documentUploaded.guarantorTwo.service
+                          ? 'bg-green-500'
+                          : 'bg-red-500 '
+                      } p-2  rounded-xl`}>
+                      {documentUploaded.guarantorTwo.service ? (
+                        <FileCheck />
+                      ) : (
+                        <CirclePlus className=' text-light ' />
+                      )}
+                    </div>
 
-                <div className='cursor-pointer text-black'>
-                  <p className='text-xs'>Adjunte Dorso de:</p>
-                  <p className='  font-medium text-base'>Documento identidad</p>
+                    <div className='cursor-pointer text-black'>
+                      <p className='text-xs'>Adjunte 1 documentos de:</p>
+                      <p className='  font-medium text-base'>
+                        Factura de servicios
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className='flex items-center relative text-light   gap-3'>
+                    <div
+                      className={`${
+                        documentUploaded.guarantorTwo.identityF
+                          ? 'bg-green-500'
+                          : 'bg-red-500 '
+                      } p-2  rounded-xl`}>
+                      {documentUploaded.guarantorTwo.identityF ? (
+                        <FileCheck />
+                      ) : (
+                        <CirclePlus className=' text-light ' />
+                      )}
+                    </div>
+
+                    <div className='cursor-pointer text-black'>
+                      <p className='text-xs'>Adjunte Frente de:</p>
+                      <p className='  font-medium text-base'>
+                        Documento identidad
+                      </p>
+                    </div>
+                  </div>
+                  <div className='flex items-center relative text-light   gap-3'>
+                    <div
+                      className={`${
+                        documentUploaded.guarantorTwo.identityB
+                          ? 'bg-green-500'
+                          : 'bg-red-500 '
+                      } p-2  rounded-xl`}>
+                      {documentUploaded.guarantorTwo.identityB ? (
+                        <FileCheck />
+                      ) : (
+                        <CirclePlus className=' text-light ' />
+                      )}
+                    </div>
+
+                    <div className='cursor-pointer text-black'>
+                      <p className='text-xs'>Adjunte Dorso de:</p>
+                      <p className='  font-medium text-base'>
+                        Documento identidad
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className='w-1/2'>
-            <h2 className='font-bold text-xl'>Garante 2</h2>
-            <div className='grid grid-cols-2 grid-rows-2 mt-8 gap-10  '>
-              <div className='flex items-center relative gap-3'>
-                <div
-                  className={`${
-                    documentUploaded.guarantorTwo.salary
-                      ? 'bg-green-500'
-                      : 'bg-red-500 '
-                  } p-2  rounded-xl text-light `}>
-                  {documentUploaded.guarantorTwo.salary ? (
-                    <FileCheck />
-                  ) : (
-                    <CirclePlus className=' text-light ' />
-                  )}
-                </div>
-
-                <div className='cursor-pointer text-black'>
-                  <p className='text-xs'>Adjunte 3 documentos de:</p>
-                  <p className='  font-medium text-base'>Recibos de sueldos</p>
-                </div>
-              </div>
-
-              <div className='flex items-center relative text-light   gap-3'>
-                <div
-                  className={`${
-                    documentUploaded.guarantorTwo.service
-                      ? 'bg-green-500'
-                      : 'bg-red-500 '
-                  } p-2  rounded-xl`}>
-                  {documentUploaded.guarantorTwo.service ? (
-                    <FileCheck />
-                  ) : (
-                    <CirclePlus className=' text-light ' />
-                  )}
-                </div>
-
-                <div className='cursor-pointer text-black'>
-                  <p className='text-xs'>Adjunte 1 documentos de:</p>
-                  <p className='  font-medium text-base'>
-                    Factura de servicios
-                  </p>
-                </div>
-              </div>
-
-              <div className='flex items-center relative text-light   gap-3'>
-                <div
-                  className={`${
-                    documentUploaded.guarantorTwo.identityF
-                      ? 'bg-green-500'
-                      : 'bg-red-500 '
-                  } p-2  rounded-xl`}>
-                  {documentUploaded.guarantorTwo.identityF ? (
-                    <FileCheck />
-                  ) : (
-                    <CirclePlus className=' text-light ' />
-                  )}
-                </div>
-
-                <div className='cursor-pointer text-black'>
-                  <p className='text-xs'>Adjunte Frente de:</p>
-                  <p className='  font-medium text-base'>Documento identidad</p>
-                </div>
-              </div>
-              <div className='flex items-center relative text-light   gap-3'>
-                <div
-                  className={`${
-                    documentUploaded.guarantorTwo.identityB
-                      ? 'bg-green-500'
-                      : 'bg-red-500 '
-                  } p-2  rounded-xl`}>
-                  {documentUploaded.guarantorTwo.identityB ? (
-                    <FileCheck />
-                  ) : (
-                    <CirclePlus className=' text-light ' />
-                  )}
-                </div>
-
-                <div className='cursor-pointer text-black'>
-                  <p className='text-xs'>Adjunte Dorso de:</p>
-                  <p className='  font-medium text-base'>Documento identidad</p>
-                </div>
+            <div className='flex justify-end items-end'>
+              <div className='flex justify-center items-center w-[162px] h-[44px] border-2 border-[#2962FF] text-[#2962FF] hover:border-[#4e629b] hover:text-[#4e629b] font-bold rounded-md cursor-pointer'>
+                Modificar datos
               </div>
             </div>
-          </div>
-          <div className='bg-green-400 h-full w-full flex items-end justify-end'>
-            <p>hola</p>
           </div>
         </div>
-      </div>
-    </div>
+      ) : loan.loan.status === 'PENDING' ? (
+        <LoanSendInfo />
+      ) : (
+        <h1>No hay un prestamo cargado</h1>
+      )}
+    </>
   );
 };
