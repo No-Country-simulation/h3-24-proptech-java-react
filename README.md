@@ -83,7 +83,20 @@ Este sitio web se presta a recibir la información, que un cliente tiene que pro
 [Repositorio de GitHub - h3-24-proptech-java-react](https://github.com/No-Country-simulation/h3-24-proptech-java-react)
 
 
+
 <br>
+
+
+## Documentación de API
+
+La documentación de la API se puede acceder a través de Swagger. Utiliza la siguiente URL para ver todos los endpoints disponibles, así como los detalles sobre las solicitudes y respuestas.
+
+[Ver Documentación de API en Swagger](https://financial-al.up.railway.app/swagger-ui/index.html)
+
+
+
+<br>
+
 
 
 ## Demo de la Aplicación
