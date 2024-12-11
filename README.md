@@ -105,9 +105,18 @@ Este es el acceso para gestionar los aspectos financieros de la aplicación.
 - Usa las credenciales proporcionadas para acceder a las funcionalidades protegidas o regístrate para crear tu propia cuenta.
 - Si necesitas más información, contáctanos.
 
+
 ## Licencia
 
 Este proyecto está bajo la licencia de [Financia.al versión 1.0.0](./LICENSE).
+
+
+## Security Policy
+
+For detailed information about our security policy, please refer to the [SECURITY.md](SECURITY.md) file.
+
+
+<br>
 
 
 ## Organización
