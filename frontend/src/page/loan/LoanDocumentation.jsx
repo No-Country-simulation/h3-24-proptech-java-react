@@ -12,6 +12,7 @@ export const LoanDocumentation = () => {
   }, []);
   useEffect(() => {
     if (!loan) {
+      console.log('holaaaaaaaaaa');
       navigate('/home');
     } else if (loan?.status === 'INITIATED') {
       return;

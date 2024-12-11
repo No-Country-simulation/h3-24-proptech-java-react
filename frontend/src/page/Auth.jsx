@@ -11,7 +11,7 @@ function Auth() {
   const { user } = useUser();
   useEffect(() => {
     console.log(user);
-    if (user) navigate('/home');
+    // if (user) navigate('/home');
   }, [user]);
   const location = useLocation();
   useEffect(() => {

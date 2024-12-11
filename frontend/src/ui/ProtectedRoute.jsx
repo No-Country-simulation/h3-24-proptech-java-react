@@ -8,10 +8,6 @@ function ProtectedRoute() {
   const navigate = useNavigate();
   const { isPending, user } = useUser();
 
-  useEffect(function () {
-    if (!user && !isPending) navigate('/auth', { replace: true });
-  }, []);
-
   if (user)
     return (
       <>

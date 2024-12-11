@@ -20,6 +20,7 @@ export const useLoan = () => {
 
 export const LoanProvider = ({ children }) => {
   const [loan, setLoan] = useState(null);
+  const [loanFullData, setLoanFullData] = useState(null);
   const [allDocumentationUploaded, setAllDocumentationUploaded] =
     useState(false);
   const [loanSimulation, setLoanSimulation] = useState(null);
@@ -60,13 +61,17 @@ export const LoanProvider = ({ children }) => {
 
   const getLoan = async () => {
     try {
+      setIsPending(true);
       const res = await getLoanApi();
       setLoan(res.loan);
+      setLoanFullData(res);
       const newArray = res.documentationStatuses.filter(
         (l) => l.allDocumentsUploaded === true
       );
       setAllDocumentationUploaded(newArray.length >= 3);
+      setIsPending(false);
     } catch (error) {
+      setIsPending(false);
       console.log(error);
     }
   };
@@ -115,6 +120,7 @@ export const LoanProvider = ({ children }) => {
         isPending,
         dataProfile,
         allDocumentationUploaded,
+        loanFullData,
         setLoanFormData,
         simulateLoan,
         createLoan,

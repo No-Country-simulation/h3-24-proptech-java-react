@@ -33,6 +33,7 @@ import ProtectedRoute from './ui/ProtectedRoute';
 import { useEffect } from 'react';
 import { useUser } from './context/UserContext';
 import Spinner from './ui/Spinner';
+import { LoanLife } from './page/loan/LoanLife';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -99,7 +100,7 @@ function App() {
               <Route path='loan' element={<LoanApplication />}>
                 <Route index element={<Navigate replace to='veriff' />} />
                 <Route path='veriff' element={<Veriff />} />
-
+                <Route path='loan-life' element={<LoanLife />} />
                 <Route path='loan-information' element={<LoanInformation />} />
 
                 <Route
@@ -133,28 +134,6 @@ function App() {
           <Route path='mp-success' element={<SuccessPaymentPage />} />
         </Routes>
       </BrowserRouter>
-
-      <Toaster
-        position='top-center'
-        gutter={12}
-        containerStyle={{ margin: '8px' }}
-        toastOptions={{
-          success: {
-            duration: 3000,
-          },
-          error: {
-            duration: 5000,
-          },
-          style: {
-            fontSize: '16px',
-            maxWidth: '600px',
-            padding: '16px 24px',
-            backgroundColor: '#FFFFFF',
-            color: '#0D0D0D',
-          },
-        }}
-      />
-      <ChatBot />
     </QueryClientProvider>
   );
 }

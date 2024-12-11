@@ -43,7 +43,7 @@ const Nav = () => {
           ) : (
             <div className='flex gap-5'>
               <button
-                className='text-[#2962FF] hover:text-blue-500 font-semibold'
+                className='text-[#2962FF] hover:text-[#1F47B4] font-semibold'
                 onClick={() => navigate('/auth', { state: 'login' })}>
                 Iniciar sesión
               </button>

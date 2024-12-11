@@ -62,7 +62,7 @@ export const UserProvider = ({ children }) => {
       setIsPending(true);
 
       const data = await getCurrentUser();
-      console.log(data);
+
       saveData('token', data?.token);
       setUser(data?.user);
       setIsPending(false);

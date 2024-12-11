@@ -40,7 +40,8 @@ function LoanApplicationSummary() {
   // }, [isPending]);
 
   const handleUpdateProfile = () => {
-    updateProfile().then(() => navigate('/loan/upload-documentation'));
+    updateProfile().then(() => navigate('/loan/loan-life'));
+    // updateProfile().then(() => navigate('/loan/upload-documentation'));
   };
 
   return (
