@@ -277,7 +277,7 @@ Proyecto creado por:
 <br>
 
 
-## Nota sobre el proyecto
+## Nota Importante
 
 Es una pena que este proyecto, completamente funcional y terminado, no haya podido ser presentado al cliente.  
 Curiosamente, NoCountry decidió priorizar otros proyectos aún sin terminar y ni siquiera se tomó el tiempo de mirar este trabajo terminado.  
